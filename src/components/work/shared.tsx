@@ -30,6 +30,8 @@ import {
 } from "@/components/ui/sheet";
 import { useDemo } from "@/features/demo/use-demo";
 import { type Opportunity } from "@/features/demo/model";
+import { useAccountAuth } from "@/features/account/auth";
+import { SignOutButton } from "@/features/account/shell";
 export function Brand() {
   return (
     <Link to="/" className="brand" aria-label="Work to Work home">
@@ -321,6 +323,7 @@ export function AppShell({ children }: { children: ReactNode }) {
 }
 export function PublicHeader() {
   const [open, setOpen] = useState(false);
+  const { user, loading } = useAccountAuth();
   return (
     <header className="public-header">
       <div className="site-container header-inner">
@@ -337,14 +340,27 @@ export function PublicHeader() {
           </Link>
         </nav>
         <div className="header-actions">
-          <Button variant="ghost" asChild>
-            <Link to="/login">Log in</Link>
-          </Button>
-          <Button asChild>
-            <Link to="/signup">
-              Get started <ArrowUpRight />
-            </Link>
-          </Button>
+          {loading ? (
+            <span role="status">Checking session…</span>
+          ) : user ? (
+            <>
+              <Button asChild>
+                <Link to="/dashboard">My workspace</Link>
+              </Button>
+              <SignOutButton />
+            </>
+          ) : (
+            <>
+              <Button variant="ghost" asChild>
+                <Link to="/login">Log in</Link>
+              </Button>
+              <Button asChild>
+                <Link to="/signup">
+                  Get started <ArrowUpRight />
+                </Link>
+              </Button>
+            </>
+          )}
         </div>
         <div className="mobile-only">
           <Sheet open={open} onOpenChange={setOpen}>
@@ -357,30 +373,32 @@ export function PublicHeader() {
               <SheetTitle>Work to Work</SheetTitle>
               <SheetDescription>Find your next chapter</SheetDescription>
               <nav className="drawer-nav">
-                {(
-                  [
-                    "/how-it-works",
-                    "/pricing",
-                    "/contact",
-                    "/login",
-                    "/signup",
-                    "/demo/dashboard",
-                  ] as const
-                ).map((to, i) => (
-                  <Link key={to} to={to} onClick={() => setOpen(false)}>
-                    {
-                      [
-                        "How it works",
-                        "Pricing",
-                        "Contact",
-                        "Log in",
-                        "Get started",
-                        "Explore the demo",
-                      ][i]
-                    }
-                    <ArrowUpRight size={16} />
-                  </Link>
-                ))}
+                {user && (
+                  <>
+                    <Link to="/dashboard" onClick={() => setOpen(false)}>
+                      My workspace
+                    </Link>
+                    <SignOutButton />
+                  </>
+                )}
+                {(["/how-it-works", "/pricing", "/contact", "/demo/dashboard"] as const).map(
+                  (to, i) => (
+                    <Link key={to} to={to} onClick={() => setOpen(false)}>
+                      {["How it works", "Pricing", "Contact", "Explore the demo"][i]}
+                      <ArrowUpRight size={16} />
+                    </Link>
+                  ),
+                )}
+                {!user && (
+                  <>
+                    <Link to="/login" onClick={() => setOpen(false)}>
+                      Log in
+                    </Link>
+                    <Link to="/signup" onClick={() => setOpen(false)}>
+                      Get started
+                    </Link>
+                  </>
+                )}
               </nav>
             </SheetContent>
           </Sheet>
@@ -406,7 +424,7 @@ export function PublicFooter() {
       </div>
       <div className="site-container footer-bottom">
         <span>© 2026 Work to Work</span>
-        <span>Stage 1 · Frontend demonstration</span>
+        <span>Accounts available · Live discovery coming later</span>
       </div>
     </footer>
   );

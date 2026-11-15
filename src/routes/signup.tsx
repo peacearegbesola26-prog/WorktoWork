@@ -1,10 +1,10 @@
 import { createFileRoute } from "@tanstack/react-router";
-import { AuthPage } from "@/components/work/public-pages";
+import { AccountAuthPage } from "@/features/account/auth-page";
 import { pageHead } from "@/lib/page-head";
 export const Route = createFileRoute("/signup")({
-  head: () => pageHead("Sign Up", "Preview the Work to Work registration form."),
+  head: () => pageHead("Sign Up", "Create your Work to Work account and verify your email."),
   component: Page,
 });
 function Page() {
-  return <AuthPage kind="signup" />;
+  return <AccountAuthPage kind="signup" />;
 }

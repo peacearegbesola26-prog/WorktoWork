@@ -1,10 +1,10 @@
 import { createFileRoute } from "@tanstack/react-router";
-import { AuthPage } from "@/components/work/public-pages";
+import { AccountAuthPage } from "@/features/account/auth-page";
 import { pageHead } from "@/lib/page-head";
 export const Route = createFileRoute("/forgot-password")({
-  head: () => pageHead("Password Reset", "Preview the Work to Work password reset form."),
+  head: () => pageHead("Password Reset", "Request a secure password reset email for Work to Work."),
   component: Page,
 });
 function Page() {
-  return <AuthPage kind="forgot" />;
+  return <AccountAuthPage kind="forgot" />;
 }

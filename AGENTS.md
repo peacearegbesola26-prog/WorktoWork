@@ -33,10 +33,14 @@ use the editor.
 
 ## Application architecture
 
-- Keep Stage 1 entirely frontend-only; service contracts have no live adapters so no real credentials or account actions run.
+- Keep fictional demo state separate from Cloud-owned accounts and records; never import demo browser state into real accounts.
 - Use one typed fictional opportunity dataset and shared demo context across routes so counts, saves and tracking stay consistent.
 - Persist only validated sample IDs and non-sensitive work-location preferences; alerts, tracking and all personal form content remain in memory for privacy.
 - Put named content on individual TanStack routes and wrap demo children in the shared app shell to preserve typed navigation.
 - Express the visual system in semantic global CSS tokens and use the shared Button for actions to keep styling and focus behavior consistent.
 - Cancel pending demo searches on reset, replacement or unmount so delayed callbacks cannot restore stale results.
 - Keep the demo context and hook separate from the provider component so frontend refreshes preserve a consistent context identity.
+- Put real workspace pages under the authenticated route layout and enforce ownership in RLS and authenticated server functions, because navigation alone is not an access boundary.
+- Store roles separately from profiles with no client role writes; initial administrator assignment requires a trusted project-owner operation.
+- Defer router and query invalidation outside auth event callbacks so session checks cannot deadlock the auth lock.
+- Keep account query options and navigation validation separate from React component exports for stable refresh behavior.

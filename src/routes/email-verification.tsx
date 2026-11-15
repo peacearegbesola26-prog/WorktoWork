@@ -1,10 +1,11 @@
 import { createFileRoute } from "@tanstack/react-router";
-import { AuthPage } from "@/components/work/public-pages";
+import { AccountAuthPage } from "@/features/account/auth-page";
 import { pageHead } from "@/lib/page-head";
 export const Route = createFileRoute("/email-verification")({
-  head: () => pageHead("Email Verification", "Preview email verification for Work to Work."),
+  head: () =>
+    pageHead("Email Verification", "Verify your email to activate your Work to Work account."),
   component: Page,
 });
 function Page() {
-  return <AuthPage kind="verification" />;
+  return <AccountAuthPage kind="verification" />;
 }

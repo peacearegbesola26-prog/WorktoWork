@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { Link } from "@tanstack/react-router";
-import { Check, ArrowUpRight, Mail, LockKeyhole, ArrowRight } from "lucide-react";
+import { Check, ArrowUpRight, ArrowRight } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { PublicShell, Field, DemoBadge, DemoNotice, ActionLink } from "./shared";
 export function HowItWorks() {
@@ -186,127 +186,6 @@ export function Contact() {
           </form>
         </div>
       </div>
-    </PublicShell>
-  );
-}
-export function AuthPage({ kind }: { kind: "login" | "signup" | "verification" | "forgot" }) {
-  const [message, setMessage] = useState("");
-  const title = {
-    login: "Welcome back.",
-    signup: "Your next chapter starts here.",
-    verification: "Verify your email.",
-    forgot: "Forgot your password?",
-  }[kind];
-  return (
-    <PublicShell>
-      <section className="auth-section">
-        <div className="auth-wrap">
-          <DemoBadge>Authentication not connected</DemoBadge>
-          <h1>{title}</h1>
-          <p>
-            {kind === "login"
-              ? "Your opportunity workspace is waiting."
-              : kind === "signup"
-                ? "Create an account when authentication is connected. For now, explore the demonstration."
-                : kind === "verification"
-                  ? "Email verification will be available after authentication and email delivery are connected."
-                  : "Password reset will be available when authentication is connected."}
-          </p>
-          <form
-            className="auth-form"
-            onSubmit={(e) => {
-              e.preventDefault();
-              setMessage(
-                kind === "verification"
-                  ? "No verification email was sent. Authentication is not connected."
-                  : kind === "forgot"
-                    ? "No reset email was sent. Authentication is not connected."
-                    : "No account action was performed. Authentication is not connected.",
-              );
-            }}
-          >
-            {kind === "signup" && (
-              <Field label="Full name">
-                <input required placeholder="Fictional demo name" autoComplete="off" />
-              </Field>
-            )}
-            <Field label="Email address">
-              <input
-                required
-                type="email"
-                placeholder="Use a fictional demo email"
-                autoComplete="off"
-              />
-            </Field>
-            {(kind === "login" || kind === "signup") && (
-              <>
-                <Field label="Password" hint="Disabled in demo mode. Do not enter a real password.">
-                  <input
-                    disabled
-                    type="password"
-                    placeholder="Authentication connection required"
-                    autoComplete="off"
-                  />
-                </Field>
-                {kind === "signup" && (
-                  <Field label="Confirm password">
-                    <input
-                      type="password"
-                      disabled
-                      placeholder="Unavailable in demo mode"
-                      autoComplete="off"
-                    />
-                  </Field>
-                )}
-                {kind === "signup" && (
-                  <label className="flex items-start gap-2 text-xs text-muted-foreground">
-                    <input required type="checkbox" className="w-4 mt-1" />I understand this is an
-                    unconnected demonstration and no account will be created.
-                  </label>
-                )}
-              </>
-            )}
-            <Button type="submit">
-              {kind === "login"
-                ? "Preview log in"
-                : kind === "signup"
-                  ? "Preview sign up"
-                  : kind === "verification"
-                    ? "Preview resend verification"
-                    : "Preview password reset"}
-              <ArrowRight />
-            </Button>
-            {message && (
-              <p className="error-inline" role="status">
-                {message}
-              </p>
-            )}
-          </form>
-          <div className="auth-links">
-            {kind === "login" ? (
-              <>
-                <Link to="/forgot-password">Forgot password?</Link>
-                <Link to="/signup">Create an account</Link>
-              </>
-            ) : (
-              <>
-                <Link to="/login">Back to log in</Link>
-                {kind === "signup" && (
-                  <Link to="/email-verification">Email verification preview</Link>
-                )}
-              </>
-            )}
-          </div>
-          <div className="auth-demo">
-            <p>No account, password or email is stored or transmitted.</p>
-            <Button asChild variant="outline">
-              <Link to="/demo/dashboard">
-                Explore Demo <ArrowUpRight />
-              </Link>
-            </Button>
-          </div>
-        </div>
-      </section>
     </PublicShell>
   );
 }

@@ -1,0 +1,119 @@
+import { useState, type ReactNode } from "react";
+import { Link, useNavigate } from "@tanstack/react-router";
+import { useQueryClient } from "@tanstack/react-query";
+import {
+  Menu,
+  LayoutDashboard,
+  Search,
+  Bookmark,
+  BriefcaseBusiness,
+  Bell,
+  UserRound,
+  Settings,
+  LogOut,
+} from "lucide-react";
+import { Button } from "@/components/ui/button";
+import {
+  Sheet,
+  SheetContent,
+  SheetTitle,
+  SheetDescription,
+  SheetTrigger,
+} from "@/components/ui/sheet";
+import { Brand } from "@/components/work/shared";
+import { supabase } from "@/integrations/supabase/client";
+import { useAccountAuth } from "./auth";
+import { toast } from "sonner";
+const nav = [
+  { to: "/dashboard", label: "Dashboard", icon: LayoutDashboard },
+  { to: "/opportunities", label: "Discovery", icon: Search },
+  { to: "/saved", label: "Saved Opportunities", icon: Bookmark },
+  { to: "/tracker", label: "Application Tracker", icon: BriefcaseBusiness },
+  { to: "/alerts", label: "Alerts", icon: Bell },
+  { to: "/profile", label: "Profile", icon: UserRound },
+  { to: "/settings", label: "Settings", icon: Settings },
+] as const;
+export function SignOutButton() {
+  const client = useQueryClient();
+  const navigate = useNavigate();
+  const [busy, setBusy] = useState(false);
+  async function logout() {
+    setBusy(true);
+    try {
+      await client.cancelQueries();
+      client.clear();
+      const { error } = await supabase.auth.signOut();
+      if (error) throw error;
+      await navigate({ to: "/auth", search: { next: "/dashboard" }, replace: true });
+    } catch {
+      toast.error("Sign out failed. Please try again.");
+    } finally {
+      setBusy(false);
+    }
+  }
+  return (
+    <Button variant="ghost" onClick={logout} disabled={busy}>
+      <LogOut size={16} />
+      {busy ? "Signing out…" : "Log out"}
+    </Button>
+  );
+}
+export function AccountShell({ children }: { children: ReactNode }) {
+  const [open, setOpen] = useState(false);
+  const { user } = useAccountAuth();
+  const navigation = (
+    <nav className="app-nav" aria-label="Account navigation">
+      {nav.map((item) => (
+        <Link
+          key={item.to}
+          to={item.to}
+          onClick={() => setOpen(false)}
+          activeProps={{ className: "active" }}
+        >
+          <item.icon size={19} />
+          <span>{item.label}</span>
+        </Link>
+      ))}
+    </nav>
+  );
+  return (
+    <div className="app-shell">
+      <aside className="desktop-sidebar">
+        <Brand />
+        {navigation}
+        <div className="sidebar-bottom">
+          <Link to="/demo/dashboard">Explore Demo</Link>
+        </div>
+      </aside>
+      <div className="app-main">
+        <header className="app-header">
+          <div className="mobile-only">
+            <Sheet open={open} onOpenChange={setOpen}>
+              <SheetTrigger asChild>
+                <Button size="icon" variant="ghost" aria-label="Open account navigation">
+                  <Menu />
+                </Button>
+              </SheetTrigger>
+              <SheetContent side="left">
+                <SheetTitle>Work to Work</SheetTitle>
+                <SheetDescription>Your account workspace</SheetDescription>
+                {navigation}
+              </SheetContent>
+            </Sheet>
+          </div>
+          <span className="header-breadcrumb">Your workspace</span>
+          <div className="flex items-center gap-2">
+            <Link to="/profile" className="avatar" aria-label="Your profile">
+              {user?.email?.slice(0, 1).toUpperCase() ?? "W"}
+            </Link>
+            <SignOutButton />
+          </div>
+        </header>
+        <main className="workspace-content">{children}</main>
+        <footer className="app-footer">
+          Work to Work · Your private workspace <Link to="/demo/dashboard">Explore Demo</Link>
+        </footer>
+      </div>
+    </div>
+  );
+}

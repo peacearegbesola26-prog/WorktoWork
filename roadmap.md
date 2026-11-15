@@ -16,3 +16,13 @@ No backend, live sources, AI connections, payments or real authentication in thi
 - [x] Harden home-page context and verify local page recovery
 
 Hosted preview verification remains unavailable from the test browser: it opens Lovable's internal project loading screen instead of the app.
+
+## Real accounts and user data
+
+- [x] Enable Cloud, email authentication and secure user-owned schema
+- [x] Replace account forms, verification, recovery and sign-out; protect real workspace routes
+- [x] Connect dashboard, profile, settings, saved records, tracker and alert preferences
+- [x] Keep fictional demo and deferred source/AI integrations separate
+- [x] Verify account journeys, refresh persistence and cross-user database restrictions
+- [x] Report results, exact manual checks and secure administrator setup; do not publish
+- [ ] Complete real inbox verification and recovery-link journey — requires the user's real email inbox; exact steps are in README and completion report
