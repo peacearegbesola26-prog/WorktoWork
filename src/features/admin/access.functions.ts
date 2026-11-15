@@ -1,8 +1,8 @@
 import { createServerFn } from "@tanstack/react-start";
 import { z } from "zod";
-import { requireSupabaseAuth } from "@/integrations/supabase/auth-middleware";
+import { requireActiveAccount } from "@/features/account/active-auth";
 export const getStaffSettings = createServerFn({ method: "GET" })
-  .middleware([requireSupabaseAuth])
+  .middleware([requireActiveAccount])
   .handler(async ({ context }) => {
     const roles = await context.supabase
       .from("user_roles")
@@ -32,7 +32,7 @@ export const getStaffSettings = createServerFn({ method: "GET" })
     };
   });
 export const changeStaffRole = createServerFn({ method: "POST" })
-  .middleware([requireSupabaseAuth])
+  .middleware([requireActiveAccount])
   .inputValidator(
     z.object({
       email: z.string().email(),
@@ -53,7 +53,7 @@ export const changeStaffRole = createServerFn({ method: "POST" })
     return { ok: true };
   });
 export const changeAiControls = createServerFn({ method: "POST" })
-  .middleware([requireSupabaseAuth])
+  .middleware([requireActiveAccount])
   .inputValidator(
     z.object({
       enabled: z.boolean(),

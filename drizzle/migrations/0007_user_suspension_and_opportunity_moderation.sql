@@ -1,0 +1,34 @@
+CREATE TABLE public.account_suspensions(user_id uuid PRIMARY KEY,suspended boolean NOT NULL DEFAULT false,reason text NOT NULL DEFAULT '',updated_at timestamptz NOT NULL DEFAULT now());
+GRANT SELECT ON public.account_suspensions TO authenticated; GRANT ALL ON public.account_suspensions TO service_role;
+ALTER TABLE public.account_suspensions ENABLE ROW LEVEL SECURITY;
+CREATE OR REPLACE FUNCTION public.account_is_active() RETURNS boolean LANGUAGE sql STABLE SECURITY DEFINER SET search_path=public AS $$ SELECT auth.uid() IS NOT NULL AND NOT EXISTS(SELECT 1 FROM public.account_suspensions WHERE user_id=auth.uid() AND suspended) $$;
+REVOKE ALL ON FUNCTION public.account_is_active() FROM PUBLIC,anon; GRANT EXECUTE ON FUNCTION public.account_is_active() TO authenticated,service_role;
+CREATE POLICY suspensions_read ON public.account_suspensions FOR SELECT TO authenticated USING(user_id=auth.uid() OR public.has_permission('users.manage'));
+CREATE OR REPLACE FUNCTION public.has_permission(p text) RETURNS boolean LANGUAGE sql STABLE SECURITY DEFINER SET search_path=public AS $$ SELECT public.account_is_active() AND EXISTS(SELECT 1 FROM public.user_roles WHERE user_id=auth.uid() AND (role='owner' OR (role='admin' AND p IN ('admin.access','opportunities.manage','sources.manage','audit.read','ai.manage','users.manage')) OR (role='moderator' AND p IN ('admin.access','opportunities.manage')))) $$;
+DO $$ DECLARE t text; BEGIN FOREACH t IN ARRAY ARRAY['profiles','resumes','saved_opportunities','tracked_applications','alert_preferences','opportunities','sources','user_roles','admin_audit','security_audit','ai_controls','ai_usage'] LOOP EXECUTE format('CREATE POLICY active_account_required ON public.%I AS RESTRICTIVE FOR ALL TO authenticated USING(public.account_is_active()) WITH CHECK(public.account_is_active())',t); END LOOP; END $$;
+CREATE OR REPLACE FUNCTION public.set_account_suspension(target uuid,is_suspended boolean,reason_value text) RETURNS void LANGUAGE plpgsql SECURITY DEFINER SET search_path=public AS $$ BEGIN
+PERFORM pg_advisory_xact_lock(824711);
+IF NOT public.has_permission('users.manage') THEN RAISE EXCEPTION 'User management access required'; END IF;
+IF target=auth.uid() OR EXISTS(SELECT 1 FROM public.user_roles WHERE user_id=target AND role='owner') THEN RAISE EXCEPTION 'Owners and your own account cannot be suspended'; END IF;
+IF NOT EXISTS(SELECT 1 FROM auth.users WHERE id=target) THEN RAISE EXCEPTION 'Account not found'; END IF;
+IF length(trim(reason_value))<1 OR length(reason_value)>1000 THEN RAISE EXCEPTION 'Provide a reason up to 1000 characters'; END IF;
+INSERT INTO public.account_suspensions(user_id,suspended,reason) VALUES(target,is_suspended,trim(reason_value)) ON CONFLICT(user_id) DO UPDATE SET suspended=excluded.suspended,reason=excluded.reason,updated_at=now();
+INSERT INTO public.security_audit(actor_id,target_id,action,details) VALUES(auth.uid(),target,CASE WHEN is_suspended THEN 'account.suspend' ELSE 'account.restore' END,jsonb_build_object('reason',trim(reason_value))); END $$;
+REVOKE ALL ON FUNCTION public.set_account_suspension(uuid,boolean,text) FROM PUBLIC,anon; GRANT EXECUTE ON FUNCTION public.set_account_suspension(uuid,boolean,text) TO authenticated;
+CREATE OR REPLACE FUNCTION public.admin_users(search_value text DEFAULT '',status_value text DEFAULT 'all',page_value integer DEFAULT 1) RETURNS jsonb LANGUAGE plpgsql STABLE SECURITY DEFINER SET search_path=public AS $$ DECLARE result jsonb; BEGIN
+IF NOT public.has_permission('users.manage') THEN RAISE EXCEPTION 'User management access required'; END IF;
+IF length(search_value)>200 OR page_value<1 OR status_value NOT IN ('all','active','suspended','verified','unverified') THEN RAISE EXCEPTION 'Invalid user filters'; END IF;
+WITH accounts AS (SELECT u.id,u.email,u.email_confirmed_at IS NOT NULL AS verified,u.created_at,COALESCE(s.suspended,false) AS suspended,COALESCE(s.reason,'') AS suspension_reason FROM auth.users u LEFT JOIN public.account_suspensions s ON s.user_id=u.id WHERE (u.email ILIKE '%'||search_value||'%') AND (status_value='all' OR (status_value='active' AND NOT COALESCE(s.suspended,false)) OR (status_value='suspended' AND COALESCE(s.suspended,false)) OR (status_value='verified' AND u.email_confirmed_at IS NOT NULL) OR (status_value='unverified' AND u.email_confirmed_at IS NULL))), paged AS (SELECT * FROM accounts ORDER BY created_at DESC LIMIT 25 OFFSET (page_value-1)*25)
+SELECT jsonb_build_object('total',(SELECT count(*) FROM accounts),'users',COALESCE((SELECT jsonb_agg(to_jsonb(p)||jsonb_build_object('roles',(SELECT COALESCE(jsonb_agg(role),'[]') FROM public.user_roles WHERE user_id=p.id),'saves',(SELECT count(*) FROM public.saved_opportunities WHERE user_id=p.id),'applications',(SELECT count(*) FROM public.tracked_applications WHERE user_id=p.id),'ai_requests',(SELECT count(*) FROM public.ai_usage WHERE user_id=p.id))) FROM paged p),'[]')) INTO result;
+RETURN result; END $$;
+REVOKE ALL ON FUNCTION public.admin_users(text,text,integer) FROM PUBLIC,anon; GRANT EXECUTE ON FUNCTION public.admin_users(text,text,integer) TO authenticated;
+CREATE TABLE public.opportunity_moderation(opportunity_id uuid PRIMARY KEY REFERENCES public.opportunities(id),review_state text NOT NULL DEFAULT 'pending' CHECK(review_state IN ('pending','reviewed')),duplicate_flag boolean NOT NULL DEFAULT false,notes text NOT NULL DEFAULT '',updated_at timestamptz NOT NULL DEFAULT now());
+GRANT SELECT,INSERT,UPDATE ON public.opportunity_moderation TO authenticated; GRANT ALL ON public.opportunity_moderation TO service_role;
+ALTER TABLE public.opportunity_moderation ENABLE ROW LEVEL SECURITY;
+CREATE POLICY opportunity_moderation_staff ON public.opportunity_moderation FOR ALL TO authenticated USING(public.has_permission('opportunities.manage')) WITH CHECK(public.has_permission('opportunities.manage'));
+CREATE OR REPLACE FUNCTION public.audit_moderation() RETURNS trigger LANGUAGE plpgsql SECURITY DEFINER SET search_path=public AS $$ BEGIN
+IF length(NEW.notes)>5000 THEN RAISE EXCEPTION 'Moderation notes too long'; END IF;
+NEW.updated_at=now(); INSERT INTO public.security_audit(actor_id,target_id,action,details) VALUES(auth.uid(),NEW.opportunity_id,'opportunity.review',jsonb_build_object('review_state',NEW.review_state,'duplicate_flag',NEW.duplicate_flag,'notes',NEW.notes)); RETURN NEW; END $$;
+CREATE TRIGGER audit_moderation BEFORE INSERT OR UPDATE ON public.opportunity_moderation FOR EACH ROW EXECUTE FUNCTION public.audit_moderation();
+CREATE OR REPLACE FUNCTION public.assert_active_account() RETURNS void LANGUAGE plpgsql SECURITY DEFINER SET search_path=public AS $$ BEGIN IF NOT public.account_is_active() THEN RAISE EXCEPTION 'Your account is suspended. Contact support.'; END IF; END $$;
+REVOKE ALL ON FUNCTION public.assert_active_account() FROM PUBLIC,anon; GRANT EXECUTE ON FUNCTION public.assert_active_account() TO authenticated;

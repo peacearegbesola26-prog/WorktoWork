@@ -2,16 +2,26 @@
 
 ## Administration substages
 
+### Current request: owner setup and B
+- [x] Confirm specified account email and assign initial owner through trusted operation
+- [x] Verify owner screens, role permissions, last-owner protection and AI settings persistence
+- [x] Add private-safe user search/details and audited suspension/restoration with backend enforcement
+- [x] Complete opportunity moderation fields and lifecycle controls
+- [ ] Verify opportunity create/edit/publish/unpublish/expire/archive and search visibility — requires a genuine opportunity; production currently has none
+- [x] Recheck resume privacy and preserve AI limits; report C–E without publishing
+
 - [x] A: implement owner, administrator and moderator permissions; owner-only role management; last-owner protection; private admin login and navigation
 - [x] Connect persistent AI availability, daily request limits and input limits to existing resume AI; record status without private content
 - [x] Verify ordinary-user/admin/moderator restrictions, AI daily/input enforcement and existing resume privacy
-- [ ] Verify owner role UI, last-owner rejection and AI controls save/reload — requires trusted initial owner assignment; no owner was silently assigned
-- [ ] B: complete user/suspension and opportunity moderation management
+- [x] Verify owner role UI, last-owner rejection and AI controls save/reload — verified after explicit trusted owner assignment
+- [x] B: implement user/suspension and opportunity moderation management; populated opportunity end-to-end verification still awaits genuine data
 - [ ] C: published website content and owner site settings
 - [ ] D: remaining source, plan and notification controls
 - [ ] E: reports, support inbox, analytics and searchable full audit
 
 Initial owner setup requires the user's verified account identification and a trusted assignment; do not assign a registrant automatically. Do not publish.
+
+Trusted owner assignment confirmed for the explicitly requested email-confirmed account. Browser verified owner role controls, last-owner rejection, settings save/reload, user search and owner suspension safeguards. Live tests verified delegation/revocation, non-owner role rejection, account suspension/restoration, AI rejection for suspended users and staff denial of resumes/application notes. 35 frontend tests and both 13-check privacy suites passed. No opportunities inserted. C–E remain open.
 
 Owner setup: ask Lovable to assign the verified signed-in account the initial owner role through a trusted backend operation, confirming the account email first. Then open /admin/login and /admin/access. This operation is not exposed to ordinary accounts. Other substages remain incomplete; existing opportunity/source administration is preserved.
 

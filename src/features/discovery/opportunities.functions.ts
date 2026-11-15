@@ -1,9 +1,9 @@
 import { createServerFn } from "@tanstack/react-start";
 import { z } from "zod";
-import { requireSupabaseAuth } from "@/integrations/supabase/auth-middleware";
+import { requireActiveAccount } from "@/features/account/active-auth";
 import { searchSchema } from "./schemas";
 export const searchOpportunities = createServerFn({ method: "POST" })
-  .middleware([requireSupabaseAuth])
+  .middleware([requireActiveAccount])
   .inputValidator((v) => searchSchema.parse(v))
   .handler(async ({ data, context }) => {
     let q = context.supabase
@@ -38,7 +38,7 @@ export const searchOpportunities = createServerFn({ method: "POST" })
     return { rows: r.data ?? [], total: r.count ?? 0, sources: sources.data ?? [] };
   });
 export const opportunityDetails = createServerFn({ method: "POST" })
-  .middleware([requireSupabaseAuth])
+  .middleware([requireActiveAccount])
   .inputValidator((v) => z.string().uuid().parse(v))
   .handler(async ({ data, context }) => {
     const r = await context.supabase

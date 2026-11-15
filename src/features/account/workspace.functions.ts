@@ -1,8 +1,8 @@
 import { createServerFn } from "@tanstack/react-start";
-import { requireSupabaseAuth } from "@/integrations/supabase/auth-middleware";
+import { requireActiveAccount } from "@/features/account/active-auth";
 import { commandSchema } from "./schemas";
 export const getWorkspace = createServerFn({ method: "GET" })
-  .middleware([requireSupabaseAuth])
+  .middleware([requireActiveAccount])
   .handler(async ({ context }) => {
     const { supabase: s, userId } = context;
     const [profile, saved, tracker, alerts, opportunities, savedCount, trackerCount, alertCount] =
@@ -67,7 +67,7 @@ export const getWorkspace = createServerFn({ method: "GET" })
     };
   });
 export const updateWorkspace = createServerFn({ method: "POST" })
-  .middleware([requireSupabaseAuth])
+  .middleware([requireActiveAccount])
   .inputValidator((input) => commandSchema.parse(input))
   .handler(async ({ data, context }) => {
     const { supabase: s, userId } = context;

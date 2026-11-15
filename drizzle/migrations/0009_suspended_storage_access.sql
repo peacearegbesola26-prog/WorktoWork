@@ -1,0 +1,1 @@
+CREATE POLICY active_account_storage_required ON storage.objects AS RESTRICTIVE FOR ALL TO authenticated USING(public.account_is_active()) WITH CHECK(public.account_is_active());

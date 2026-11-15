@@ -1,9 +1,9 @@
 import { createServerFn } from "@tanstack/react-start";
-import { requireSupabaseAuth } from "@/integrations/supabase/auth-middleware";
+import { requireActiveAccount } from "@/features/account/active-auth";
 import { z } from "zod";
 import { resumeSchema, blankResume, modes, missingInput } from "./schema";
 export const listResumes = createServerFn({ method: "GET" })
-  .middleware([requireSupabaseAuth])
+  .middleware([requireActiveAccount])
   .handler(async ({ context }) => {
     const { data, error } = await context.supabase
       .from("resumes")
@@ -17,7 +17,7 @@ export const listResumes = createServerFn({ method: "GET" })
     }));
   });
 export const resumeCommand = createServerFn({ method: "POST" })
-  .middleware([requireSupabaseAuth])
+  .middleware([requireActiveAccount])
   .inputValidator(
     z.discriminatedUnion("action", [
       z.object({
@@ -81,7 +81,7 @@ export const resumeCommand = createServerFn({ method: "POST" })
     return { id: r.data.id };
   });
 export const optimizeResume = createServerFn({ method: "POST" })
-  .middleware([requireSupabaseAuth])
+  .middleware([requireActiveAccount])
   .inputValidator(z.object({ id: z.string().uuid(), mode: z.enum(modes) }))
   .handler(async ({ data, context }) => {
     const r = await context.supabase

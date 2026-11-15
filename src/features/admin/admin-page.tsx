@@ -23,6 +23,11 @@ export function AdminPage({ view }: { view: "overview" | "opportunities" | "sour
     [id, setId] = useState<string | undefined>();
   const [value, setValue] = useState({ ...emptyOpportunity }),
     [error, setError] = useState("");
+  const [moderation, setModeration] = useState<{
+    review_state: "pending" | "reviewed";
+    duplicate_flag: boolean;
+    notes: string;
+  }>({ review_state: "pending", duplicate_flag: false, notes: "" });
   const [sourceId, setSourceId] = useState<string | undefined>(),
     [sourceName, setSourceName] = useState(""),
     [platform, setPlatform] = useState("Web"),
@@ -36,7 +41,8 @@ export function AdminPage({ view }: { view: "overview" | "opportunities" | "sour
     ]);
   }
   const mutation = useMutation({
-    mutationFn: () => saveOpportunity({ data: { id, value: opportunitySchema.parse(value) } }),
+    mutationFn: () =>
+      saveOpportunity({ data: { id, value: opportunitySchema.parse(value), moderation } }),
     onSuccess: async () => {
       await refresh();
       setEditing(false);
@@ -91,10 +97,14 @@ export function AdminPage({ view }: { view: "overview" | "opportunities" | "sour
             ["/admin/sources", "Sources"],
             ["/admin/audit", "Audit trail"],
             ["/admin/access", "Access and AI controls"],
+            ["/admin/users", "Users"],
           ] as const
         ).map(
           ([to, label]) =>
-            ((to !== "/admin/sources" && to !== "/admin/audit" && to !== "/admin/access") ||
+            ((to !== "/admin/sources" &&
+              to !== "/admin/audit" &&
+              to !== "/admin/access" &&
+              to !== "/admin/users") ||
               data.roles.some((r) => r === "owner" || r === "admin")) && (
               <Button asChild variant="outline" key={to}>
                 <Link to={to}>{label}</Link>
@@ -122,6 +132,7 @@ export function AdminPage({ view }: { view: "overview" | "opportunities" | "sour
               onClick={() => {
                 setId(undefined);
                 setValue({ ...emptyOpportunity });
+                setModeration({ review_state: "pending", duplicate_flag: false, notes: "" });
                 setEditing(true);
                 setError("");
               }}
@@ -142,6 +153,13 @@ export function AdminPage({ view }: { view: "overview" | "opportunities" | "sour
                   );
                   return;
                 }
+                if (
+                  (id || value.status !== "draft") &&
+                  !window.confirm(
+                    `Save opportunity as ${value.status}? Drafts are hidden from discovery.`,
+                  )
+                )
+                  return;
                 mutation.mutate();
               }}
             >
@@ -251,6 +269,37 @@ export function AdminPage({ view }: { view: "overview" | "opportunities" | "sour
                 onChange={(v) => set("status", v)}
                 options={[...opportunityStatuses]}
               />
+              <Field label="Review state">
+                <select
+                  value={moderation.review_state}
+                  onChange={(e) =>
+                    setModeration({
+                      ...moderation,
+                      review_state: e.target.value === "reviewed" ? "reviewed" : "pending",
+                    })
+                  }
+                >
+                  <option value="pending">Pending review</option>
+                  <option value="reviewed">Reviewed</option>
+                </select>
+              </Field>
+              <label className="flex gap-3">
+                <input
+                  type="checkbox"
+                  checked={moderation.duplicate_flag}
+                  onChange={(e) =>
+                    setModeration({ ...moderation, duplicate_flag: e.target.checked })
+                  }
+                />
+                Flag possible duplicate
+              </label>
+              <Field label="Private moderation notes">
+                <textarea
+                  maxLength={5000}
+                  value={moderation.notes}
+                  onChange={(e) => setModeration({ ...moderation, notes: e.target.value })}
+                />
+              </Field>
               <div className="flex flex-wrap gap-2">
                 <Button type="submit" disabled={mutation.isPending}>
                   {mutation.isPending ? "Saving…" : "Save opportunity"}
@@ -275,6 +324,13 @@ export function AdminPage({ view }: { view: "overview" | "opportunities" | "sour
                       variant="outline"
                       onClick={() => {
                         setId(o.id);
+                        const review = data.moderation.find((m) => m.opportunity_id === o.id);
+                        setModeration({
+                          review_state:
+                            review?.review_state === "reviewed" ? "reviewed" : "pending",
+                          duplicate_flag: review?.duplicate_flag ?? false,
+                          notes: review?.notes ?? "",
+                        });
                         setValue({
                           ...o,
                           country: o.country ?? "",

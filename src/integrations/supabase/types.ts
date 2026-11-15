@@ -14,6 +14,27 @@ export type Database = {
   }
   public: {
     Tables: {
+      account_suspensions: {
+        Row: {
+          reason: string
+          suspended: boolean
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          reason?: string
+          suspended?: boolean
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          reason?: string
+          suspended?: boolean
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
       admin_audit: {
         Row: {
           action: string
@@ -221,6 +242,38 @@ export type Database = {
             columns: ["source_id"]
             isOneToOne: false
             referencedRelation: "sources"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      opportunity_moderation: {
+        Row: {
+          duplicate_flag: boolean
+          notes: string
+          opportunity_id: string
+          review_state: string
+          updated_at: string
+        }
+        Insert: {
+          duplicate_flag?: boolean
+          notes?: string
+          opportunity_id: string
+          review_state?: string
+          updated_at?: string
+        }
+        Update: {
+          duplicate_flag?: boolean
+          notes?: string
+          opportunity_id?: string
+          review_state?: string
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "opportunity_moderation_opportunity_id_fkey"
+            columns: ["opportunity_id"]
+            isOneToOne: true
+            referencedRelation: "opportunities"
             referencedColumns: ["id"]
           },
         ]
@@ -461,7 +514,17 @@ export type Database = {
       [_ in never]: never
     }
     Functions: {
+      account_is_active: { Args: never; Returns: boolean }
       admin_overview: { Args: never; Returns: Json }
+      admin_users: {
+        Args: {
+          page_value?: number
+          search_value?: string
+          status_value?: string
+        }
+        Returns: Json
+      }
+      assert_active_account: { Args: never; Returns: undefined }
       finish_resume_ai: {
         Args: { request_id: string; request_status: string }
         Returns: undefined
@@ -481,6 +544,10 @@ export type Database = {
       reserve_resume_ai: {
         Args: { input_length: number; mode_value: string }
         Returns: string
+      }
+      set_account_suspension: {
+        Args: { is_suspended: boolean; reason_value: string; target: string }
+        Returns: undefined
       }
       set_staff_role: {
         Args: {

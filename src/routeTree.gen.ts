@@ -51,6 +51,7 @@ import { Route as AuthenticatedAdminAccessRouteImport } from './routes/_authenti
 import { Route as AuthenticatedAdminAuditRouteImport } from './routes/_authenticated/admin.audit'
 import { Route as AuthenticatedAdminOpportunitiesRouteImport } from './routes/_authenticated/admin.opportunities'
 import { Route as AuthenticatedAdminSourcesRouteImport } from './routes/_authenticated/admin.sources'
+import { Route as AuthenticatedAdminUsersRouteImport } from './routes/_authenticated/admin.users'
 import { Route as AuthenticatedAppAdminRouteImport } from './routes/_authenticated/app.admin'
 import { Route as AuthenticatedAppAlertsRouteImport } from './routes/_authenticated/app.alerts'
 import { Route as AuthenticatedAppCoverLetterRouteImport } from './routes/_authenticated/app.cover-letter'
@@ -283,6 +284,11 @@ const AuthenticatedAdminSourcesRoute =
     path: '/sources',
     getParentRoute: () => AuthenticatedAdminRoute,
   } as any)
+const AuthenticatedAdminUsersRoute = AuthenticatedAdminUsersRouteImport.update({
+  id: '/users',
+  path: '/users',
+  getParentRoute: () => AuthenticatedAdminRoute,
+} as any)
 const AuthenticatedAppAdminRoute = AuthenticatedAppAdminRouteImport.update({
   id: '/app/admin',
   path: '/app/admin',
@@ -423,6 +429,7 @@ export interface FileRoutesByFullPath {
   '/admin/audit': typeof AuthenticatedAdminAuditRoute
   '/admin/opportunities': typeof AuthenticatedAdminOpportunitiesRoute
   '/admin/sources': typeof AuthenticatedAdminSourcesRoute
+  '/admin/users': typeof AuthenticatedAdminUsersRoute
   '/app/admin': typeof AuthenticatedAppAdminRoute
   '/app/alerts': typeof AuthenticatedAppAlertsRoute
   '/app/cover-letter': typeof AuthenticatedAppCoverLetterRoute
@@ -482,6 +489,7 @@ export interface FileRoutesByTo {
   '/admin/audit': typeof AuthenticatedAdminAuditRoute
   '/admin/opportunities': typeof AuthenticatedAdminOpportunitiesRoute
   '/admin/sources': typeof AuthenticatedAdminSourcesRoute
+  '/admin/users': typeof AuthenticatedAdminUsersRoute
   '/app/admin': typeof AuthenticatedAppAdminRoute
   '/app/alerts': typeof AuthenticatedAppAlertsRoute
   '/app/cover-letter': typeof AuthenticatedAppCoverLetterRoute
@@ -545,6 +553,7 @@ export interface FileRoutesById {
   '/_authenticated/admin/audit': typeof AuthenticatedAdminAuditRoute
   '/_authenticated/admin/opportunities': typeof AuthenticatedAdminOpportunitiesRoute
   '/_authenticated/admin/sources': typeof AuthenticatedAdminSourcesRoute
+  '/_authenticated/admin/users': typeof AuthenticatedAdminUsersRoute
   '/_authenticated/app/admin': typeof AuthenticatedAppAdminRoute
   '/_authenticated/app/alerts': typeof AuthenticatedAppAlertsRoute
   '/_authenticated/app/cover-letter': typeof AuthenticatedAppCoverLetterRoute
@@ -608,6 +617,7 @@ export interface FileRouteTypes {
     | '/admin/audit'
     | '/admin/opportunities'
     | '/admin/sources'
+    | '/admin/users'
     | '/app/admin'
     | '/app/alerts'
     | '/app/cover-letter'
@@ -667,6 +677,7 @@ export interface FileRouteTypes {
     | '/admin/audit'
     | '/admin/opportunities'
     | '/admin/sources'
+    | '/admin/users'
     | '/app/admin'
     | '/app/alerts'
     | '/app/cover-letter'
@@ -729,6 +740,7 @@ export interface FileRouteTypes {
     | '/_authenticated/admin/audit'
     | '/_authenticated/admin/opportunities'
     | '/_authenticated/admin/sources'
+    | '/_authenticated/admin/users'
     | '/_authenticated/app/admin'
     | '/_authenticated/app/alerts'
     | '/_authenticated/app/cover-letter'
@@ -1062,6 +1074,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedAdminSourcesRouteImport
       parentRoute: typeof AuthenticatedAdminRoute
     }
+    '/_authenticated/admin/users': {
+      id: '/_authenticated/admin/users'
+      path: '/users'
+      fullPath: '/admin/users'
+      preLoaderRoute: typeof AuthenticatedAdminUsersRouteImport
+      parentRoute: typeof AuthenticatedAdminRoute
+    }
     '/_authenticated/app/admin': {
       id: '/_authenticated/app/admin'
       path: '/app/admin'
@@ -1196,6 +1215,7 @@ interface AuthenticatedAdminRouteChildren {
   AuthenticatedAdminAuditRoute: typeof AuthenticatedAdminAuditRoute
   AuthenticatedAdminOpportunitiesRoute: typeof AuthenticatedAdminOpportunitiesRoute
   AuthenticatedAdminSourcesRoute: typeof AuthenticatedAdminSourcesRoute
+  AuthenticatedAdminUsersRoute: typeof AuthenticatedAdminUsersRoute
   AuthenticatedAdminIndexRoute: typeof AuthenticatedAdminIndexRoute
 }
 
@@ -1204,6 +1224,7 @@ const AuthenticatedAdminRouteChildren: AuthenticatedAdminRouteChildren = {
   AuthenticatedAdminAuditRoute: AuthenticatedAdminAuditRoute,
   AuthenticatedAdminOpportunitiesRoute: AuthenticatedAdminOpportunitiesRoute,
   AuthenticatedAdminSourcesRoute: AuthenticatedAdminSourcesRoute,
+  AuthenticatedAdminUsersRoute: AuthenticatedAdminUsersRoute,
   AuthenticatedAdminIndexRoute: AuthenticatedAdminIndexRoute,
 }
 
