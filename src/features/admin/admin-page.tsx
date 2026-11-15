@@ -1,5 +1,4 @@
 import { useState } from "react";
-import { Link } from "@tanstack/react-router";
 import { useSuspenseQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { useServerFn } from "@tanstack/react-start";
 import { toast } from "sonner";
@@ -89,29 +88,6 @@ export function AdminPage({ view }: { view: "overview" | "opportunities" | "sour
         }
         description="Work to Work administration."
       />
-      <nav className="flex flex-wrap gap-2 mb-6" aria-label="Administration navigation">
-        {(
-          [
-            ["/admin", "Overview"],
-            ["/admin/opportunities", "Opportunities"],
-            ["/admin/sources", "Sources"],
-            ["/admin/audit", "Audit trail"],
-            ["/admin/access", "Access and AI controls"],
-            ["/admin/users", "Users"],
-          ] as const
-        ).map(
-          ([to, label]) =>
-            ((to !== "/admin/sources" &&
-              to !== "/admin/audit" &&
-              to !== "/admin/access" &&
-              to !== "/admin/users") ||
-              data.roles.some((r) => r === "owner" || r === "admin")) && (
-              <Button asChild variant="outline" key={to}>
-                <Link to={to}>{label}</Link>
-              </Button>
-            ),
-        )}
-      </nav>
       {view === "overview" && (
         <div className="stat-grid">
           {data.totals &&

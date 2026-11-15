@@ -1,18 +1,58 @@
 import { createServerFn } from "@tanstack/react-start";
 import { z } from "zod";
-import { requireActiveAccount } from "@/features/account/active-auth";
+import { requireSupabaseAuth } from "@/integrations/supabase/auth-middleware";
+import { requireStaff } from "./staff-auth";
 import { opportunitySchema, platforms } from "@/features/discovery/schemas";
 export const adminAccess = createServerFn({ method: "GET" })
-  .middleware([requireActiveAccount])
+  .middleware([requireSupabaseAuth])
   .handler(async ({ context }) => {
     const r = await context.supabase.rpc("has_permission", { p: "admin.access" });
     return !r.error && r.data === true;
   });
+export const checkStaffPermission = createServerFn({ method: "POST" })
+  .middleware([requireSupabaseAuth])
+  .inputValidator(
+    z.object({
+      permission: z.enum([
+        "admin.access",
+        "opportunities.manage",
+        "sources.manage",
+        "audit.read",
+        "ai.manage",
+        "users.manage",
+        "roles.manage",
+      ]),
+    }),
+  )
+  .handler(async ({ data, context }) => {
+    const result = await context.supabase.rpc("has_permission", { p: data.permission });
+    return !result.error && result.data === true;
+  });
+export const getStaffPermissions = createServerFn({ method: "GET" })
+  .middleware([requireStaff])
+  .handler(async ({ context }) => {
+    const permissions = [
+      "admin.access",
+      "opportunities.manage",
+      "sources.manage",
+      "audit.read",
+      "ai.manage",
+      "users.manage",
+      "roles.manage",
+    ];
+    const results = await Promise.all(
+      permissions.map(async (p) => {
+        const result = await context.supabase.rpc("has_permission", { p });
+        return !result.error && result.data === true ? p : null;
+      }),
+    );
+    return results.filter((p): p is string => p !== null);
+  });
 export const getAdminWorkspace = createServerFn({ method: "GET" })
-  .middleware([requireActiveAccount])
+  .middleware([requireStaff])
   .handler(async ({ context }) => {
     const role = await context.supabase.rpc("has_permission", { p: "admin.access" });
-    if (role.error || !role.data) throw new Error("Administrator access required.");
+    if (role.error || !role.data) throw new Error("Access denied.");
     const [opportunities, sources, audit, totals, roles, securityAudit, moderation] =
       await Promise.all([
         context.supabase
@@ -47,7 +87,7 @@ export const getAdminWorkspace = createServerFn({ method: "GET" })
     };
   });
 export const saveAdminOpportunity = createServerFn({ method: "POST" })
-  .middleware([requireActiveAccount])
+  .middleware([requireStaff])
   .inputValidator((v) =>
     z
       .object({
@@ -65,7 +105,7 @@ export const saveAdminOpportunity = createServerFn({ method: "POST" })
   )
   .handler(async ({ data, context }) => {
     const role = await context.supabase.rpc("has_permission", { p: "opportunities.manage" });
-    if (role.error || !role.data) throw new Error("Administrator access required.");
+    if (role.error || !role.data) throw new Error("Access denied.");
     const v = data.value;
     const value = {
       ...v,
@@ -100,7 +140,7 @@ export const saveAdminOpportunity = createServerFn({ method: "POST" })
     return r.data;
   });
 export const saveAdminSource = createServerFn({ method: "POST" })
-  .middleware([requireActiveAccount])
+  .middleware([requireStaff])
   .inputValidator((v) =>
     z
       .object({
@@ -113,7 +153,7 @@ export const saveAdminSource = createServerFn({ method: "POST" })
   )
   .handler(async ({ data, context }) => {
     const role = await context.supabase.rpc("has_permission", { p: "sources.manage" });
-    if (role.error || !role.data) throw new Error("Administrator access required.");
+    if (role.error || !role.data) throw new Error("Access denied.");
     const { id, ...value } = data;
     const r = id
       ? await context.supabase.from("sources").update(value).eq("id", id).select("id").single()

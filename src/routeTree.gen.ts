@@ -11,6 +11,7 @@
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as AuthenticatedRouteRouteImport } from './routes/_authenticated/route'
+import { Route as AdminRouteImport } from './routes/admin'
 import { Route as AuthRouteImport } from './routes/auth'
 import { Route as ContactRouteImport } from './routes/contact'
 import { Route as DemoRouteImport } from './routes/demo'
@@ -21,7 +22,6 @@ import { Route as LoginRouteImport } from './routes/login'
 import { Route as PricingRouteImport } from './routes/pricing'
 import { Route as ResetPasswordRouteImport } from './routes/reset-password'
 import { Route as SignupRouteImport } from './routes/signup'
-import { Route as AuthenticatedAdminRouteImport } from './routes/_authenticated/admin'
 import { Route as AuthenticatedAlertsRouteImport } from './routes/_authenticated/alerts'
 import { Route as AuthenticatedDashboardRouteImport } from './routes/_authenticated/dashboard'
 import { Route as AuthenticatedOpportunitiesRouteImport } from './routes/_authenticated/opportunities'
@@ -29,6 +29,12 @@ import { Route as AuthenticatedProfileRouteImport } from './routes/_authenticate
 import { Route as AuthenticatedSavedRouteImport } from './routes/_authenticated/saved'
 import { Route as AuthenticatedSettingsRouteImport } from './routes/_authenticated/settings'
 import { Route as AuthenticatedTrackerRouteImport } from './routes/_authenticated/tracker'
+import { Route as AdminIndexRouteImport } from './routes/admin.index'
+import { Route as AdminAccessRouteImport } from './routes/admin.access'
+import { Route as AdminAuditRouteImport } from './routes/admin.audit'
+import { Route as AdminOpportunitiesRouteImport } from './routes/admin.opportunities'
+import { Route as AdminSourcesRouteImport } from './routes/admin.sources'
+import { Route as AdminUsersRouteImport } from './routes/admin.users'
 import { Route as AdminLoginRouteImport } from './routes/admin_.login'
 import { Route as DemoIndexRouteImport } from './routes/demo.index'
 import { Route as DemoAdminRouteImport } from './routes/demo.admin'
@@ -46,12 +52,6 @@ import { Route as DemoSocialRouteImport } from './routes/demo.social'
 import { Route as DemoToolkitRouteImport } from './routes/demo.toolkit'
 import { Route as DemoTrackerRouteImport } from './routes/demo.tracker'
 import { Route as DemoWebRouteImport } from './routes/demo.web'
-import { Route as AuthenticatedAdminIndexRouteImport } from './routes/_authenticated/admin.index'
-import { Route as AuthenticatedAdminAccessRouteImport } from './routes/_authenticated/admin.access'
-import { Route as AuthenticatedAdminAuditRouteImport } from './routes/_authenticated/admin.audit'
-import { Route as AuthenticatedAdminOpportunitiesRouteImport } from './routes/_authenticated/admin.opportunities'
-import { Route as AuthenticatedAdminSourcesRouteImport } from './routes/_authenticated/admin.sources'
-import { Route as AuthenticatedAdminUsersRouteImport } from './routes/_authenticated/admin.users'
 import { Route as AuthenticatedAppAdminRouteImport } from './routes/_authenticated/app.admin'
 import { Route as AuthenticatedAppAlertsRouteImport } from './routes/_authenticated/app.alerts'
 import { Route as AuthenticatedAppCoverLetterRouteImport } from './routes/_authenticated/app.cover-letter'
@@ -78,6 +78,11 @@ const IndexRoute = IndexRouteImport.update({
 } as any)
 const AuthenticatedRouteRoute = AuthenticatedRouteRouteImport.update({
   id: '/_authenticated',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AdminRoute = AdminRouteImport.update({
+  id: '/admin',
+  path: '/admin',
   getParentRoute: () => rootRouteImport,
 } as any)
 const AuthRoute = AuthRouteImport.update({
@@ -130,11 +135,6 @@ const SignupRoute = SignupRouteImport.update({
   path: '/signup',
   getParentRoute: () => rootRouteImport,
 } as any)
-const AuthenticatedAdminRoute = AuthenticatedAdminRouteImport.update({
-  id: '/admin',
-  path: '/admin',
-  getParentRoute: () => AuthenticatedRouteRoute,
-} as any)
 const AuthenticatedAlertsRoute = AuthenticatedAlertsRouteImport.update({
   id: '/alerts',
   path: '/alerts',
@@ -170,6 +170,36 @@ const AuthenticatedTrackerRoute = AuthenticatedTrackerRouteImport.update({
   id: '/tracker',
   path: '/tracker',
   getParentRoute: () => AuthenticatedRouteRoute,
+} as any)
+const AdminIndexRoute = AdminIndexRouteImport.update({
+  id: '/',
+  path: '/',
+  getParentRoute: () => AdminRoute,
+} as any)
+const AdminAccessRoute = AdminAccessRouteImport.update({
+  id: '/access',
+  path: '/access',
+  getParentRoute: () => AdminRoute,
+} as any)
+const AdminAuditRoute = AdminAuditRouteImport.update({
+  id: '/audit',
+  path: '/audit',
+  getParentRoute: () => AdminRoute,
+} as any)
+const AdminOpportunitiesRoute = AdminOpportunitiesRouteImport.update({
+  id: '/opportunities',
+  path: '/opportunities',
+  getParentRoute: () => AdminRoute,
+} as any)
+const AdminSourcesRoute = AdminSourcesRouteImport.update({
+  id: '/sources',
+  path: '/sources',
+  getParentRoute: () => AdminRoute,
+} as any)
+const AdminUsersRoute = AdminUsersRouteImport.update({
+  id: '/users',
+  path: '/users',
+  getParentRoute: () => AdminRoute,
 } as any)
 const AdminLoginRoute = AdminLoginRouteImport.update({
   id: '/admin_/login',
@@ -255,39 +285,6 @@ const DemoWebRoute = DemoWebRouteImport.update({
   id: '/web',
   path: '/web',
   getParentRoute: () => DemoRoute,
-} as any)
-const AuthenticatedAdminIndexRoute = AuthenticatedAdminIndexRouteImport.update({
-  id: '/',
-  path: '/',
-  getParentRoute: () => AuthenticatedAdminRoute,
-} as any)
-const AuthenticatedAdminAccessRoute =
-  AuthenticatedAdminAccessRouteImport.update({
-    id: '/access',
-    path: '/access',
-    getParentRoute: () => AuthenticatedAdminRoute,
-  } as any)
-const AuthenticatedAdminAuditRoute = AuthenticatedAdminAuditRouteImport.update({
-  id: '/audit',
-  path: '/audit',
-  getParentRoute: () => AuthenticatedAdminRoute,
-} as any)
-const AuthenticatedAdminOpportunitiesRoute =
-  AuthenticatedAdminOpportunitiesRouteImport.update({
-    id: '/opportunities',
-    path: '/opportunities',
-    getParentRoute: () => AuthenticatedAdminRoute,
-  } as any)
-const AuthenticatedAdminSourcesRoute =
-  AuthenticatedAdminSourcesRouteImport.update({
-    id: '/sources',
-    path: '/sources',
-    getParentRoute: () => AuthenticatedAdminRoute,
-  } as any)
-const AuthenticatedAdminUsersRoute = AuthenticatedAdminUsersRouteImport.update({
-  id: '/users',
-  path: '/users',
-  getParentRoute: () => AuthenticatedAdminRoute,
 } as any)
 const AuthenticatedAppAdminRoute = AuthenticatedAppAdminRouteImport.update({
   id: '/app/admin',
@@ -390,6 +387,7 @@ const AuthenticatedAppOpportunitiesIdRoute =
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/admin': typeof AdminRouteWithChildren
   '/auth': typeof AuthRoute
   '/contact': typeof ContactRoute
   '/demo': typeof DemoRouteWithChildren
@@ -400,7 +398,6 @@ export interface FileRoutesByFullPath {
   '/pricing': typeof PricingRoute
   '/reset-password': typeof ResetPasswordRoute
   '/signup': typeof SignupRoute
-  '/admin': typeof AuthenticatedAdminRouteWithChildren
   '/alerts': typeof AuthenticatedAlertsRoute
   '/dashboard': typeof AuthenticatedDashboardRoute
   '/opportunities': typeof AuthenticatedOpportunitiesRoute
@@ -408,6 +405,11 @@ export interface FileRoutesByFullPath {
   '/saved': typeof AuthenticatedSavedRoute
   '/settings': typeof AuthenticatedSettingsRoute
   '/tracker': typeof AuthenticatedTrackerRoute
+  '/admin/access': typeof AdminAccessRoute
+  '/admin/audit': typeof AdminAuditRoute
+  '/admin/opportunities': typeof AdminOpportunitiesRoute
+  '/admin/sources': typeof AdminSourcesRoute
+  '/admin/users': typeof AdminUsersRoute
   '/admin/login': typeof AdminLoginRoute
   '/demo/admin': typeof DemoAdminRoute
   '/demo/alerts': typeof DemoAlertsRoute
@@ -424,12 +426,8 @@ export interface FileRoutesByFullPath {
   '/demo/toolkit': typeof DemoToolkitRoute
   '/demo/tracker': typeof DemoTrackerRoute
   '/demo/web': typeof DemoWebRoute
+  '/admin/': typeof AdminIndexRoute
   '/demo/': typeof DemoIndexRoute
-  '/admin/access': typeof AuthenticatedAdminAccessRoute
-  '/admin/audit': typeof AuthenticatedAdminAuditRoute
-  '/admin/opportunities': typeof AuthenticatedAdminOpportunitiesRoute
-  '/admin/sources': typeof AuthenticatedAdminSourcesRoute
-  '/admin/users': typeof AuthenticatedAdminUsersRoute
   '/app/admin': typeof AuthenticatedAppAdminRoute
   '/app/alerts': typeof AuthenticatedAppAlertsRoute
   '/app/cover-letter': typeof AuthenticatedAppCoverLetterRoute
@@ -447,7 +445,6 @@ export interface FileRoutesByFullPath {
   '/app/tracker': typeof AuthenticatedAppTrackerRoute
   '/app/web': typeof AuthenticatedAppWebRoute
   '/demo/opportunities/$id': typeof DemoOpportunitiesIdRoute
-  '/admin/': typeof AuthenticatedAdminIndexRoute
   '/app/opportunities/$id': typeof AuthenticatedAppOpportunitiesIdRoute
 }
 export interface FileRoutesByTo {
@@ -468,6 +465,11 @@ export interface FileRoutesByTo {
   '/saved': typeof AuthenticatedSavedRoute
   '/settings': typeof AuthenticatedSettingsRoute
   '/tracker': typeof AuthenticatedTrackerRoute
+  '/admin/access': typeof AdminAccessRoute
+  '/admin/audit': typeof AdminAuditRoute
+  '/admin/opportunities': typeof AdminOpportunitiesRoute
+  '/admin/sources': typeof AdminSourcesRoute
+  '/admin/users': typeof AdminUsersRoute
   '/admin/login': typeof AdminLoginRoute
   '/demo/admin': typeof DemoAdminRoute
   '/demo/alerts': typeof DemoAlertsRoute
@@ -484,12 +486,8 @@ export interface FileRoutesByTo {
   '/demo/toolkit': typeof DemoToolkitRoute
   '/demo/tracker': typeof DemoTrackerRoute
   '/demo/web': typeof DemoWebRoute
+  '/admin': typeof AdminIndexRoute
   '/demo': typeof DemoIndexRoute
-  '/admin/access': typeof AuthenticatedAdminAccessRoute
-  '/admin/audit': typeof AuthenticatedAdminAuditRoute
-  '/admin/opportunities': typeof AuthenticatedAdminOpportunitiesRoute
-  '/admin/sources': typeof AuthenticatedAdminSourcesRoute
-  '/admin/users': typeof AuthenticatedAdminUsersRoute
   '/app/admin': typeof AuthenticatedAppAdminRoute
   '/app/alerts': typeof AuthenticatedAppAlertsRoute
   '/app/cover-letter': typeof AuthenticatedAppCoverLetterRoute
@@ -507,13 +505,13 @@ export interface FileRoutesByTo {
   '/app/tracker': typeof AuthenticatedAppTrackerRoute
   '/app/web': typeof AuthenticatedAppWebRoute
   '/demo/opportunities/$id': typeof DemoOpportunitiesIdRoute
-  '/admin': typeof AuthenticatedAdminIndexRoute
   '/app/opportunities/$id': typeof AuthenticatedAppOpportunitiesIdRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
   '/_authenticated': typeof AuthenticatedRouteRouteWithChildren
+  '/admin': typeof AdminRouteWithChildren
   '/auth': typeof AuthRoute
   '/contact': typeof ContactRoute
   '/demo': typeof DemoRouteWithChildren
@@ -524,7 +522,6 @@ export interface FileRoutesById {
   '/pricing': typeof PricingRoute
   '/reset-password': typeof ResetPasswordRoute
   '/signup': typeof SignupRoute
-  '/_authenticated/admin': typeof AuthenticatedAdminRouteWithChildren
   '/_authenticated/alerts': typeof AuthenticatedAlertsRoute
   '/_authenticated/dashboard': typeof AuthenticatedDashboardRoute
   '/_authenticated/opportunities': typeof AuthenticatedOpportunitiesRoute
@@ -532,6 +529,11 @@ export interface FileRoutesById {
   '/_authenticated/saved': typeof AuthenticatedSavedRoute
   '/_authenticated/settings': typeof AuthenticatedSettingsRoute
   '/_authenticated/tracker': typeof AuthenticatedTrackerRoute
+  '/admin/access': typeof AdminAccessRoute
+  '/admin/audit': typeof AdminAuditRoute
+  '/admin/opportunities': typeof AdminOpportunitiesRoute
+  '/admin/sources': typeof AdminSourcesRoute
+  '/admin/users': typeof AdminUsersRoute
   '/admin_/login': typeof AdminLoginRoute
   '/demo/admin': typeof DemoAdminRoute
   '/demo/alerts': typeof DemoAlertsRoute
@@ -548,12 +550,8 @@ export interface FileRoutesById {
   '/demo/toolkit': typeof DemoToolkitRoute
   '/demo/tracker': typeof DemoTrackerRoute
   '/demo/web': typeof DemoWebRoute
+  '/admin/': typeof AdminIndexRoute
   '/demo/': typeof DemoIndexRoute
-  '/_authenticated/admin/access': typeof AuthenticatedAdminAccessRoute
-  '/_authenticated/admin/audit': typeof AuthenticatedAdminAuditRoute
-  '/_authenticated/admin/opportunities': typeof AuthenticatedAdminOpportunitiesRoute
-  '/_authenticated/admin/sources': typeof AuthenticatedAdminSourcesRoute
-  '/_authenticated/admin/users': typeof AuthenticatedAdminUsersRoute
   '/_authenticated/app/admin': typeof AuthenticatedAppAdminRoute
   '/_authenticated/app/alerts': typeof AuthenticatedAppAlertsRoute
   '/_authenticated/app/cover-letter': typeof AuthenticatedAppCoverLetterRoute
@@ -571,13 +569,13 @@ export interface FileRoutesById {
   '/_authenticated/app/tracker': typeof AuthenticatedAppTrackerRoute
   '/_authenticated/app/web': typeof AuthenticatedAppWebRoute
   '/demo/opportunities/$id': typeof DemoOpportunitiesIdRoute
-  '/_authenticated/admin/': typeof AuthenticatedAdminIndexRoute
   '/_authenticated/app/opportunities/$id': typeof AuthenticatedAppOpportunitiesIdRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
   fullPaths:
     | '/'
+    | '/admin'
     | '/auth'
     | '/contact'
     | '/demo'
@@ -588,7 +586,6 @@ export interface FileRouteTypes {
     | '/pricing'
     | '/reset-password'
     | '/signup'
-    | '/admin'
     | '/alerts'
     | '/dashboard'
     | '/opportunities'
@@ -596,6 +593,11 @@ export interface FileRouteTypes {
     | '/saved'
     | '/settings'
     | '/tracker'
+    | '/admin/access'
+    | '/admin/audit'
+    | '/admin/opportunities'
+    | '/admin/sources'
+    | '/admin/users'
     | '/admin/login'
     | '/demo/admin'
     | '/demo/alerts'
@@ -612,12 +614,8 @@ export interface FileRouteTypes {
     | '/demo/toolkit'
     | '/demo/tracker'
     | '/demo/web'
+    | '/admin/'
     | '/demo/'
-    | '/admin/access'
-    | '/admin/audit'
-    | '/admin/opportunities'
-    | '/admin/sources'
-    | '/admin/users'
     | '/app/admin'
     | '/app/alerts'
     | '/app/cover-letter'
@@ -635,7 +633,6 @@ export interface FileRouteTypes {
     | '/app/tracker'
     | '/app/web'
     | '/demo/opportunities/$id'
-    | '/admin/'
     | '/app/opportunities/$id'
   fileRoutesByTo: FileRoutesByTo
   to:
@@ -656,6 +653,11 @@ export interface FileRouteTypes {
     | '/saved'
     | '/settings'
     | '/tracker'
+    | '/admin/access'
+    | '/admin/audit'
+    | '/admin/opportunities'
+    | '/admin/sources'
+    | '/admin/users'
     | '/admin/login'
     | '/demo/admin'
     | '/demo/alerts'
@@ -672,12 +674,8 @@ export interface FileRouteTypes {
     | '/demo/toolkit'
     | '/demo/tracker'
     | '/demo/web'
+    | '/admin'
     | '/demo'
-    | '/admin/access'
-    | '/admin/audit'
-    | '/admin/opportunities'
-    | '/admin/sources'
-    | '/admin/users'
     | '/app/admin'
     | '/app/alerts'
     | '/app/cover-letter'
@@ -695,12 +693,12 @@ export interface FileRouteTypes {
     | '/app/tracker'
     | '/app/web'
     | '/demo/opportunities/$id'
-    | '/admin'
     | '/app/opportunities/$id'
   id:
     | '__root__'
     | '/'
     | '/_authenticated'
+    | '/admin'
     | '/auth'
     | '/contact'
     | '/demo'
@@ -711,7 +709,6 @@ export interface FileRouteTypes {
     | '/pricing'
     | '/reset-password'
     | '/signup'
-    | '/_authenticated/admin'
     | '/_authenticated/alerts'
     | '/_authenticated/dashboard'
     | '/_authenticated/opportunities'
@@ -719,6 +716,11 @@ export interface FileRouteTypes {
     | '/_authenticated/saved'
     | '/_authenticated/settings'
     | '/_authenticated/tracker'
+    | '/admin/access'
+    | '/admin/audit'
+    | '/admin/opportunities'
+    | '/admin/sources'
+    | '/admin/users'
     | '/admin_/login'
     | '/demo/admin'
     | '/demo/alerts'
@@ -735,12 +737,8 @@ export interface FileRouteTypes {
     | '/demo/toolkit'
     | '/demo/tracker'
     | '/demo/web'
+    | '/admin/'
     | '/demo/'
-    | '/_authenticated/admin/access'
-    | '/_authenticated/admin/audit'
-    | '/_authenticated/admin/opportunities'
-    | '/_authenticated/admin/sources'
-    | '/_authenticated/admin/users'
     | '/_authenticated/app/admin'
     | '/_authenticated/app/alerts'
     | '/_authenticated/app/cover-letter'
@@ -758,13 +756,13 @@ export interface FileRouteTypes {
     | '/_authenticated/app/tracker'
     | '/_authenticated/app/web'
     | '/demo/opportunities/$id'
-    | '/_authenticated/admin/'
     | '/_authenticated/app/opportunities/$id'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   AuthenticatedRouteRoute: typeof AuthenticatedRouteRouteWithChildren
+  AdminRoute: typeof AdminRouteWithChildren
   AuthRoute: typeof AuthRoute
   ContactRoute: typeof ContactRoute
   DemoRoute: typeof DemoRouteWithChildren
@@ -792,6 +790,13 @@ declare module '@tanstack/react-router' {
       path: ''
       fullPath: '/'
       preLoaderRoute: typeof AuthenticatedRouteRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/admin': {
+      id: '/admin'
+      path: '/admin'
+      fullPath: '/admin'
+      preLoaderRoute: typeof AdminRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/auth': {
@@ -864,13 +869,6 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof SignupRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/_authenticated/admin': {
-      id: '/_authenticated/admin'
-      path: '/admin'
-      fullPath: '/admin'
-      preLoaderRoute: typeof AuthenticatedAdminRouteImport
-      parentRoute: typeof AuthenticatedRouteRoute
-    }
     '/_authenticated/alerts': {
       id: '/_authenticated/alerts'
       path: '/alerts'
@@ -919,6 +917,48 @@ declare module '@tanstack/react-router' {
       fullPath: '/tracker'
       preLoaderRoute: typeof AuthenticatedTrackerRouteImport
       parentRoute: typeof AuthenticatedRouteRoute
+    }
+    '/admin/': {
+      id: '/admin/'
+      path: '/'
+      fullPath: '/admin/'
+      preLoaderRoute: typeof AdminIndexRouteImport
+      parentRoute: typeof AdminRoute
+    }
+    '/admin/access': {
+      id: '/admin/access'
+      path: '/access'
+      fullPath: '/admin/access'
+      preLoaderRoute: typeof AdminAccessRouteImport
+      parentRoute: typeof AdminRoute
+    }
+    '/admin/audit': {
+      id: '/admin/audit'
+      path: '/audit'
+      fullPath: '/admin/audit'
+      preLoaderRoute: typeof AdminAuditRouteImport
+      parentRoute: typeof AdminRoute
+    }
+    '/admin/opportunities': {
+      id: '/admin/opportunities'
+      path: '/opportunities'
+      fullPath: '/admin/opportunities'
+      preLoaderRoute: typeof AdminOpportunitiesRouteImport
+      parentRoute: typeof AdminRoute
+    }
+    '/admin/sources': {
+      id: '/admin/sources'
+      path: '/sources'
+      fullPath: '/admin/sources'
+      preLoaderRoute: typeof AdminSourcesRouteImport
+      parentRoute: typeof AdminRoute
+    }
+    '/admin/users': {
+      id: '/admin/users'
+      path: '/users'
+      fullPath: '/admin/users'
+      preLoaderRoute: typeof AdminUsersRouteImport
+      parentRoute: typeof AdminRoute
     }
     '/admin_/login': {
       id: '/admin_/login'
@@ -1038,48 +1078,6 @@ declare module '@tanstack/react-router' {
       fullPath: '/demo/web'
       preLoaderRoute: typeof DemoWebRouteImport
       parentRoute: typeof DemoRoute
-    }
-    '/_authenticated/admin/': {
-      id: '/_authenticated/admin/'
-      path: '/'
-      fullPath: '/admin/'
-      preLoaderRoute: typeof AuthenticatedAdminIndexRouteImport
-      parentRoute: typeof AuthenticatedAdminRoute
-    }
-    '/_authenticated/admin/access': {
-      id: '/_authenticated/admin/access'
-      path: '/access'
-      fullPath: '/admin/access'
-      preLoaderRoute: typeof AuthenticatedAdminAccessRouteImport
-      parentRoute: typeof AuthenticatedAdminRoute
-    }
-    '/_authenticated/admin/audit': {
-      id: '/_authenticated/admin/audit'
-      path: '/audit'
-      fullPath: '/admin/audit'
-      preLoaderRoute: typeof AuthenticatedAdminAuditRouteImport
-      parentRoute: typeof AuthenticatedAdminRoute
-    }
-    '/_authenticated/admin/opportunities': {
-      id: '/_authenticated/admin/opportunities'
-      path: '/opportunities'
-      fullPath: '/admin/opportunities'
-      preLoaderRoute: typeof AuthenticatedAdminOpportunitiesRouteImport
-      parentRoute: typeof AuthenticatedAdminRoute
-    }
-    '/_authenticated/admin/sources': {
-      id: '/_authenticated/admin/sources'
-      path: '/sources'
-      fullPath: '/admin/sources'
-      preLoaderRoute: typeof AuthenticatedAdminSourcesRouteImport
-      parentRoute: typeof AuthenticatedAdminRoute
-    }
-    '/_authenticated/admin/users': {
-      id: '/_authenticated/admin/users'
-      path: '/users'
-      fullPath: '/admin/users'
-      preLoaderRoute: typeof AuthenticatedAdminUsersRouteImport
-      parentRoute: typeof AuthenticatedAdminRoute
     }
     '/_authenticated/app/admin': {
       id: '/_authenticated/app/admin'
@@ -1210,29 +1208,7 @@ declare module '@tanstack/react-router' {
   }
 }
 
-interface AuthenticatedAdminRouteChildren {
-  AuthenticatedAdminAccessRoute: typeof AuthenticatedAdminAccessRoute
-  AuthenticatedAdminAuditRoute: typeof AuthenticatedAdminAuditRoute
-  AuthenticatedAdminOpportunitiesRoute: typeof AuthenticatedAdminOpportunitiesRoute
-  AuthenticatedAdminSourcesRoute: typeof AuthenticatedAdminSourcesRoute
-  AuthenticatedAdminUsersRoute: typeof AuthenticatedAdminUsersRoute
-  AuthenticatedAdminIndexRoute: typeof AuthenticatedAdminIndexRoute
-}
-
-const AuthenticatedAdminRouteChildren: AuthenticatedAdminRouteChildren = {
-  AuthenticatedAdminAccessRoute: AuthenticatedAdminAccessRoute,
-  AuthenticatedAdminAuditRoute: AuthenticatedAdminAuditRoute,
-  AuthenticatedAdminOpportunitiesRoute: AuthenticatedAdminOpportunitiesRoute,
-  AuthenticatedAdminSourcesRoute: AuthenticatedAdminSourcesRoute,
-  AuthenticatedAdminUsersRoute: AuthenticatedAdminUsersRoute,
-  AuthenticatedAdminIndexRoute: AuthenticatedAdminIndexRoute,
-}
-
-const AuthenticatedAdminRouteWithChildren =
-  AuthenticatedAdminRoute._addFileChildren(AuthenticatedAdminRouteChildren)
-
 interface AuthenticatedRouteRouteChildren {
-  AuthenticatedAdminRoute: typeof AuthenticatedAdminRouteWithChildren
   AuthenticatedAlertsRoute: typeof AuthenticatedAlertsRoute
   AuthenticatedDashboardRoute: typeof AuthenticatedDashboardRoute
   AuthenticatedOpportunitiesRoute: typeof AuthenticatedOpportunitiesRoute
@@ -1260,7 +1236,6 @@ interface AuthenticatedRouteRouteChildren {
 }
 
 const AuthenticatedRouteRouteChildren: AuthenticatedRouteRouteChildren = {
-  AuthenticatedAdminRoute: AuthenticatedAdminRouteWithChildren,
   AuthenticatedAlertsRoute: AuthenticatedAlertsRoute,
   AuthenticatedDashboardRoute: AuthenticatedDashboardRoute,
   AuthenticatedOpportunitiesRoute: AuthenticatedOpportunitiesRoute,
@@ -1290,6 +1265,26 @@ const AuthenticatedRouteRouteChildren: AuthenticatedRouteRouteChildren = {
 
 const AuthenticatedRouteRouteWithChildren =
   AuthenticatedRouteRoute._addFileChildren(AuthenticatedRouteRouteChildren)
+
+interface AdminRouteChildren {
+  AdminAccessRoute: typeof AdminAccessRoute
+  AdminAuditRoute: typeof AdminAuditRoute
+  AdminOpportunitiesRoute: typeof AdminOpportunitiesRoute
+  AdminSourcesRoute: typeof AdminSourcesRoute
+  AdminUsersRoute: typeof AdminUsersRoute
+  AdminIndexRoute: typeof AdminIndexRoute
+}
+
+const AdminRouteChildren: AdminRouteChildren = {
+  AdminAccessRoute: AdminAccessRoute,
+  AdminAuditRoute: AdminAuditRoute,
+  AdminOpportunitiesRoute: AdminOpportunitiesRoute,
+  AdminSourcesRoute: AdminSourcesRoute,
+  AdminUsersRoute: AdminUsersRoute,
+  AdminIndexRoute: AdminIndexRoute,
+}
+
+const AdminRouteWithChildren = AdminRoute._addFileChildren(AdminRouteChildren)
 
 interface DemoRouteChildren {
   DemoAdminRoute: typeof DemoAdminRoute
@@ -1336,6 +1331,7 @@ const DemoRouteWithChildren = DemoRoute._addFileChildren(DemoRouteChildren)
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   AuthenticatedRouteRoute: AuthenticatedRouteRouteWithChildren,
+  AdminRoute: AdminRouteWithChildren,
   AuthRoute: AuthRoute,
   ContactRoute: ContactRoute,
   DemoRoute: DemoRouteWithChildren,

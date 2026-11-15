@@ -71,6 +71,13 @@
       "when": 1794738024595,
       "tag": "0009_suspended_storage_access",
       "breakpoints": true
+    },
+    {
+      "idx": 10,
+      "version": "7",
+      "when": 1794738833975,
+      "tag": "0010_active_owner_permission_commands",
+      "breakpoints": true
     }
   ]
 }

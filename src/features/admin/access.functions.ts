@@ -1,16 +1,15 @@
 import { createServerFn } from "@tanstack/react-start";
 import { z } from "zod";
-import { requireActiveAccount } from "@/features/account/active-auth";
+import { requireStaff } from "./staff-auth";
 export const getStaffSettings = createServerFn({ method: "GET" })
-  .middleware([requireActiveAccount])
+  .middleware([requireStaff])
   .handler(async ({ context }) => {
     const roles = await context.supabase
       .from("user_roles")
       .select("role")
       .eq("user_id", context.userId);
     const values = roles.data?.map((r) => r.role) ?? [];
-    if (!values.some((r) => ["owner", "admin"].includes(r)))
-      throw new Error("Administrator access required.");
+    if (!values.some((r) => ["owner", "admin"].includes(r))) throw new Error("Access denied.");
     const [controls, usage, directory] = await Promise.all([
       context.supabase.from("ai_controls").select("*").eq("scope", "resume").maybeSingle(),
       context.supabase
@@ -32,7 +31,7 @@ export const getStaffSettings = createServerFn({ method: "GET" })
     };
   });
 export const changeStaffRole = createServerFn({ method: "POST" })
-  .middleware([requireActiveAccount])
+  .middleware([requireStaff])
   .inputValidator(
     z.object({
       email: z.string().email(),
@@ -41,6 +40,8 @@ export const changeStaffRole = createServerFn({ method: "POST" })
     }),
   )
   .handler(async ({ data, context }) => {
+    const permission = await context.supabase.rpc("has_permission", { p: "roles.manage" });
+    if (permission.error || permission.data !== true) throw new Error("Access denied.");
     const target = await context.supabase.rpc("verified_staff_target", { address: data.email });
     if (target.error || !target.data)
       throw new Error(target.error?.message ?? "Verified account not found.");
@@ -53,7 +54,7 @@ export const changeStaffRole = createServerFn({ method: "POST" })
     return { ok: true };
   });
 export const changeAiControls = createServerFn({ method: "POST" })
-  .middleware([requireActiveAccount])
+  .middleware([requireStaff])
   .inputValidator(
     z.object({
       enabled: z.boolean(),
@@ -63,7 +64,7 @@ export const changeAiControls = createServerFn({ method: "POST" })
   )
   .handler(async ({ data, context }) => {
     const permission = await context.supabase.rpc("has_permission", { p: "ai.manage" });
-    if (permission.error || !permission.data) throw new Error("Administrator access required.");
+    if (permission.error || !permission.data) throw new Error("Access denied.");
     const result = await context.supabase.from("ai_controls").upsert({ scope: "resume", ...data });
     if (result.error) throw new Error("AI settings could not be saved.");
     return { ok: true };

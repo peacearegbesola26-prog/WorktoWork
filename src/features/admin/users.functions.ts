@@ -1,15 +1,17 @@
 import { createServerFn } from "@tanstack/react-start";
 import { z } from "zod";
-import { requireActiveAccount } from "@/features/account/active-auth";
+import { requireStaff } from "./staff-auth";
 export const userFilters = z.object({
   search: z.string().max(200),
   status: z.enum(["all", "active", "suspended", "verified", "unverified"]),
   page: z.number().int().min(1),
 });
 export const listAdminUsers = createServerFn({ method: "POST" })
-  .middleware([requireActiveAccount])
+  .middleware([requireStaff])
   .inputValidator(userFilters)
   .handler(async ({ data, context }) => {
+    const permission = await context.supabase.rpc("has_permission", { p: "users.manage" });
+    if (permission.error || permission.data !== true) throw new Error("Access denied.");
     const result = await context.supabase.rpc("admin_users", {
       search_value: data.search,
       status_value: data.status,
@@ -37,7 +39,7 @@ export const listAdminUsers = createServerFn({ method: "POST" })
       .parse(result.data);
   });
 export const suspendAccount = createServerFn({ method: "POST" })
-  .middleware([requireActiveAccount])
+  .middleware([requireStaff])
   .inputValidator(
     z.object({
       id: z.string().uuid(),
@@ -46,6 +48,8 @@ export const suspendAccount = createServerFn({ method: "POST" })
     }),
   )
   .handler(async ({ data, context }) => {
+    const permission = await context.supabase.rpc("has_permission", { p: "users.manage" });
+    if (permission.error || permission.data !== true) throw new Error("Access denied.");
     const result = await context.supabase.rpc("set_account_suspension", {
       target: data.id,
       is_suspended: data.suspended,

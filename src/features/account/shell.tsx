@@ -1,9 +1,6 @@
 import { useState, type ReactNode } from "react";
 import { Link, useNavigate } from "@tanstack/react-router";
 import { useQueryClient } from "@tanstack/react-query";
-import { useQuery } from "@tanstack/react-query";
-import { useServerFn } from "@tanstack/react-start";
-import { adminAccess } from "@/features/admin/admin.functions";
 import {
   Menu,
   Globe2,
@@ -43,7 +40,7 @@ const nav = [
   { to: "/app/profile", label: "Profile", icon: UserRound },
   { to: "/app/settings", label: "Settings", icon: Settings },
 ] as const;
-export function SignOutButton() {
+export function SignOutButton({ staff = false }: { staff?: boolean }) {
   const client = useQueryClient();
   const navigate = useNavigate();
   const [busy, setBusy] = useState(false);
@@ -54,7 +51,8 @@ export function SignOutButton() {
       client.clear();
       const { error } = await supabase.auth.signOut();
       if (error) throw error;
-      await navigate({ to: "/auth", search: { next: "/app/dashboard" }, replace: true });
+      if (staff) await navigate({ to: "/admin/login", replace: true });
+      else await navigate({ to: "/auth", search: { next: "/app/dashboard" }, replace: true });
     } catch {
       toast.error("Sign out failed. Please try again.");
     } finally {
@@ -72,12 +70,6 @@ export function AccountShell({ children }: { children: ReactNode }) {
   const [open, setOpen] = useState(false);
   const [collapsed, setCollapsed] = useState(false);
   const { user } = useAccountAuth();
-  const checkAdmin = useServerFn(adminAccess);
-  const { data: isAdmin } = useQuery({
-    queryKey: ["admin-access", user?.id],
-    queryFn: () => checkAdmin(),
-    enabled: !!user,
-  });
   const navigation = (
     <nav className="app-nav" aria-label="Account navigation">
       {nav.map((item) => (
@@ -92,12 +84,6 @@ export function AccountShell({ children }: { children: ReactNode }) {
           <span className={collapsed ? "hidden" : ""}>{item.label}</span>
         </Link>
       ))}
-      {isAdmin && (
-        <Link to="/admin" onClick={() => setOpen(false)} activeProps={{ className: "active" }}>
-          <Settings size={19} />
-          <span className={collapsed ? "hidden" : ""}>Administration</span>
-        </Link>
-      )}
     </nav>
   );
   return (

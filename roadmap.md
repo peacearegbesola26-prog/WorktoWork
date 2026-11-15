@@ -2,6 +2,13 @@
 
 ## Administration substages
 
+### Separate permission-controlled staff area
+- [x] Separate staff login/layout/navigation and remove ordinary-menu admin links
+- [x] Enforce generic access denial and current per-operation staff permissions
+- [x] Verify role restrictions, revocation, suspension and private-record protection without publishing
+
+Staff-area verification: 41 application tests passed; 13 direct staff-area checks, 13 user-management checks, 13 resume checks and 13 staff/privacy checks passed. Browser verified dedicated logged-out login, ordinary-user login/URL denial, restored owner access, AI settings save/refresh, last-owner denial, moderator restrictions, administrator user search, revocation/suspension with the same session, and separate desktop/mobile menus. Existing AI daily-limit live test skipped because owner-configured controls already exist; AI processing and limits were not changed. Permission-change audit records confirmed. Zero production opportunities; no domain or publication changes. Populated opportunity testing still requires genuine data; inbox checks and C–E remain pending as listed below.
+
 ### Current request: owner setup and B
 - [x] Confirm specified account email and assign initial owner through trusted operation
 - [x] Verify owner screens, role permissions, last-owner protection and AI settings persistence
