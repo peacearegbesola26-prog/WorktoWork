@@ -5,18 +5,15 @@ import { opportunitySchema, platforms } from "@/features/discovery/schemas";
 export const adminAccess = createServerFn({ method: "GET" })
   .middleware([requireSupabaseAuth])
   .handler(async ({ context }) => {
-    const r = await context.supabase.rpc("has_role", { _user_id: context.userId, _role: "admin" });
+    const r = await context.supabase.rpc("has_permission", { p: "admin.access" });
     return !r.error && r.data === true;
   });
 export const getAdminWorkspace = createServerFn({ method: "GET" })
   .middleware([requireSupabaseAuth])
   .handler(async ({ context }) => {
-    const role = await context.supabase.rpc("has_role", {
-      _user_id: context.userId,
-      _role: "admin",
-    });
+    const role = await context.supabase.rpc("has_permission", { p: "admin.access" });
     if (role.error || !role.data) throw new Error("Administrator access required.");
-    const [opportunities, sources, audit, totals] = await Promise.all([
+    const [opportunities, sources, audit, totals, roles, securityAudit] = await Promise.all([
       context.supabase.from("opportunities").select("*").order("updated_at", { ascending: false }),
       context.supabase.from("sources").select("*").order("name"),
       context.supabase
@@ -25,6 +22,12 @@ export const getAdminWorkspace = createServerFn({ method: "GET" })
         .order("created_at", { ascending: false })
         .limit(100),
       context.supabase.rpc("admin_overview"),
+      context.supabase.from("user_roles").select("role").eq("user_id", context.userId),
+      context.supabase
+        .from("security_audit")
+        .select("*")
+        .order("created_at", { ascending: false })
+        .limit(100),
     ]);
     if ([opportunities, sources, audit, totals].some((r) => r.error))
       throw new Error("Administration could not be loaded.");
@@ -33,6 +36,8 @@ export const getAdminWorkspace = createServerFn({ method: "GET" })
       sources: sources.data ?? [],
       audit: audit.data ?? [],
       totals: totals.data,
+      roles: roles.data?.map((r) => r.role) ?? [],
+      securityAudit: securityAudit.data ?? [],
     };
   });
 export const saveAdminOpportunity = createServerFn({ method: "POST" })
@@ -41,10 +46,7 @@ export const saveAdminOpportunity = createServerFn({ method: "POST" })
     z.object({ id: z.string().uuid().optional(), value: opportunitySchema }).parse(v),
   )
   .handler(async ({ data, context }) => {
-    const role = await context.supabase.rpc("has_role", {
-      _user_id: context.userId,
-      _role: "admin",
-    });
+    const role = await context.supabase.rpc("has_permission", { p: "opportunities.manage" });
     if (role.error || !role.data) throw new Error("Administrator access required.");
     const v = data.value;
     const value = {
@@ -83,10 +85,7 @@ export const saveAdminSource = createServerFn({ method: "POST" })
       .parse(v),
   )
   .handler(async ({ data, context }) => {
-    const role = await context.supabase.rpc("has_role", {
-      _user_id: context.userId,
-      _role: "admin",
-    });
+    const role = await context.supabase.rpc("has_permission", { p: "sources.manage" });
     if (role.error || !role.data) throw new Error("Administrator access required.");
     const { id, ...value } = data;
     const r = id

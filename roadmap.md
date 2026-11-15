@@ -1,5 +1,20 @@
 # Stage 1
 
+## Administration substages
+
+- [x] A: implement owner, administrator and moderator permissions; owner-only role management; last-owner protection; private admin login and navigation
+- [x] Connect persistent AI availability, daily request limits and input limits to existing resume AI; record status without private content
+- [x] Verify ordinary-user/admin/moderator restrictions, AI daily/input enforcement and existing resume privacy
+- [ ] Verify owner role UI, last-owner rejection and AI controls save/reload — requires trusted initial owner assignment; no owner was silently assigned
+- [ ] B: complete user/suspension and opportunity moderation management
+- [ ] C: published website content and owner site settings
+- [ ] D: remaining source, plan and notification controls
+- [ ] E: reports, support inbox, analytics and searchable full audit
+
+Initial owner setup requires the user's verified account identification and a trusted assignment; do not assign a registrant automatically. Do not publish.
+
+Owner setup: ask Lovable to assign the verified signed-in account the initial owner role through a trusted backend operation, confirming the account email first. Then open /admin/login and /admin/access. This operation is not exposed to ordinary accounts. Other substages remain incomplete; existing opportunity/source administration is preserved.
+
 ## Saved resumes and factual AI optimization
 
 - [x] Inspect account prerequisites and ownership controls

@@ -29,6 +29,7 @@ import { Route as AuthenticatedProfileRouteImport } from './routes/_authenticate
 import { Route as AuthenticatedSavedRouteImport } from './routes/_authenticated/saved'
 import { Route as AuthenticatedSettingsRouteImport } from './routes/_authenticated/settings'
 import { Route as AuthenticatedTrackerRouteImport } from './routes/_authenticated/tracker'
+import { Route as AdminLoginRouteImport } from './routes/admin_.login'
 import { Route as DemoIndexRouteImport } from './routes/demo.index'
 import { Route as DemoAdminRouteImport } from './routes/demo.admin'
 import { Route as DemoAlertsRouteImport } from './routes/demo.alerts'
@@ -46,6 +47,7 @@ import { Route as DemoToolkitRouteImport } from './routes/demo.toolkit'
 import { Route as DemoTrackerRouteImport } from './routes/demo.tracker'
 import { Route as DemoWebRouteImport } from './routes/demo.web'
 import { Route as AuthenticatedAdminIndexRouteImport } from './routes/_authenticated/admin.index'
+import { Route as AuthenticatedAdminAccessRouteImport } from './routes/_authenticated/admin.access'
 import { Route as AuthenticatedAdminAuditRouteImport } from './routes/_authenticated/admin.audit'
 import { Route as AuthenticatedAdminOpportunitiesRouteImport } from './routes/_authenticated/admin.opportunities'
 import { Route as AuthenticatedAdminSourcesRouteImport } from './routes/_authenticated/admin.sources'
@@ -168,6 +170,11 @@ const AuthenticatedTrackerRoute = AuthenticatedTrackerRouteImport.update({
   path: '/tracker',
   getParentRoute: () => AuthenticatedRouteRoute,
 } as any)
+const AdminLoginRoute = AdminLoginRouteImport.update({
+  id: '/admin_/login',
+  path: '/admin/login',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const DemoIndexRoute = DemoIndexRouteImport.update({
   id: '/',
   path: '/',
@@ -253,6 +260,12 @@ const AuthenticatedAdminIndexRoute = AuthenticatedAdminIndexRouteImport.update({
   path: '/',
   getParentRoute: () => AuthenticatedAdminRoute,
 } as any)
+const AuthenticatedAdminAccessRoute =
+  AuthenticatedAdminAccessRouteImport.update({
+    id: '/access',
+    path: '/access',
+    getParentRoute: () => AuthenticatedAdminRoute,
+  } as any)
 const AuthenticatedAdminAuditRoute = AuthenticatedAdminAuditRouteImport.update({
   id: '/audit',
   path: '/audit',
@@ -389,6 +402,7 @@ export interface FileRoutesByFullPath {
   '/saved': typeof AuthenticatedSavedRoute
   '/settings': typeof AuthenticatedSettingsRoute
   '/tracker': typeof AuthenticatedTrackerRoute
+  '/admin/login': typeof AdminLoginRoute
   '/demo/admin': typeof DemoAdminRoute
   '/demo/alerts': typeof DemoAlertsRoute
   '/demo/cover-letter': typeof DemoCoverLetterRoute
@@ -405,6 +419,7 @@ export interface FileRoutesByFullPath {
   '/demo/tracker': typeof DemoTrackerRoute
   '/demo/web': typeof DemoWebRoute
   '/demo/': typeof DemoIndexRoute
+  '/admin/access': typeof AuthenticatedAdminAccessRoute
   '/admin/audit': typeof AuthenticatedAdminAuditRoute
   '/admin/opportunities': typeof AuthenticatedAdminOpportunitiesRoute
   '/admin/sources': typeof AuthenticatedAdminSourcesRoute
@@ -446,6 +461,7 @@ export interface FileRoutesByTo {
   '/saved': typeof AuthenticatedSavedRoute
   '/settings': typeof AuthenticatedSettingsRoute
   '/tracker': typeof AuthenticatedTrackerRoute
+  '/admin/login': typeof AdminLoginRoute
   '/demo/admin': typeof DemoAdminRoute
   '/demo/alerts': typeof DemoAlertsRoute
   '/demo/cover-letter': typeof DemoCoverLetterRoute
@@ -462,6 +478,7 @@ export interface FileRoutesByTo {
   '/demo/tracker': typeof DemoTrackerRoute
   '/demo/web': typeof DemoWebRoute
   '/demo': typeof DemoIndexRoute
+  '/admin/access': typeof AuthenticatedAdminAccessRoute
   '/admin/audit': typeof AuthenticatedAdminAuditRoute
   '/admin/opportunities': typeof AuthenticatedAdminOpportunitiesRoute
   '/admin/sources': typeof AuthenticatedAdminSourcesRoute
@@ -507,6 +524,7 @@ export interface FileRoutesById {
   '/_authenticated/saved': typeof AuthenticatedSavedRoute
   '/_authenticated/settings': typeof AuthenticatedSettingsRoute
   '/_authenticated/tracker': typeof AuthenticatedTrackerRoute
+  '/admin_/login': typeof AdminLoginRoute
   '/demo/admin': typeof DemoAdminRoute
   '/demo/alerts': typeof DemoAlertsRoute
   '/demo/cover-letter': typeof DemoCoverLetterRoute
@@ -523,6 +541,7 @@ export interface FileRoutesById {
   '/demo/tracker': typeof DemoTrackerRoute
   '/demo/web': typeof DemoWebRoute
   '/demo/': typeof DemoIndexRoute
+  '/_authenticated/admin/access': typeof AuthenticatedAdminAccessRoute
   '/_authenticated/admin/audit': typeof AuthenticatedAdminAuditRoute
   '/_authenticated/admin/opportunities': typeof AuthenticatedAdminOpportunitiesRoute
   '/_authenticated/admin/sources': typeof AuthenticatedAdminSourcesRoute
@@ -568,6 +587,7 @@ export interface FileRouteTypes {
     | '/saved'
     | '/settings'
     | '/tracker'
+    | '/admin/login'
     | '/demo/admin'
     | '/demo/alerts'
     | '/demo/cover-letter'
@@ -584,6 +604,7 @@ export interface FileRouteTypes {
     | '/demo/tracker'
     | '/demo/web'
     | '/demo/'
+    | '/admin/access'
     | '/admin/audit'
     | '/admin/opportunities'
     | '/admin/sources'
@@ -625,6 +646,7 @@ export interface FileRouteTypes {
     | '/saved'
     | '/settings'
     | '/tracker'
+    | '/admin/login'
     | '/demo/admin'
     | '/demo/alerts'
     | '/demo/cover-letter'
@@ -641,6 +663,7 @@ export interface FileRouteTypes {
     | '/demo/tracker'
     | '/demo/web'
     | '/demo'
+    | '/admin/access'
     | '/admin/audit'
     | '/admin/opportunities'
     | '/admin/sources'
@@ -685,6 +708,7 @@ export interface FileRouteTypes {
     | '/_authenticated/saved'
     | '/_authenticated/settings'
     | '/_authenticated/tracker'
+    | '/admin_/login'
     | '/demo/admin'
     | '/demo/alerts'
     | '/demo/cover-letter'
@@ -701,6 +725,7 @@ export interface FileRouteTypes {
     | '/demo/tracker'
     | '/demo/web'
     | '/demo/'
+    | '/_authenticated/admin/access'
     | '/_authenticated/admin/audit'
     | '/_authenticated/admin/opportunities'
     | '/_authenticated/admin/sources'
@@ -738,6 +763,7 @@ export interface RootRouteChildren {
   PricingRoute: typeof PricingRoute
   ResetPasswordRoute: typeof ResetPasswordRoute
   SignupRoute: typeof SignupRoute
+  AdminLoginRoute: typeof AdminLoginRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -882,6 +908,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedTrackerRouteImport
       parentRoute: typeof AuthenticatedRouteRoute
     }
+    '/admin_/login': {
+      id: '/admin_/login'
+      path: '/admin/login'
+      fullPath: '/admin/login'
+      preLoaderRoute: typeof AdminLoginRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/demo/': {
       id: '/demo/'
       path: '/'
@@ -999,6 +1032,13 @@ declare module '@tanstack/react-router' {
       path: '/'
       fullPath: '/admin/'
       preLoaderRoute: typeof AuthenticatedAdminIndexRouteImport
+      parentRoute: typeof AuthenticatedAdminRoute
+    }
+    '/_authenticated/admin/access': {
+      id: '/_authenticated/admin/access'
+      path: '/access'
+      fullPath: '/admin/access'
+      preLoaderRoute: typeof AuthenticatedAdminAccessRouteImport
       parentRoute: typeof AuthenticatedAdminRoute
     }
     '/_authenticated/admin/audit': {
@@ -1152,6 +1192,7 @@ declare module '@tanstack/react-router' {
 }
 
 interface AuthenticatedAdminRouteChildren {
+  AuthenticatedAdminAccessRoute: typeof AuthenticatedAdminAccessRoute
   AuthenticatedAdminAuditRoute: typeof AuthenticatedAdminAuditRoute
   AuthenticatedAdminOpportunitiesRoute: typeof AuthenticatedAdminOpportunitiesRoute
   AuthenticatedAdminSourcesRoute: typeof AuthenticatedAdminSourcesRoute
@@ -1159,6 +1200,7 @@ interface AuthenticatedAdminRouteChildren {
 }
 
 const AuthenticatedAdminRouteChildren: AuthenticatedAdminRouteChildren = {
+  AuthenticatedAdminAccessRoute: AuthenticatedAdminAccessRoute,
   AuthenticatedAdminAuditRoute: AuthenticatedAdminAuditRoute,
   AuthenticatedAdminOpportunitiesRoute: AuthenticatedAdminOpportunitiesRoute,
   AuthenticatedAdminSourcesRoute: AuthenticatedAdminSourcesRoute,
@@ -1283,6 +1325,7 @@ const rootRouteChildren: RootRouteChildren = {
   PricingRoute: PricingRoute,
   ResetPasswordRoute: ResetPasswordRoute,
   SignupRoute: SignupRoute,
+  AdminLoginRoute: AdminLoginRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)

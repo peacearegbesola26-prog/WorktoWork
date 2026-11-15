@@ -95,5 +95,19 @@ export const optimizeResume = createServerFn({ method: "POST" })
     const missing = missingInput(content, data.mode);
     if (missing) return { text: "", error: missing };
     const { runResumeOptimization } = await import("./optimization.server");
-    return runResumeOptimization(content, data.mode);
+    const reservation = await context.supabase.rpc("reserve_resume_ai", {
+      mode_value: data.mode,
+      input_length: JSON.stringify(content).length,
+    });
+    if (reservation.error || !reservation.data)
+      return {
+        text: "",
+        error: reservation.error?.message ?? "AI request could not be authorised.",
+      };
+    const result = await runResumeOptimization(content, data.mode);
+    await context.supabase.rpc("finish_resume_ai", {
+      request_id: reservation.data,
+      request_status: result.error ? "error" : "completed",
+    });
+    return result;
   });

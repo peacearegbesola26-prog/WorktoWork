@@ -41,6 +41,8 @@ use the editor.
 - Keep source connector contracts separate from pages and without live adapters until permitted integrations are configured.
 - Put real workspace pages under the authenticated route layout and enforce ownership in RLS and authenticated server functions, because navigation alone is not an access boundary.
 - Store roles separately from profiles with no client role writes; initial administrator assignment requires a trusted project-owner operation.
+- Staff permissions use database helpers and owner-only role commands with serialized last-owner safeguards; staff never inherit private document ownership.
+- Resume AI requests reserve a durable per-user daily slot before calling the unchanged gateway, enforcing administration availability and input limits without logging resume content.
 - Defer router and query invalidation outside auth event callbacks so session checks cannot deadlock the auth lock.
 - Keep account query options and navigation validation separate from React component exports for stable refresh behavior.
 - Preserve validated intended destinations in account links and verification callbacks so changing account forms does not lose the protected destination.

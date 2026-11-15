@@ -44,6 +44,57 @@ export type Database = {
         }
         Relationships: []
       }
+      ai_controls: {
+        Row: {
+          daily_limit: number
+          enabled: boolean
+          input_limit: number
+          scope: string
+          updated_at: string
+        }
+        Insert: {
+          daily_limit?: number
+          enabled?: boolean
+          input_limit?: number
+          scope?: string
+          updated_at?: string
+        }
+        Update: {
+          daily_limit?: number
+          enabled?: boolean
+          input_limit?: number
+          scope?: string
+          updated_at?: string
+        }
+        Relationships: []
+      }
+      ai_usage: {
+        Row: {
+          created_at: string
+          finished_at: string | null
+          id: string
+          mode: string
+          status: string
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          finished_at?: string | null
+          id?: string
+          mode: string
+          status?: string
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          finished_at?: string | null
+          id?: string
+          mode?: string
+          status?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
       alert_preferences: {
         Row: {
           countries: string[]
@@ -285,6 +336,33 @@ export type Database = {
           },
         ]
       }
+      security_audit: {
+        Row: {
+          action: string
+          actor_id: string | null
+          created_at: string
+          details: Json
+          id: string
+          target_id: string | null
+        }
+        Insert: {
+          action: string
+          actor_id?: string | null
+          created_at?: string
+          details?: Json
+          id?: string
+          target_id?: string | null
+        }
+        Update: {
+          action?: string
+          actor_id?: string | null
+          created_at?: string
+          details?: Json
+          id?: string
+          target_id?: string | null
+        }
+        Relationships: []
+      }
       sources: {
         Row: {
           created_at: string
@@ -384,6 +462,11 @@ export type Database = {
     }
     Functions: {
       admin_overview: { Args: never; Returns: Json }
+      finish_resume_ai: {
+        Args: { request_id: string; request_status: string }
+        Returns: undefined
+      }
+      has_permission: { Args: { p: string }; Returns: boolean }
       has_role: {
         Args: {
           _role: Database["public"]["Enums"]["app_role"]
@@ -395,9 +478,30 @@ export type Database = {
         Args: { o: Database["public"]["Tables"]["opportunities"]["Row"] }
         Returns: boolean
       }
+      reserve_resume_ai: {
+        Args: { input_length: number; mode_value: string }
+        Returns: string
+      }
+      set_staff_role: {
+        Args: {
+          grant_role: boolean
+          new_role: Database["public"]["Enums"]["app_role"]
+          target: string
+        }
+        Returns: undefined
+      }
+      staff_directory: {
+        Args: never
+        Returns: {
+          email: string
+          role: Database["public"]["Enums"]["app_role"]
+          user_id: string
+        }[]
+      }
+      verified_staff_target: { Args: { address: string }; Returns: string }
     }
     Enums: {
-      app_role: "admin" | "user"
+      app_role: "admin" | "user" | "owner" | "moderator"
       application_status:
         | "Saved"
         | "Applied"
@@ -531,7 +635,7 @@ export type CompositeTypes<
 export const Constants = {
   public: {
     Enums: {
-      app_role: ["admin", "user"],
+      app_role: ["admin", "user", "owner", "moderator"],
       application_status: [
         "Saved",
         "Applied",

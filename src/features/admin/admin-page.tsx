@@ -90,12 +90,17 @@ export function AdminPage({ view }: { view: "overview" | "opportunities" | "sour
             ["/admin/opportunities", "Opportunities"],
             ["/admin/sources", "Sources"],
             ["/admin/audit", "Audit trail"],
+            ["/admin/access", "Access and AI controls"],
           ] as const
-        ).map(([to, label]) => (
-          <Button asChild variant="outline" key={to}>
-            <Link to={to}>{label}</Link>
-          </Button>
-        ))}
+        ).map(
+          ([to, label]) =>
+            ((to !== "/admin/sources" && to !== "/admin/audit" && to !== "/admin/access") ||
+              data.roles.some((r) => r === "owner" || r === "admin")) && (
+              <Button asChild variant="outline" key={to}>
+                <Link to={to}>{label}</Link>
+              </Button>
+            ),
+        )}
       </nav>
       {view === "overview" && (
         <div className="stat-grid">
@@ -377,6 +382,17 @@ export function AdminPage({ view }: { view: "overview" | "opportunities" | "sour
           </div>
         </>
       )}
+      {view === "audit" &&
+        data.securityAudit.map((a) => (
+          <article className="opportunity-card mb-3" key={a.id}>
+            <h3>{a.action}</h3>
+            <p>{new Date(a.created_at).toLocaleString()}</p>
+            <p className="break-all">Actor: {a.actor_id ?? "Trusted owner setup"}</p>
+            <pre className="whitespace-pre-wrap break-all text-xs">
+              {JSON.stringify(a.details, null, 2)}
+            </pre>
+          </article>
+        ))}
       {view === "audit" &&
         (data.audit.length ? (
           <div className="grid gap-4">
