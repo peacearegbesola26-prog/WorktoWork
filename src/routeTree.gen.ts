@@ -10,33 +10,343 @@
 
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as ContactRouteImport } from './routes/contact'
+import { Route as DemoRouteImport } from './routes/demo'
+import { Route as EmailVerificationRouteImport } from './routes/email-verification'
+import { Route as ForgotPasswordRouteImport } from './routes/forgot-password'
+import { Route as HowItWorksRouteImport } from './routes/how-it-works'
+import { Route as LoginRouteImport } from './routes/login'
+import { Route as PricingRouteImport } from './routes/pricing'
+import { Route as SignupRouteImport } from './routes/signup'
+import { Route as DemoIndexRouteImport } from './routes/demo.index'
+import { Route as DemoAdminRouteImport } from './routes/demo.admin'
+import { Route as DemoAlertsRouteImport } from './routes/demo.alerts'
+import { Route as DemoCoverLetterRouteImport } from './routes/demo.cover-letter'
+import { Route as DemoDashboardRouteImport } from './routes/demo.dashboard'
+import { Route as DemoLinkedinOptimizerRouteImport } from './routes/demo.linkedin-optimizer'
+import { Route as DemoProfileRouteImport } from './routes/demo.profile'
+import { Route as DemoResumeBuilderRouteImport } from './routes/demo.resume-builder'
+import { Route as DemoResumeOptimizerRouteImport } from './routes/demo.resume-optimizer'
+import { Route as DemoResumeTailoringRouteImport } from './routes/demo.resume-tailoring'
+import { Route as DemoSavedRouteImport } from './routes/demo.saved'
+import { Route as DemoSettingsRouteImport } from './routes/demo.settings'
+import { Route as DemoSocialRouteImport } from './routes/demo.social'
+import { Route as DemoToolkitRouteImport } from './routes/demo.toolkit'
+import { Route as DemoTrackerRouteImport } from './routes/demo.tracker'
+import { Route as DemoWebRouteImport } from './routes/demo.web'
+import { Route as DemoOpportunitiesIdRouteImport } from './routes/demo.opportunities.$id'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
   getParentRoute: () => rootRouteImport,
 } as any)
+const ContactRoute = ContactRouteImport.update({
+  id: '/contact',
+  path: '/contact',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const DemoRoute = DemoRouteImport.update({
+  id: '/demo',
+  path: '/demo',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const EmailVerificationRoute = EmailVerificationRouteImport.update({
+  id: '/email-verification',
+  path: '/email-verification',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ForgotPasswordRoute = ForgotPasswordRouteImport.update({
+  id: '/forgot-password',
+  path: '/forgot-password',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const HowItWorksRoute = HowItWorksRouteImport.update({
+  id: '/how-it-works',
+  path: '/how-it-works',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const LoginRoute = LoginRouteImport.update({
+  id: '/login',
+  path: '/login',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const PricingRoute = PricingRouteImport.update({
+  id: '/pricing',
+  path: '/pricing',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const SignupRoute = SignupRouteImport.update({
+  id: '/signup',
+  path: '/signup',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const DemoIndexRoute = DemoIndexRouteImport.update({
+  id: '/',
+  path: '/',
+  getParentRoute: () => DemoRoute,
+} as any)
+const DemoAdminRoute = DemoAdminRouteImport.update({
+  id: '/admin',
+  path: '/admin',
+  getParentRoute: () => DemoRoute,
+} as any)
+const DemoAlertsRoute = DemoAlertsRouteImport.update({
+  id: '/alerts',
+  path: '/alerts',
+  getParentRoute: () => DemoRoute,
+} as any)
+const DemoCoverLetterRoute = DemoCoverLetterRouteImport.update({
+  id: '/cover-letter',
+  path: '/cover-letter',
+  getParentRoute: () => DemoRoute,
+} as any)
+const DemoDashboardRoute = DemoDashboardRouteImport.update({
+  id: '/dashboard',
+  path: '/dashboard',
+  getParentRoute: () => DemoRoute,
+} as any)
+const DemoLinkedinOptimizerRoute = DemoLinkedinOptimizerRouteImport.update({
+  id: '/linkedin-optimizer',
+  path: '/linkedin-optimizer',
+  getParentRoute: () => DemoRoute,
+} as any)
+const DemoProfileRoute = DemoProfileRouteImport.update({
+  id: '/profile',
+  path: '/profile',
+  getParentRoute: () => DemoRoute,
+} as any)
+const DemoResumeBuilderRoute = DemoResumeBuilderRouteImport.update({
+  id: '/resume-builder',
+  path: '/resume-builder',
+  getParentRoute: () => DemoRoute,
+} as any)
+const DemoResumeOptimizerRoute = DemoResumeOptimizerRouteImport.update({
+  id: '/resume-optimizer',
+  path: '/resume-optimizer',
+  getParentRoute: () => DemoRoute,
+} as any)
+const DemoResumeTailoringRoute = DemoResumeTailoringRouteImport.update({
+  id: '/resume-tailoring',
+  path: '/resume-tailoring',
+  getParentRoute: () => DemoRoute,
+} as any)
+const DemoSavedRoute = DemoSavedRouteImport.update({
+  id: '/saved',
+  path: '/saved',
+  getParentRoute: () => DemoRoute,
+} as any)
+const DemoSettingsRoute = DemoSettingsRouteImport.update({
+  id: '/settings',
+  path: '/settings',
+  getParentRoute: () => DemoRoute,
+} as any)
+const DemoSocialRoute = DemoSocialRouteImport.update({
+  id: '/social',
+  path: '/social',
+  getParentRoute: () => DemoRoute,
+} as any)
+const DemoToolkitRoute = DemoToolkitRouteImport.update({
+  id: '/toolkit',
+  path: '/toolkit',
+  getParentRoute: () => DemoRoute,
+} as any)
+const DemoTrackerRoute = DemoTrackerRouteImport.update({
+  id: '/tracker',
+  path: '/tracker',
+  getParentRoute: () => DemoRoute,
+} as any)
+const DemoWebRoute = DemoWebRouteImport.update({
+  id: '/web',
+  path: '/web',
+  getParentRoute: () => DemoRoute,
+} as any)
+const DemoOpportunitiesIdRoute = DemoOpportunitiesIdRouteImport.update({
+  id: '/opportunities/$id',
+  path: '/opportunities/$id',
+  getParentRoute: () => DemoRoute,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/contact': typeof ContactRoute
+  '/demo': typeof DemoRouteWithChildren
+  '/email-verification': typeof EmailVerificationRoute
+  '/forgot-password': typeof ForgotPasswordRoute
+  '/how-it-works': typeof HowItWorksRoute
+  '/login': typeof LoginRoute
+  '/pricing': typeof PricingRoute
+  '/signup': typeof SignupRoute
+  '/demo/admin': typeof DemoAdminRoute
+  '/demo/alerts': typeof DemoAlertsRoute
+  '/demo/cover-letter': typeof DemoCoverLetterRoute
+  '/demo/dashboard': typeof DemoDashboardRoute
+  '/demo/linkedin-optimizer': typeof DemoLinkedinOptimizerRoute
+  '/demo/profile': typeof DemoProfileRoute
+  '/demo/resume-builder': typeof DemoResumeBuilderRoute
+  '/demo/resume-optimizer': typeof DemoResumeOptimizerRoute
+  '/demo/resume-tailoring': typeof DemoResumeTailoringRoute
+  '/demo/saved': typeof DemoSavedRoute
+  '/demo/settings': typeof DemoSettingsRoute
+  '/demo/social': typeof DemoSocialRoute
+  '/demo/toolkit': typeof DemoToolkitRoute
+  '/demo/tracker': typeof DemoTrackerRoute
+  '/demo/web': typeof DemoWebRoute
+  '/demo/': typeof DemoIndexRoute
+  '/demo/opportunities/$id': typeof DemoOpportunitiesIdRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/contact': typeof ContactRoute
+  '/email-verification': typeof EmailVerificationRoute
+  '/forgot-password': typeof ForgotPasswordRoute
+  '/how-it-works': typeof HowItWorksRoute
+  '/login': typeof LoginRoute
+  '/pricing': typeof PricingRoute
+  '/signup': typeof SignupRoute
+  '/demo/admin': typeof DemoAdminRoute
+  '/demo/alerts': typeof DemoAlertsRoute
+  '/demo/cover-letter': typeof DemoCoverLetterRoute
+  '/demo/dashboard': typeof DemoDashboardRoute
+  '/demo/linkedin-optimizer': typeof DemoLinkedinOptimizerRoute
+  '/demo/profile': typeof DemoProfileRoute
+  '/demo/resume-builder': typeof DemoResumeBuilderRoute
+  '/demo/resume-optimizer': typeof DemoResumeOptimizerRoute
+  '/demo/resume-tailoring': typeof DemoResumeTailoringRoute
+  '/demo/saved': typeof DemoSavedRoute
+  '/demo/settings': typeof DemoSettingsRoute
+  '/demo/social': typeof DemoSocialRoute
+  '/demo/toolkit': typeof DemoToolkitRoute
+  '/demo/tracker': typeof DemoTrackerRoute
+  '/demo/web': typeof DemoWebRoute
+  '/demo': typeof DemoIndexRoute
+  '/demo/opportunities/$id': typeof DemoOpportunitiesIdRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
+  '/contact': typeof ContactRoute
+  '/demo': typeof DemoRouteWithChildren
+  '/email-verification': typeof EmailVerificationRoute
+  '/forgot-password': typeof ForgotPasswordRoute
+  '/how-it-works': typeof HowItWorksRoute
+  '/login': typeof LoginRoute
+  '/pricing': typeof PricingRoute
+  '/signup': typeof SignupRoute
+  '/demo/admin': typeof DemoAdminRoute
+  '/demo/alerts': typeof DemoAlertsRoute
+  '/demo/cover-letter': typeof DemoCoverLetterRoute
+  '/demo/dashboard': typeof DemoDashboardRoute
+  '/demo/linkedin-optimizer': typeof DemoLinkedinOptimizerRoute
+  '/demo/profile': typeof DemoProfileRoute
+  '/demo/resume-builder': typeof DemoResumeBuilderRoute
+  '/demo/resume-optimizer': typeof DemoResumeOptimizerRoute
+  '/demo/resume-tailoring': typeof DemoResumeTailoringRoute
+  '/demo/saved': typeof DemoSavedRoute
+  '/demo/settings': typeof DemoSettingsRoute
+  '/demo/social': typeof DemoSocialRoute
+  '/demo/toolkit': typeof DemoToolkitRoute
+  '/demo/tracker': typeof DemoTrackerRoute
+  '/demo/web': typeof DemoWebRoute
+  '/demo/': typeof DemoIndexRoute
+  '/demo/opportunities/$id': typeof DemoOpportunitiesIdRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/'
+  fullPaths:
+    | '/'
+    | '/contact'
+    | '/demo'
+    | '/email-verification'
+    | '/forgot-password'
+    | '/how-it-works'
+    | '/login'
+    | '/pricing'
+    | '/signup'
+    | '/demo/admin'
+    | '/demo/alerts'
+    | '/demo/cover-letter'
+    | '/demo/dashboard'
+    | '/demo/linkedin-optimizer'
+    | '/demo/profile'
+    | '/demo/resume-builder'
+    | '/demo/resume-optimizer'
+    | '/demo/resume-tailoring'
+    | '/demo/saved'
+    | '/demo/settings'
+    | '/demo/social'
+    | '/demo/toolkit'
+    | '/demo/tracker'
+    | '/demo/web'
+    | '/demo/'
+    | '/demo/opportunities/$id'
   fileRoutesByTo: FileRoutesByTo
-  to: '/'
-  id: '__root__' | '/'
+  to:
+    | '/'
+    | '/contact'
+    | '/email-verification'
+    | '/forgot-password'
+    | '/how-it-works'
+    | '/login'
+    | '/pricing'
+    | '/signup'
+    | '/demo/admin'
+    | '/demo/alerts'
+    | '/demo/cover-letter'
+    | '/demo/dashboard'
+    | '/demo/linkedin-optimizer'
+    | '/demo/profile'
+    | '/demo/resume-builder'
+    | '/demo/resume-optimizer'
+    | '/demo/resume-tailoring'
+    | '/demo/saved'
+    | '/demo/settings'
+    | '/demo/social'
+    | '/demo/toolkit'
+    | '/demo/tracker'
+    | '/demo/web'
+    | '/demo'
+    | '/demo/opportunities/$id'
+  id:
+    | '__root__'
+    | '/'
+    | '/contact'
+    | '/demo'
+    | '/email-verification'
+    | '/forgot-password'
+    | '/how-it-works'
+    | '/login'
+    | '/pricing'
+    | '/signup'
+    | '/demo/admin'
+    | '/demo/alerts'
+    | '/demo/cover-letter'
+    | '/demo/dashboard'
+    | '/demo/linkedin-optimizer'
+    | '/demo/profile'
+    | '/demo/resume-builder'
+    | '/demo/resume-optimizer'
+    | '/demo/resume-tailoring'
+    | '/demo/saved'
+    | '/demo/settings'
+    | '/demo/social'
+    | '/demo/toolkit'
+    | '/demo/tracker'
+    | '/demo/web'
+    | '/demo/'
+    | '/demo/opportunities/$id'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  ContactRoute: typeof ContactRoute
+  DemoRoute: typeof DemoRouteWithChildren
+  EmailVerificationRoute: typeof EmailVerificationRoute
+  ForgotPasswordRoute: typeof ForgotPasswordRoute
+  HowItWorksRoute: typeof HowItWorksRoute
+  LoginRoute: typeof LoginRoute
+  PricingRoute: typeof PricingRoute
+  SignupRoute: typeof SignupRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -48,11 +358,236 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/contact': {
+      id: '/contact'
+      path: '/contact'
+      fullPath: '/contact'
+      preLoaderRoute: typeof ContactRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/demo': {
+      id: '/demo'
+      path: '/demo'
+      fullPath: '/demo'
+      preLoaderRoute: typeof DemoRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/email-verification': {
+      id: '/email-verification'
+      path: '/email-verification'
+      fullPath: '/email-verification'
+      preLoaderRoute: typeof EmailVerificationRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/forgot-password': {
+      id: '/forgot-password'
+      path: '/forgot-password'
+      fullPath: '/forgot-password'
+      preLoaderRoute: typeof ForgotPasswordRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/how-it-works': {
+      id: '/how-it-works'
+      path: '/how-it-works'
+      fullPath: '/how-it-works'
+      preLoaderRoute: typeof HowItWorksRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/login': {
+      id: '/login'
+      path: '/login'
+      fullPath: '/login'
+      preLoaderRoute: typeof LoginRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/pricing': {
+      id: '/pricing'
+      path: '/pricing'
+      fullPath: '/pricing'
+      preLoaderRoute: typeof PricingRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/signup': {
+      id: '/signup'
+      path: '/signup'
+      fullPath: '/signup'
+      preLoaderRoute: typeof SignupRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/demo/': {
+      id: '/demo/'
+      path: '/'
+      fullPath: '/demo/'
+      preLoaderRoute: typeof DemoIndexRouteImport
+      parentRoute: typeof DemoRoute
+    }
+    '/demo/admin': {
+      id: '/demo/admin'
+      path: '/admin'
+      fullPath: '/demo/admin'
+      preLoaderRoute: typeof DemoAdminRouteImport
+      parentRoute: typeof DemoRoute
+    }
+    '/demo/alerts': {
+      id: '/demo/alerts'
+      path: '/alerts'
+      fullPath: '/demo/alerts'
+      preLoaderRoute: typeof DemoAlertsRouteImport
+      parentRoute: typeof DemoRoute
+    }
+    '/demo/cover-letter': {
+      id: '/demo/cover-letter'
+      path: '/cover-letter'
+      fullPath: '/demo/cover-letter'
+      preLoaderRoute: typeof DemoCoverLetterRouteImport
+      parentRoute: typeof DemoRoute
+    }
+    '/demo/dashboard': {
+      id: '/demo/dashboard'
+      path: '/dashboard'
+      fullPath: '/demo/dashboard'
+      preLoaderRoute: typeof DemoDashboardRouteImport
+      parentRoute: typeof DemoRoute
+    }
+    '/demo/linkedin-optimizer': {
+      id: '/demo/linkedin-optimizer'
+      path: '/linkedin-optimizer'
+      fullPath: '/demo/linkedin-optimizer'
+      preLoaderRoute: typeof DemoLinkedinOptimizerRouteImport
+      parentRoute: typeof DemoRoute
+    }
+    '/demo/profile': {
+      id: '/demo/profile'
+      path: '/profile'
+      fullPath: '/demo/profile'
+      preLoaderRoute: typeof DemoProfileRouteImport
+      parentRoute: typeof DemoRoute
+    }
+    '/demo/resume-builder': {
+      id: '/demo/resume-builder'
+      path: '/resume-builder'
+      fullPath: '/demo/resume-builder'
+      preLoaderRoute: typeof DemoResumeBuilderRouteImport
+      parentRoute: typeof DemoRoute
+    }
+    '/demo/resume-optimizer': {
+      id: '/demo/resume-optimizer'
+      path: '/resume-optimizer'
+      fullPath: '/demo/resume-optimizer'
+      preLoaderRoute: typeof DemoResumeOptimizerRouteImport
+      parentRoute: typeof DemoRoute
+    }
+    '/demo/resume-tailoring': {
+      id: '/demo/resume-tailoring'
+      path: '/resume-tailoring'
+      fullPath: '/demo/resume-tailoring'
+      preLoaderRoute: typeof DemoResumeTailoringRouteImport
+      parentRoute: typeof DemoRoute
+    }
+    '/demo/saved': {
+      id: '/demo/saved'
+      path: '/saved'
+      fullPath: '/demo/saved'
+      preLoaderRoute: typeof DemoSavedRouteImport
+      parentRoute: typeof DemoRoute
+    }
+    '/demo/settings': {
+      id: '/demo/settings'
+      path: '/settings'
+      fullPath: '/demo/settings'
+      preLoaderRoute: typeof DemoSettingsRouteImport
+      parentRoute: typeof DemoRoute
+    }
+    '/demo/social': {
+      id: '/demo/social'
+      path: '/social'
+      fullPath: '/demo/social'
+      preLoaderRoute: typeof DemoSocialRouteImport
+      parentRoute: typeof DemoRoute
+    }
+    '/demo/toolkit': {
+      id: '/demo/toolkit'
+      path: '/toolkit'
+      fullPath: '/demo/toolkit'
+      preLoaderRoute: typeof DemoToolkitRouteImport
+      parentRoute: typeof DemoRoute
+    }
+    '/demo/tracker': {
+      id: '/demo/tracker'
+      path: '/tracker'
+      fullPath: '/demo/tracker'
+      preLoaderRoute: typeof DemoTrackerRouteImport
+      parentRoute: typeof DemoRoute
+    }
+    '/demo/web': {
+      id: '/demo/web'
+      path: '/web'
+      fullPath: '/demo/web'
+      preLoaderRoute: typeof DemoWebRouteImport
+      parentRoute: typeof DemoRoute
+    }
+    '/demo/opportunities/$id': {
+      id: '/demo/opportunities/$id'
+      path: '/opportunities/$id'
+      fullPath: '/demo/opportunities/$id'
+      preLoaderRoute: typeof DemoOpportunitiesIdRouteImport
+      parentRoute: typeof DemoRoute
+    }
   }
 }
 
+interface DemoRouteChildren {
+  DemoAdminRoute: typeof DemoAdminRoute
+  DemoAlertsRoute: typeof DemoAlertsRoute
+  DemoCoverLetterRoute: typeof DemoCoverLetterRoute
+  DemoDashboardRoute: typeof DemoDashboardRoute
+  DemoLinkedinOptimizerRoute: typeof DemoLinkedinOptimizerRoute
+  DemoProfileRoute: typeof DemoProfileRoute
+  DemoResumeBuilderRoute: typeof DemoResumeBuilderRoute
+  DemoResumeOptimizerRoute: typeof DemoResumeOptimizerRoute
+  DemoResumeTailoringRoute: typeof DemoResumeTailoringRoute
+  DemoSavedRoute: typeof DemoSavedRoute
+  DemoSettingsRoute: typeof DemoSettingsRoute
+  DemoSocialRoute: typeof DemoSocialRoute
+  DemoToolkitRoute: typeof DemoToolkitRoute
+  DemoTrackerRoute: typeof DemoTrackerRoute
+  DemoWebRoute: typeof DemoWebRoute
+  DemoIndexRoute: typeof DemoIndexRoute
+  DemoOpportunitiesIdRoute: typeof DemoOpportunitiesIdRoute
+}
+
+const DemoRouteChildren: DemoRouteChildren = {
+  DemoAdminRoute: DemoAdminRoute,
+  DemoAlertsRoute: DemoAlertsRoute,
+  DemoCoverLetterRoute: DemoCoverLetterRoute,
+  DemoDashboardRoute: DemoDashboardRoute,
+  DemoLinkedinOptimizerRoute: DemoLinkedinOptimizerRoute,
+  DemoProfileRoute: DemoProfileRoute,
+  DemoResumeBuilderRoute: DemoResumeBuilderRoute,
+  DemoResumeOptimizerRoute: DemoResumeOptimizerRoute,
+  DemoResumeTailoringRoute: DemoResumeTailoringRoute,
+  DemoSavedRoute: DemoSavedRoute,
+  DemoSettingsRoute: DemoSettingsRoute,
+  DemoSocialRoute: DemoSocialRoute,
+  DemoToolkitRoute: DemoToolkitRoute,
+  DemoTrackerRoute: DemoTrackerRoute,
+  DemoWebRoute: DemoWebRoute,
+  DemoIndexRoute: DemoIndexRoute,
+  DemoOpportunitiesIdRoute: DemoOpportunitiesIdRoute,
+}
+
+const DemoRouteWithChildren = DemoRoute._addFileChildren(DemoRouteChildren)
+
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  ContactRoute: ContactRoute,
+  DemoRoute: DemoRouteWithChildren,
+  EmailVerificationRoute: EmailVerificationRoute,
+  ForgotPasswordRoute: ForgotPasswordRoute,
+  HowItWorksRoute: HowItWorksRoute,
+  LoginRoute: LoginRoute,
+  PricingRoute: PricingRoute,
+  SignupRoute: SignupRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)

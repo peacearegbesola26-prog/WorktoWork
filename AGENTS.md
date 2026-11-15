@@ -1,4 +1,5 @@
 <!-- LOVABLE:BEGIN -->
+
 > [!IMPORTANT]
 > This project is connected to [Lovable](https://lovable.dev). Avoid rewriting
 > published git history — force pushing, or rebasing/amending/squashing commits
@@ -27,4 +28,13 @@ use the editor.
   `LOVABLE_API_KEY`. When Lovable does not provide one, users can bring their
   own key and store it in Secrets.
 - **Secrets.** Lovable manages them. Do not put secret values in the repo.
+
 <!-- LOVABLE:END -->
+
+## Application architecture
+
+- Keep Stage 1 entirely frontend-only; service contracts have no live adapters so no real credentials or account actions run.
+- Use one typed fictional opportunity dataset and shared demo context across routes so counts, saves and tracking stay consistent.
+- Persist only validated sample IDs and non-sensitive work-location preferences; alerts, tracking and all personal form content remain in memory for privacy.
+- Put named content on individual TanStack routes and wrap demo children in the shared app shell to preserve typed navigation.
+- Express the visual system in semantic global CSS tokens and use the shared Button for actions to keep styling and focus behavior consistent.
