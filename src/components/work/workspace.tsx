@@ -32,7 +32,8 @@ import {
   type Filters,
   type AlertRule,
 } from "@/features/demo/model";
-import { useDemo } from "@/features/demo/context";
+import { useDemo } from "@/features/demo/use-demo";
+import { useDemoSearch } from "@/features/demo/use-demo-search";
 import {
   PageHeading,
   DemoNotice,
@@ -147,7 +148,7 @@ export function Discovery({ web = false }: { web?: boolean }) {
   const [filters, setFilters] = useState<Filters>(emptyFilters);
   const [draft, setDraft] = useState("");
   const [page, setPage] = useState(1);
-  const [loading, setLoading] = useState(false);
+  const { loading, run, cancel } = useDemoSearch();
   const rows = opportunities.filter((o) => (web ? o.source === "Web" : o.source !== "Web"));
   const results = filterOpportunities(rows, filters);
   const pages = Math.max(1, Math.ceil(results.length / 4));
@@ -158,12 +159,10 @@ export function Discovery({ web = false }: { web?: boolean }) {
   }
   function search(e: React.FormEvent) {
     e.preventDefault();
-    setLoading(true);
     setPage(1);
-    window.setTimeout(() => {
+    run(() => {
       setFilters((p) => ({ ...p, query: draft }));
-      setLoading(false);
-    }, 250);
+    });
   }
   return (
     <div className="fade-in">
@@ -191,14 +190,14 @@ export function Discovery({ web = false }: { web?: boolean }) {
         </div>
       )}
       <form className="search-form" onSubmit={search}>
-        <Field
-          label={
-            web ? "What opportunity are you looking for?" : "Search by skill, service or keyword"
-          }
-        >
+        <div className="field">
+          <label htmlFor="discovery-query">
+            {web ? "What opportunity are you looking for?" : "Search by skill, service or keyword"}
+          </label>
           <div className="search-input-wrap">
             <Search />
             <input
+              id="discovery-query"
               value={draft}
               onChange={(e) => setDraft(e.target.value)}
               placeholder={
@@ -212,13 +211,14 @@ export function Discovery({ web = false }: { web?: boolean }) {
               {loading ? "Searching…" : "Search " + (web ? "web" : "opportunities")}
             </Button>
           </div>
-        </Field>
+        </div>
         {web && (
           <Button
             type="button"
             variant="link"
             className="mt-2 h-auto p-0 text-xs"
             onClick={() => {
+              cancel();
               setDraft("Find businesses in the UK looking for Shopify developers.");
               setFilters((p) => ({
                 ...p,
@@ -283,6 +283,7 @@ export function Discovery({ web = false }: { web?: boolean }) {
             type="button"
             variant="ghost"
             onClick={() => {
+              cancel();
               setFilters(emptyFilters);
               setDraft("");
               setPage(1);
@@ -602,7 +603,10 @@ export function Alerts() {
   }
   function submit(e: React.FormEvent) {
     e.preventDefault();
-    if (!form.name.trim()) return;
+    if (!form.name.trim()) {
+      toast.error("Enter a name for your demo alert.");
+      return;
+    }
     const rule = { ...form, name: form.name.trim(), id: editing ?? `alert-${Date.now()}` };
     demo.setAlerts(
       editing ? demo.alerts.map((a) => (a.id === editing ? rule : a)) : [...demo.alerts, rule],
@@ -723,6 +727,11 @@ export function Alerts() {
                 aria-label={`Delete ${a.name}`}
                 onClick={() => {
                   demo.setAlerts(demo.alerts.filter((x) => x.id !== a.id));
+                  if (editing === a.id) {
+                    setEditing(null);
+                    setShow(false);
+                    setForm(blankAlert);
+                  }
                   toast.success("Demo alert deleted.");
                 }}
               >
@@ -880,7 +889,7 @@ export function ResumeBuilder() {
             </Field>
           ))}
           <AIRequired />
-          <Button disabled>
+          <Button disabled className="resume-ai-action">
             <Sparkles /> Enhance with AI — connection required
           </Button>
           <Button
@@ -1158,16 +1167,34 @@ export function Admin() {
         {tabs.map((t) => (
           <Button
             key={t}
+            id={`admin-tab-${tabs.indexOf(t)}`}
             role="tab"
             aria-selected={tab === t}
+            aria-controls="admin-panel"
+            tabIndex={tab === t ? 0 : -1}
             variant={tab === t ? "default" : "outline"}
             onClick={() => setTab(t)}
+            onKeyDown={(e) => {
+              if (!["ArrowLeft", "ArrowRight", "Home", "End"].includes(e.key)) return;
+              e.preventDefault();
+              const index = tabs.indexOf(t);
+              const nextIndex =
+                e.key === "Home"
+                  ? 0
+                  : e.key === "End"
+                    ? tabs.length - 1
+                    : (index + (e.key === "ArrowRight" ? 1 : -1) + tabs.length) % tabs.length;
+              const next = tabs[nextIndex];
+              if (!next) return;
+              setTab(next);
+              document.getElementById(`admin-tab-${nextIndex}`)?.focus();
+            }}
           >
             {t}
           </Button>
         ))}
       </div>
-      <div role="tabpanel">
+      <div id="admin-panel" role="tabpanel" aria-labelledby={`admin-tab-${tabs.indexOf(tab)}`}>
         <div className="section-heading">
           <h2>{tab}</h2>
           <DemoBadge>Fictional demonstration</DemoBadge>

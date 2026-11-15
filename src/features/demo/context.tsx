@@ -1,27 +1,8 @@
-import { createContext, useContext, useEffect, useState, type ReactNode } from "react";
-import {
-  initialAlerts,
-  initialSaved,
-  initialTracker,
-  validSavedIds,
-  type AlertRule,
-  type Status,
-} from "./model";
+import { useEffect, useState, type ReactNode } from "react";
+import { initialAlerts, initialSaved, initialTracker, opportunities } from "./model";
 import { toast } from "sonner";
-interface DemoState {
-  saved: string[];
-  toggleSaved: (id: string) => void;
-  tracker: Record<string, Status>;
-  track: (id: string) => void;
-  setStatus: (id: string, status: Status) => void;
-  removeTracked: (id: string) => void;
-  alerts: AlertRule[];
-  setAlerts: (value: AlertRule[]) => void;
-  preference: string;
-  setPreference: (value: string) => void;
-  reset: () => void;
-}
-const DemoContext = createContext<DemoState | null>(null);
+import { parseDemoPreferences } from "./preferences";
+import { DemoContext } from "./use-demo";
 export function DemoProvider({ children }: { children: ReactNode }) {
   const [saved, setSaved] = useState(initialSaved);
   const [tracker, setTracker] = useState(initialTracker);
@@ -30,13 +11,9 @@ export function DemoProvider({ children }: { children: ReactNode }) {
   const [ready, setReady] = useState(false);
   useEffect(() => {
     try {
-      const raw = localStorage.getItem("wtw-demo-v1");
-      if (raw) {
-        const data = JSON.parse(raw);
-        setSaved(validSavedIds(data.saved));
-        if (["Remote", "Hybrid", "On-site", "All"].includes(data.preference))
-          setPreference(data.preference);
-      }
+      const data = parseDemoPreferences(localStorage.getItem("wtw-demo-v1"));
+      setSaved(data.saved);
+      setPreference(data.preference);
     } catch {
       toast.error("Demo preferences could not be loaded. Default records are shown.");
     }
@@ -52,12 +29,14 @@ export function DemoProvider({ children }: { children: ReactNode }) {
     }
   }, [saved, preference, ready]);
   function toggleSaved(id: string) {
+    if (!opportunities.some((o) => o.id === id)) return;
     setSaved((prev) => (prev.includes(id) ? prev.filter((x) => x !== id) : [...prev, id]));
     toast.success(
       saved.includes(id) ? "Sample opportunity removed from saved." : "Sample opportunity saved.",
     );
   }
   function track(id: string) {
+    if (!opportunities.some((o) => o.id === id)) return;
     setTracker((prev) => ({ ...prev, [id]: prev[id] ?? "Saved" }));
     toast.success("Sample opportunity added to your tracker.");
   }
@@ -75,7 +54,7 @@ export function DemoProvider({ children }: { children: ReactNode }) {
         toggleSaved,
         tracker,
         track,
-        setStatus: (id, status) => setTracker((p) => ({ ...p, [id]: status })),
+        setStatus: (id, status) => setTracker((p) => (id in p ? { ...p, [id]: status } : p)),
         removeTracked: (id) =>
           setTracker((p) => Object.fromEntries(Object.entries(p).filter(([key]) => key !== id))),
         alerts,
@@ -88,9 +67,4 @@ export function DemoProvider({ children }: { children: ReactNode }) {
       {children}
     </DemoContext.Provider>
   );
-}
-export function useDemo() {
-  const context = useContext(DemoContext);
-  if (!context) throw new Error("Demo provider is required");
-  return context;
 }

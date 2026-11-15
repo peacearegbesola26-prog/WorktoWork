@@ -28,7 +28,7 @@ import {
   SheetDescription,
   SheetTrigger,
 } from "@/components/ui/sheet";
-import { useDemo } from "@/features/demo/context";
+import { useDemo } from "@/features/demo/use-demo";
 import { type Opportunity } from "@/features/demo/model";
 export function Brand() {
   return (
@@ -295,7 +295,12 @@ export function AppShell({ children }: { children: ReactNode }) {
           </span>
           <div className="flex items-center gap-4">
             <DemoBadge />
-            <Link to="/demo/alerts" title="Demo alerts" className="header-icon">
+            <Link
+              to="/demo/alerts"
+              title="Demo alerts"
+              aria-label="Demo alerts"
+              className="header-icon"
+            >
               <Bell size={19} />
             </Link>
             <Link to="/demo/profile" className="avatar" aria-label="Demo profile">
@@ -425,11 +430,13 @@ export function Field({
   hint?: string;
 }) {
   return (
-    <label className="field">
-      <span>{label}</span>
-      {children}
+    <div className="field">
+      <label className="field">
+        <span>{label}</span>
+        {children}
+      </label>
       {hint && <small>{hint}</small>}
-    </label>
+    </div>
   );
 }
 export function SelectField({

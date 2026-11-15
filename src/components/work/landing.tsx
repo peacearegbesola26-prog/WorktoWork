@@ -17,7 +17,7 @@ import workspace from "@/assets/workspace.jpg";
 import { PublicShell, Brand, SourceIcon, OpportunityCard, DemoBadge, ActionLink } from "./shared";
 import { Button } from "@/components/ui/button";
 import { opportunities, demoStats } from "@/features/demo/model";
-import { useDemo } from "@/features/demo/context";
+import { useDemo } from "@/features/demo/use-demo";
 export function DashboardPreview() {
   const demo = useDemo();
   const stats = demoStats(demo.saved, demo.tracker, demo.alerts);

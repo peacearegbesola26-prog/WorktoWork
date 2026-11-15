@@ -38,3 +38,5 @@ use the editor.
 - Persist only validated sample IDs and non-sensitive work-location preferences; alerts, tracking and all personal form content remain in memory for privacy.
 - Put named content on individual TanStack routes and wrap demo children in the shared app shell to preserve typed navigation.
 - Express the visual system in semantic global CSS tokens and use the shared Button for actions to keep styling and focus behavior consistent.
+- Cancel pending demo searches on reset, replacement or unmount so delayed callbacks cannot restore stale results.
+- Keep the demo context and hook separate from the provider component so frontend refreshes preserve a consistent context identity.
