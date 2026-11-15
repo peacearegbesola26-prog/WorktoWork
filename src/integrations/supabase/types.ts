@@ -509,6 +509,83 @@ export type Database = {
         }
         Relationships: []
       }
+      website_content: {
+        Row: {
+          draft: Json
+          key: string
+          published: Json
+          revision: number
+          updated_at: string
+        }
+        Insert: {
+          draft?: Json
+          key: string
+          published?: Json
+          revision?: number
+          updated_at?: string
+        }
+        Update: {
+          draft?: Json
+          key?: string
+          published?: Json
+          revision?: number
+          updated_at?: string
+        }
+        Relationships: []
+      }
+      website_settings: {
+        Row: {
+          id: boolean
+          updated_at: string
+          value: Json
+        }
+        Insert: {
+          id?: boolean
+          updated_at?: string
+          value?: Json
+        }
+        Update: {
+          id?: boolean
+          updated_at?: string
+          value?: Json
+        }
+        Relationships: []
+      }
+      website_versions: {
+        Row: {
+          actor_id: string | null
+          content: Json
+          created_at: string
+          id: string
+          key: string
+          revision: number
+        }
+        Insert: {
+          actor_id?: string | null
+          content: Json
+          created_at?: string
+          id?: string
+          key: string
+          revision: number
+        }
+        Update: {
+          actor_id?: string | null
+          content?: Json
+          created_at?: string
+          id?: string
+          key?: string
+          revision?: number
+        }
+        Relationships: [
+          {
+            foreignKeyName: "website_versions_key_fkey"
+            columns: ["key"]
+            isOneToOne: false
+            referencedRelation: "website_content"
+            referencedColumns: ["key"]
+          },
+        ]
+      }
     }
     Views: {
       [_ in never]: never
@@ -541,6 +618,7 @@ export type Database = {
         Args: { o: Database["public"]["Tables"]["opportunities"]["Row"] }
         Returns: boolean
       }
+      published_website: { Args: never; Returns: Json }
       reserve_resume_ai: {
         Args: { input_length: number; mode_value: string }
         Returns: string
@@ -566,6 +644,21 @@ export type Database = {
         }[]
       }
       verified_staff_target: { Args: { address: string }; Returns: string }
+      website_available: { Args: never; Returns: boolean }
+      website_content_command: {
+        Args: {
+          action_value: string
+          content_value: Json
+          expected_revision: number
+          key_value: string
+          version_id?: string
+        }
+        Returns: number
+      }
+      website_settings_command: {
+        Args: { settings_value: Json }
+        Returns: undefined
+      }
     }
     Enums: {
       app_role: "admin" | "user" | "owner" | "moderator"

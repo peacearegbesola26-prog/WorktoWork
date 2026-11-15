@@ -2,6 +2,13 @@
 
 ## Administration substages
 
+### Current request: C — website content and site settings
+- [ ] Import current public wording; add draft, staff preview, publication and version restoration
+- [ ] Add owner brand images, supported colours, support email and announcement settings
+- [ ] Enforce registration availability in the account-creation backend; preserve account recovery and staff during maintenance
+- [ ] Verify permissions, persistence, public visibility, restoration and desktop/mobile presentation
+- [ ] Report actual checks and D–E blockers without publishing the application
+
 ### Separate permission-controlled staff area
 - [x] Separate staff login/layout/navigation and remove ordinary-menu admin links
 - [x] Enforce generic access denial and current per-operation staff permissions

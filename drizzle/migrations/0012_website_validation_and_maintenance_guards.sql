@@ -1,0 +1,12 @@
+CREATE OR REPLACE FUNCTION public.website_available() RETURNS boolean LANGUAGE sql STABLE SECURITY DEFINER SET search_path=public AS $$ SELECT NOT EXISTS(SELECT 1 FROM public.website_settings WHERE id=true AND value->>'maintenance'='true') OR public.has_permission('admin.access') $$;
+REVOKE ALL ON FUNCTION public.website_available() FROM PUBLIC; GRANT EXECUTE ON FUNCTION public.website_available() TO authenticated;
+DO $$ DECLARE t text; BEGIN FOREACH t IN ARRAY ARRAY['resumes','saved_opportunities','tracked_applications','alert_preferences','opportunities','sources','ai_usage'] LOOP EXECUTE format('CREATE POLICY maintenance_required ON public.%I AS RESTRICTIVE FOR ALL TO authenticated USING(public.website_available()) WITH CHECK(public.website_available())',t); END LOOP; END $$;
+CREATE OR REPLACE FUNCTION public.validate_website_content() RETURNS trigger LANGUAGE plpgsql SET search_path=public AS $$ DECLARE c jsonb; link jsonb; v text; BEGIN FOREACH c IN ARRAY ARRAY[NEW.published,NEW.draft] LOOP
+IF jsonb_typeof(c)<>'object' OR jsonb_typeof(c->'text')<>'object' OR jsonb_typeof(c->'faqs')<>'array' OR length(c->>'title') NOT BETWEEN 1 AND 150 OR length(c->>'description') NOT BETWEEN 1 AND 500 THEN RAISE EXCEPTION 'Invalid website content'; END IF;
+IF EXISTS(SELECT 1 FROM jsonb_object_keys(c) k WHERE k NOT IN ('title','description','text','faqs','links','primaryCta','secondaryCta')) THEN RAISE EXCEPTION 'Unsupported content field'; END IF;
+IF jsonb_array_length(c->'faqs')>100 OR EXISTS(SELECT 1 FROM jsonb_each(c->'text') t WHERE jsonb_typeof(t.value)<>'string' OR length(t.value#>>'{}')>20000) THEN RAISE EXCEPTION 'Content too large'; END IF;
+FOR v IN SELECT c->>'primaryCta' UNION ALL SELECT c->>'secondaryCta' LOOP IF v IS NOT NULL AND v<>'' AND v !~ '^/[^/[:space:]]*$' AND v !~ '^https://[^@[:space:]]+$' THEN RAISE EXCEPTION 'Invalid action URL'; END IF; END LOOP;
+FOR link IN SELECT value FROM jsonb_array_elements(COALESCE(c->'links','[]'::jsonb)) LOOP IF length(link->>'label') NOT BETWEEN 1 AND 100 OR ((link->>'url')<>'' AND (link->>'url') !~ '^/[^/[:space:]]*$' AND (link->>'url') !~ '^https://[^@[:space:]]+$') THEN RAISE EXCEPTION 'Invalid footer link'; END IF; END LOOP;
+END LOOP; RETURN NEW; END $$;
+CREATE TRIGGER validate_website_content BEFORE INSERT OR UPDATE ON public.website_content FOR EACH ROW EXECUTE FUNCTION public.validate_website_content();
+CREATE POLICY brand_owner_read ON storage.objects FOR SELECT TO authenticated USING(bucket_id='website-brand' AND public.has_permission('site.manage'));

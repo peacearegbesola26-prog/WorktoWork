@@ -6,7 +6,10 @@ export type StaffPermission =
   | "ai.manage"
   | "users.manage"
   | "roles.manage";
-export function permissionForAdminPath(path: string): StaffPermission {
+export type WebsitePermission = "content.manage" | "site.manage";
+export function permissionForAdminPath(path: string): StaffPermission | WebsitePermission {
+  if (path.startsWith("/admin/content")) return "content.manage";
+  if (path.startsWith("/admin/site-settings")) return "site.manage";
   if (path.startsWith("/admin/opportunities")) return "opportunities.manage";
   if (path.startsWith("/admin/sources")) return "sources.manage";
   if (path.startsWith("/admin/audit")) return "audit.read";

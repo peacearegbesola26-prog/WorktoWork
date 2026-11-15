@@ -23,6 +23,8 @@ import {
 import { SignOutButton } from "@/features/account/shell";
 import { getStaffPermissions } from "./admin.functions";
 const items = [
+  { to: "/admin/content", label: "Website content", icon: Globe2, permission: "content.manage" },
+  { to: "/admin/site-settings", label: "Site settings", icon: Settings, permission: "site.manage" },
   { to: "/admin", label: "Overview", icon: LayoutDashboard, permission: "admin.access" },
   {
     to: "/admin/opportunities",

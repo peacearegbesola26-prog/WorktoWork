@@ -1,3 +1,4 @@
+import { brandImageUrl, useWebsite, WebsiteText } from "@/features/website/context";
 import { Link } from "@tanstack/react-router";
 import { ArrowUpRight, ArrowRight, Search, Globe2, Sparkles, Menu } from "lucide-react";
 import { useState, type ReactNode } from "react";
@@ -12,13 +13,38 @@ import {
 import { useAccountAuth } from "@/features/account/auth";
 import { SignOutButton } from "@/features/account/shell";
 export function Brand() {
+  const { settings } = useWebsite();
+  if (settings.logo)
+    return (
+      <Link to="/" className="brand" aria-label={`${settings.displayName} home`}>
+        <img
+          src={brandImageUrl(settings.logo)}
+          alt={settings.displayName}
+          className="h-9 max-w-40 object-contain"
+        />
+        <span>{settings.displayName}</span>
+      </Link>
+    );
+  if (settings.displayName !== "Work to Work")
+    return (
+      <Link to="/" className="brand">
+        {settings.displayName}
+      </Link>
+    );
   return (
     <Link to="/" className="brand" aria-label="Work to Work home">
       <span className="brand-mark">
         <ArrowUpRight size={23} />
       </span>
       <span>
-        work<span className="text-primary">to</span>work<span className="brand-dot">.</span>
+        <WebsiteText page="footer" id="1" fallback="work" />
+        <span className="text-primary">
+          <WebsiteText page="footer" id="2" fallback="to" />
+        </span>
+        <WebsiteText page="footer" id="3" fallback="work" />
+        <span className="brand-dot">
+          <WebsiteText page="footer" id="4" fallback="." />
+        </span>
       </span>
     </Link>
   );
@@ -99,22 +125,26 @@ export function PublicHeader() {
         <Brand />
         <nav className="public-nav" aria-label="Website navigation">
           <Link to="/how-it-works" activeProps={{ className: "active" }}>
-            How it works
+            <WebsiteText page="footer" id="5" fallback="How it works" />
           </Link>
           <Link to="/pricing" activeProps={{ className: "active" }}>
-            Pricing
+            <WebsiteText page="footer" id="6" fallback="Pricing" />
           </Link>
           <Link to="/contact" activeProps={{ className: "active" }}>
-            Contact
+            <WebsiteText page="footer" id="7" fallback="Contact" />
           </Link>
         </nav>
         <div className="header-actions">
           {loading ? (
-            <span role="status">Checking session…</span>
+            <span role="status">
+              <WebsiteText page="footer" id="8" fallback="Checking session…" />
+            </span>
           ) : user ? (
             <>
               <Button asChild>
-                <Link to="/app/dashboard">My workspace</Link>
+                <Link to="/app/dashboard">
+                  <WebsiteText page="footer" id="9" fallback="My workspace" />
+                </Link>
               </Button>
               <SignOutButton />
             </>
@@ -122,12 +152,13 @@ export function PublicHeader() {
             <>
               <Button variant="ghost" asChild>
                 <Link to="/login" search={{ next: "/app/dashboard" }}>
-                  Log in
+                  <WebsiteText page="footer" id="10" fallback="Log in" />
                 </Link>
               </Button>
               <Button asChild>
                 <Link to="/signup" search={{ next: "/app/dashboard" }}>
-                  Get started <ArrowUpRight />
+                  <WebsiteText page="footer" id="11" fallback="Get started" />
+                  <ArrowUpRight />
                 </Link>
               </Button>
             </>
@@ -141,13 +172,17 @@ export function PublicHeader() {
               </Button>
             </SheetTrigger>
             <SheetContent>
-              <SheetTitle>Work to Work</SheetTitle>
-              <SheetDescription>Find your next chapter</SheetDescription>
+              <SheetTitle>
+                <WebsiteText page="footer" id="12" fallback="Work to Work" />
+              </SheetTitle>
+              <SheetDescription>
+                <WebsiteText page="footer" id="13" fallback="Find your next chapter" />
+              </SheetDescription>
               <nav className="drawer-nav">
                 {user && (
                   <>
                     <Link to="/app/dashboard" onClick={() => setOpen(false)}>
-                      My workspace
+                      <WebsiteText page="footer" id="14" fallback="My workspace" />
                     </Link>
                     <SignOutButton />
                   </>
@@ -165,14 +200,14 @@ export function PublicHeader() {
                       search={{ next: "/app/dashboard" }}
                       onClick={() => setOpen(false)}
                     >
-                      Log in
+                      <WebsiteText page="footer" id="15" fallback="Log in" />
                     </Link>
                     <Link
                       to="/signup"
                       search={{ next: "/app/dashboard" }}
                       onClick={() => setOpen(false)}
                     >
-                      Get started
+                      <WebsiteText page="footer" id="16" fallback="Get started" />
                     </Link>
                   </>
                 )}
@@ -185,23 +220,55 @@ export function PublicHeader() {
   );
 }
 export function PublicFooter() {
+  const { pages } = useWebsite();
   return (
     <footer className="public-footer">
       <div className="site-container footer-top">
         <div>
           <Brand />
-          <p>More possibilities. A stronger next chapter.</p>
+          <p>
+            <WebsiteText
+              page="footer"
+              id="17"
+              fallback="More possibilities. A stronger next chapter."
+            />
+          </p>
         </div>
         <nav aria-label="Footer navigation">
-          <Link to="/how-it-works">How it works</Link>
-          <Link to="/pricing">Pricing</Link>
-          <Link to="/contact">Contact</Link>
-          <Link to="/app/dashboard">My workspace</Link>
+          <Link to="/about">About</Link>
+          <Link to="/faqs">FAQs</Link>
+          <Link to="/privacy">Privacy</Link>
+          <Link to="/terms">Terms</Link>
+          {pages.footer?.links.map((l, i) => (
+            <a key={i} href={l.url} rel="noopener noreferrer">
+              {l.label}
+            </a>
+          ))}
+          <Link to="/how-it-works">
+            <WebsiteText page="footer" id="18" fallback="How it works" />
+          </Link>
+          <Link to="/pricing">
+            <WebsiteText page="footer" id="19" fallback="Pricing" />
+          </Link>
+          <Link to="/contact">
+            <WebsiteText page="footer" id="20" fallback="Contact" />
+          </Link>
+          <Link to="/app/dashboard">
+            <WebsiteText page="footer" id="21" fallback="My workspace" />
+          </Link>
         </nav>
       </div>
       <div className="site-container footer-bottom">
-        <span>© 2026 Work to Work</span>
-        <span>Accounts available · Live discovery coming later</span>
+        <span>
+          <WebsiteText page="footer" id="22" fallback="© 2026 Work to Work" />
+        </span>
+        <span>
+          <WebsiteText
+            page="footer"
+            id="23"
+            fallback="Accounts available · Live discovery coming later"
+          />
+        </span>
       </div>
     </footer>
   );
@@ -262,8 +329,16 @@ export function AIRequired() {
     <div className="integration-state">
       <Sparkles size={22} />
       <div>
-        <strong>AI connection required</strong>
-        <p>AI processing is not connected. No content is sent or processed.</p>
+        <strong>
+          <WebsiteText page="footer" id="24" fallback="AI connection required" />
+        </strong>
+        <p>
+          <WebsiteText
+            page="footer"
+            id="25"
+            fallback="AI processing is not connected. No content is sent or processed."
+          />
+        </p>
       </div>
     </div>
   );

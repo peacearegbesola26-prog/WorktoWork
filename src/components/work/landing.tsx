@@ -1,3 +1,4 @@
+import { useWebsite, WebsiteText } from "@/features/website/context";
 import { Link } from "@tanstack/react-router";
 import {
   ArrowRight,
@@ -41,18 +42,17 @@ export function DashboardPreview() {
       </aside>
       <div className="preview-body">
         <div className="preview-toolbar">
-          <span>YOUR OPPORTUNITY WORKSPACE</span>
-          <StatusBadge>Workspace overview</StatusBadge>
+          <span><WebsiteText page="home" id="1" fallback="YOUR OPPORTUNITY WORKSPACE" /></span>
+          <StatusBadge><WebsiteText page="home" id="2" fallback="Workspace overview" /></StatusBadge>
         </div>
         <div className="preview-greeting">
           <div>
-            <h3>A world of possibilities.</h3>
-            <p>Your next opportunity could be just one search away.</p>
+            <h3><WebsiteText page="home" id="3" fallback="A world of possibilities." /></h3>
+            <p><WebsiteText page="home" id="4" fallback="Your next opportunity could be just one search away." /></p>
           </div>
           <Button asChild size="sm">
             <Link to="/app/social">
-              <Search /> Find opportunities
-            </Link>
+              <Search /><WebsiteText page="home" id="5" fallback="Find opportunities" /></Link>
           </Button>
         </div>
         <EmptyState
@@ -64,6 +64,8 @@ export function DashboardPreview() {
   );
 }
 export function Landing() {
+  const { pages } = useWebsite();
+  const home = pages.home;
   return (
     <PublicShell>
       <section className="hero">
@@ -77,40 +79,28 @@ export function Landing() {
         <div className="site-container hero-content">
           <div className="hero-copy">
             <span className="hero-eyebrow">
-              <Sparkles size={12} /> YOUR NEXT CHAPTER STARTS HERE
-            </span>
-            <h1>
-              Find Your Next
-              <br />
-              Opportunity.
-              <br />
-              <span>Everywhere.</span>
+              <Sparkles size={12} /><WebsiteText page="home" id="6" fallback="YOUR NEXT CHAPTER STARTS HERE" /></span>
+            <h1><WebsiteText page="home" id="7" fallback="Find Your Next" /><br /><WebsiteText page="home" id="8" fallback="Opportunity." /><br />
+              <span><WebsiteText page="home" id="9" fallback="Everywhere." /></span>
             </h1>
-            <p className="hero-description">
-              Organise your applications, save private resumes and request AI resume suggestions.
-              Live discovery is not connected yet.
-            </p>
+            <p className="hero-description"><WebsiteText page="home" id="10" fallback="Organise your applications, save private resumes and request AI resume suggestions. Live discovery is not connected yet." /></p>
             <div className="hero-actions">
-              <ActionLink to="/signup">Start Finding Opportunities</ActionLink>
+              <Button asChild size="lg"><a href={home?.primaryCta || "/signup"}><WebsiteText page="home" id="11" fallback="Start Finding Opportunities" /><ArrowRight /></a></Button>
               <Button asChild variant="outline" size="lg">
-                <Link to="/app/dashboard">
-                  <ArrowUpRight size={14} /> Open workspace
-                </Link>
+                <a href={home?.secondaryCta || "/app/dashboard"}>
+                  <ArrowUpRight size={14} /><WebsiteText page="home" id="12" fallback="Open workspace" /></Link>
               </Button>
             </div>
             <p className="hero-note">
-              <ShieldCheck size={13} /> Real accounts. Private profiles and application tracking.
-            </p>
+              <ShieldCheck size={13} /><WebsiteText page="home" id="13" fallback="Real accounts. Private profiles and application tracking." /></p>
           </div>
         </div>
       </section>
       <section className="source-band">
         <div className="site-container">
           <div className="source-band-inner">
-            <p>
-              More places to discover.
-              <br />
-              <strong>One place to move forward.</strong>
+            <p><WebsiteText page="home" id="14" fallback="More places to discover." /><br />
+              <strong><WebsiteText page="home" id="15" fallback="One place to move forward." /></strong>
             </p>
             <div className="source-logos">
               {["LinkedIn", "Facebook", "Instagram", "TikTok", "Reddit", "Web"].map((s) => (
@@ -121,73 +111,53 @@ export function Landing() {
               ))}
             </div>
           </div>
-          <p className="source-band-note">
-            Planned discovery sources. Live connectors are not configured; access depends on each
-            platform’s permissions and policies.
-          </p>
+          <p className="source-band-note"><WebsiteText page="home" id="16" fallback="Planned discovery sources. Live connectors are not configured; access depends on each platform’s permissions and policies." /></p>
         </div>
       </section>
       <section className="section section-muted">
         <div className="site-container">
           <div className="section-title center">
-            <p className="eyebrow">LESS SEARCHING. MORE POSSIBILITY.</p>
-            <h2>Your next move, all in one place.</h2>
-            <p>
-              Discover opportunities, keep your shortlist organised, and prepare for what comes
-              next.
-            </p>
+            <p className="eyebrow"><WebsiteText page="home" id="17" fallback="LESS SEARCHING. MORE POSSIBILITY." /></p>
+            <h2><WebsiteText page="home" id="18" fallback="Your next move, all in one place." /></h2>
+            <p><WebsiteText page="home" id="19" fallback="Discover opportunities, keep your shortlist organised, and prepare for what comes next." /></p>
           </div>
           <DashboardPreview />
-          <p className="legal-note text-center">
-            Your workspace shows only your actual account records.
-          </p>
+          <p className="legal-note text-center"><WebsiteText page="home" id="20" fallback="Your workspace shows only your actual account records." /></p>
         </div>
       </section>
       <section className="section">
         <div className="site-container">
           <div className="section-title">
-            <p className="eyebrow">BUILT FOR YOUR NEXT CHAPTER</p>
-            <h2>Great work can start anywhere.</h2>
-            <p>Give your opportunity search a little more direction.</p>
+            <p className="eyebrow"><WebsiteText page="home" id="21" fallback="BUILT FOR YOUR NEXT CHAPTER" /></p>
+            <h2><WebsiteText page="home" id="22" fallback="Great work can start anywhere." /></h2>
+            <p><WebsiteText page="home" id="23" fallback="Give your opportunity search a little more direction." /></p>
           </div>
           <div className="feature-grid">
             <div className="feature-item">
               <div className="feature-icon">
                 <Search size={21} />
               </div>
-              <h3>Discover beyond the job board</h3>
-              <p>
-                Explore social discovery and the wider web in separate, focused searches. Narrow
-                your results by skills, location, and work preferences.
-              </p>
-              <Link to="/app/social">
-                Explore discovery <ArrowRight size={14} />
+              <h3><WebsiteText page="home" id="24" fallback="Discover beyond the job board" /></h3>
+              <p><WebsiteText page="home" id="25" fallback="Explore social discovery and the wider web in separate, focused searches. Narrow your results by skills, location, and work preferences." /></p>
+              <Link to="/app/social"><WebsiteText page="home" id="26" fallback="Explore discovery" /><ArrowRight size={14} />
               </Link>
             </div>
             <div className="feature-item">
               <div className="feature-icon">
                 <Bookmark size={21} />
               </div>
-              <h3>Keep your next steps together</h3>
-              <p>
-                Save the opportunities that stand out and follow each application from your first
-                shortlist through to an offer.
-              </p>
-              <Link to="/app/tracker">
-                See the application tracker <ArrowRight size={14} />
+              <h3><WebsiteText page="home" id="27" fallback="Keep your next steps together" /></h3>
+              <p><WebsiteText page="home" id="28" fallback="Save the opportunities that stand out and follow each application from your first shortlist through to an offer." /></p>
+              <Link to="/app/tracker"><WebsiteText page="home" id="29" fallback="See the application tracker" /><ArrowRight size={14} />
               </Link>
             </div>
             <div className="feature-item">
               <div className="feature-icon">
                 <Sparkles size={21} />
               </div>
-              <h3>Put your best work forward</h3>
-              <p>
-                Save your resumes and review AI suggestions grounded in your own experience. Other
-                application preparation tools are not connected yet.
-              </p>
-              <Link to="/app/toolkit">
-                Discover your career toolkit <ArrowRight size={14} />
+              <h3><WebsiteText page="home" id="30" fallback="Put your best work forward" /></h3>
+              <p><WebsiteText page="home" id="31" fallback="Save your resumes and review AI suggestions grounded in your own experience. Other application preparation tools are not connected yet." /></p>
+              <Link to="/app/toolkit"><WebsiteText page="home" id="32" fallback="Discover your career toolkit" /><ArrowRight size={14} />
               </Link>
             </div>
           </div>
@@ -196,42 +166,33 @@ export function Landing() {
       <section className="section section-muted">
         <div className="site-container">
           <div className="section-title center">
-            <p className="eyebrow">FROM DISCOVERY TO YOUR NEXT STEP</p>
-            <h2>A more intentional way to find work.</h2>
+            <p className="eyebrow"><WebsiteText page="home" id="33" fallback="FROM DISCOVERY TO YOUR NEXT STEP" /></p>
+            <h2><WebsiteText page="home" id="34" fallback="A more intentional way to find work." /></h2>
           </div>
           <div className="steps">
             <div>
-              <span className="step-number">01</span>
-              <h3>Tell us what you do</h3>
-              <p>
-                Choose your skills, preferred countries, and the kind of opportunity you’re looking
-                for.
-              </p>
+              <span className="step-number"><WebsiteText page="home" id="35" fallback="01" /></span>
+              <h3><WebsiteText page="home" id="36" fallback="Tell us what you do" /></h3>
+              <p><WebsiteText page="home" id="37" fallback="Choose your skills, preferred countries, and the kind of opportunity you’re looking for." /></p>
             </div>
             <div>
-              <span className="step-number">02</span>
-              <h3>Explore the possibilities</h3>
-              <p>
-                Live discovery is not connected yet. Future discovery will use official APIs,
-                licensed services, and other permitted sources.
-              </p>
+              <span className="step-number"><WebsiteText page="home" id="38" fallback="02" /></span>
+              <h3><WebsiteText page="home" id="39" fallback="Explore the possibilities" /></h3>
+              <p><WebsiteText page="home" id="40" fallback="Live discovery is not connected yet. Future discovery will use official APIs, licensed services, and other permitted sources." /></p>
             </div>
             <div>
-              <span className="step-number">03</span>
-              <h3>Make your next move</h3>
-              <p>
-                Save your shortlist, track applications, and build a resume that brings your
-                experience together.
-              </p>
+              <span className="step-number"><WebsiteText page="home" id="41" fallback="03" /></span>
+              <h3><WebsiteText page="home" id="42" fallback="Make your next move" /></h3>
+              <p><WebsiteText page="home" id="43" fallback="Save your shortlist, track applications, and build a resume that brings your experience together." /></p>
             </div>
           </div>
         </div>
       </section>
       <section className="cta-section">
-        <p className="eyebrow">A NEW CHAPTER AWAITS</p>
-        <h2>Make room for your next opportunity.</h2>
-        <p>Take a look around your future workspace.</p>
-        <ActionLink to="/app/dashboard">Open your workspace</ActionLink>
+        <p className="eyebrow"><WebsiteText page="home" id="44" fallback="A NEW CHAPTER AWAITS" /></p>
+        <h2><WebsiteText page="home" id="45" fallback="Make room for your next opportunity." /></h2>
+        <p><WebsiteText page="home" id="46" fallback="Take a look around your future workspace." /></p>
+        <ActionLink to="/app/dashboard"><WebsiteText page="home" id="47" fallback="Open your workspace" /></ActionLink>
       </section>
     </PublicShell>
   );

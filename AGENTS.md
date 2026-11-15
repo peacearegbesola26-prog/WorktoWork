@@ -33,6 +33,10 @@ use the editor.
 
 ## Application architecture
 
+- Website drafts and immutable publication versions are staff-only; public SSR reads only the published projection through a security-definer read RPC.
+- Brand media accepts signature-checked raster uploads only; private storage is served publicly only while referenced by published settings, preventing draft image leakage.
+- Registration closure is enforced by the existing account-profile creation trigger; maintenance preserves staff and account/privacy routes without relaxing record ownership.
+
 - Use only Cloud-owned account records in the application; never import legacy browser sample state or seed fictional opportunities.
 - Put real workspace pages under /app within the authenticated layout; preserve old addresses with redirects rather than a second experience.
 - Persist resumes through owner-scoped authenticated commands and RLS; keep unsaved edits in memory with an explicit status so drafts never enter browser storage.

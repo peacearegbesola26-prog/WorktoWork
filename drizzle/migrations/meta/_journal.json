@@ -78,6 +78,20 @@
       "when": 1794738833975,
       "tag": "0010_active_owner_permission_commands",
       "breakpoints": true
+    },
+    {
+      "idx": 11,
+      "version": "7",
+      "when": 1794766838636,
+      "tag": "0011_website_content_and_owner_settings",
+      "breakpoints": true
+    },
+    {
+      "idx": 12,
+      "version": "7",
+      "when": 1794767058054,
+      "tag": "0012_website_validation_and_maintenance_guards",
+      "breakpoints": true
     }
   ]
 }

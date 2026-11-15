@@ -21,6 +21,8 @@ export const checkStaffPermission = createServerFn({ method: "POST" })
         "ai.manage",
         "users.manage",
         "roles.manage",
+        "content.manage",
+        "site.manage",
       ]),
     }),
   )
@@ -39,6 +41,8 @@ export const getStaffPermissions = createServerFn({ method: "GET" })
       "ai.manage",
       "users.manage",
       "roles.manage",
+      "content.manage",
+      "site.manage",
     ];
     const results = await Promise.all(
       permissions.map(async (p) => {

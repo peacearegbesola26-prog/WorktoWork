@@ -1,8 +1,10 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { HowItWorks } from "@/components/work/public-pages";
-import { pageHead } from "@/lib/page-head";
+import { websiteHead } from "@/features/website/head";
+import { publishedWebsiteOptions } from "@/features/website/query";
 export const Route = createFileRoute("/how-it-works")({
-  head: () => pageHead("How It Works", "Understand opportunity discovery and career preparation."),
+  loader: ({ context }) => context.queryClient.ensureQueryData(publishedWebsiteOptions),
+  head: ({ loaderData }) => websiteHead(loaderData, "public"),
   component: Page,
 });
 function Page() {

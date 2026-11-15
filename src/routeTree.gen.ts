@@ -11,17 +11,21 @@
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as AuthenticatedRouteRouteImport } from './routes/_authenticated/route'
+import { Route as AboutRouteImport } from './routes/about'
 import { Route as AdminRouteImport } from './routes/admin'
 import { Route as AuthRouteImport } from './routes/auth'
 import { Route as ContactRouteImport } from './routes/contact'
 import { Route as DemoRouteImport } from './routes/demo'
 import { Route as EmailVerificationRouteImport } from './routes/email-verification'
+import { Route as FaqsRouteImport } from './routes/faqs'
 import { Route as ForgotPasswordRouteImport } from './routes/forgot-password'
 import { Route as HowItWorksRouteImport } from './routes/how-it-works'
 import { Route as LoginRouteImport } from './routes/login'
 import { Route as PricingRouteImport } from './routes/pricing'
+import { Route as PrivacyRouteImport } from './routes/privacy'
 import { Route as ResetPasswordRouteImport } from './routes/reset-password'
 import { Route as SignupRouteImport } from './routes/signup'
+import { Route as TermsRouteImport } from './routes/terms'
 import { Route as AuthenticatedAlertsRouteImport } from './routes/_authenticated/alerts'
 import { Route as AuthenticatedDashboardRouteImport } from './routes/_authenticated/dashboard'
 import { Route as AuthenticatedOpportunitiesRouteImport } from './routes/_authenticated/opportunities'
@@ -32,7 +36,9 @@ import { Route as AuthenticatedTrackerRouteImport } from './routes/_authenticate
 import { Route as AdminIndexRouteImport } from './routes/admin.index'
 import { Route as AdminAccessRouteImport } from './routes/admin.access'
 import { Route as AdminAuditRouteImport } from './routes/admin.audit'
+import { Route as AdminContentRouteImport } from './routes/admin.content'
 import { Route as AdminOpportunitiesRouteImport } from './routes/admin.opportunities'
+import { Route as AdminSiteSettingsRouteImport } from './routes/admin.site-settings'
 import { Route as AdminSourcesRouteImport } from './routes/admin.sources'
 import { Route as AdminUsersRouteImport } from './routes/admin.users'
 import { Route as AdminLoginRouteImport } from './routes/admin_.login'
@@ -70,6 +76,7 @@ import { Route as AuthenticatedAppTrackerRouteImport } from './routes/_authentic
 import { Route as AuthenticatedAppWebRouteImport } from './routes/_authenticated/app.web'
 import { Route as DemoOpportunitiesIdRouteImport } from './routes/demo.opportunities.$id'
 import { Route as AuthenticatedAppOpportunitiesIdRouteImport } from './routes/_authenticated/app.opportunities.$id'
+import { Route as ApiPublicBrandNameRouteImport } from './routes/api/public/brand/$name'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
@@ -78,6 +85,11 @@ const IndexRoute = IndexRouteImport.update({
 } as any)
 const AuthenticatedRouteRoute = AuthenticatedRouteRouteImport.update({
   id: '/_authenticated',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AboutRoute = AboutRouteImport.update({
+  id: '/about',
+  path: '/about',
   getParentRoute: () => rootRouteImport,
 } as any)
 const AdminRoute = AdminRouteImport.update({
@@ -105,6 +117,11 @@ const EmailVerificationRoute = EmailVerificationRouteImport.update({
   path: '/email-verification',
   getParentRoute: () => rootRouteImport,
 } as any)
+const FaqsRoute = FaqsRouteImport.update({
+  id: '/faqs',
+  path: '/faqs',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const ForgotPasswordRoute = ForgotPasswordRouteImport.update({
   id: '/forgot-password',
   path: '/forgot-password',
@@ -125,6 +142,11 @@ const PricingRoute = PricingRouteImport.update({
   path: '/pricing',
   getParentRoute: () => rootRouteImport,
 } as any)
+const PrivacyRoute = PrivacyRouteImport.update({
+  id: '/privacy',
+  path: '/privacy',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const ResetPasswordRoute = ResetPasswordRouteImport.update({
   id: '/reset-password',
   path: '/reset-password',
@@ -133,6 +155,11 @@ const ResetPasswordRoute = ResetPasswordRouteImport.update({
 const SignupRoute = SignupRouteImport.update({
   id: '/signup',
   path: '/signup',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const TermsRoute = TermsRouteImport.update({
+  id: '/terms',
+  path: '/terms',
   getParentRoute: () => rootRouteImport,
 } as any)
 const AuthenticatedAlertsRoute = AuthenticatedAlertsRouteImport.update({
@@ -186,9 +213,19 @@ const AdminAuditRoute = AdminAuditRouteImport.update({
   path: '/audit',
   getParentRoute: () => AdminRoute,
 } as any)
+const AdminContentRoute = AdminContentRouteImport.update({
+  id: '/content',
+  path: '/content',
+  getParentRoute: () => AdminRoute,
+} as any)
 const AdminOpportunitiesRoute = AdminOpportunitiesRouteImport.update({
   id: '/opportunities',
   path: '/opportunities',
+  getParentRoute: () => AdminRoute,
+} as any)
+const AdminSiteSettingsRoute = AdminSiteSettingsRouteImport.update({
+  id: '/site-settings',
+  path: '/site-settings',
   getParentRoute: () => AdminRoute,
 } as any)
 const AdminSourcesRoute = AdminSourcesRouteImport.update({
@@ -384,20 +421,29 @@ const AuthenticatedAppOpportunitiesIdRoute =
     path: '/app/opportunities/$id',
     getParentRoute: () => AuthenticatedRouteRoute,
   } as any)
+const ApiPublicBrandNameRoute = ApiPublicBrandNameRouteImport.update({
+  id: '/api/public/brand/$name',
+  path: '/api/public/brand/$name',
+  getParentRoute: () => rootRouteImport,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/about': typeof AboutRoute
   '/admin': typeof AdminRouteWithChildren
   '/auth': typeof AuthRoute
   '/contact': typeof ContactRoute
   '/demo': typeof DemoRouteWithChildren
   '/email-verification': typeof EmailVerificationRoute
+  '/faqs': typeof FaqsRoute
   '/forgot-password': typeof ForgotPasswordRoute
   '/how-it-works': typeof HowItWorksRoute
   '/login': typeof LoginRoute
   '/pricing': typeof PricingRoute
+  '/privacy': typeof PrivacyRoute
   '/reset-password': typeof ResetPasswordRoute
   '/signup': typeof SignupRoute
+  '/terms': typeof TermsRoute
   '/alerts': typeof AuthenticatedAlertsRoute
   '/dashboard': typeof AuthenticatedDashboardRoute
   '/opportunities': typeof AuthenticatedOpportunitiesRoute
@@ -407,7 +453,9 @@ export interface FileRoutesByFullPath {
   '/tracker': typeof AuthenticatedTrackerRoute
   '/admin/access': typeof AdminAccessRoute
   '/admin/audit': typeof AdminAuditRoute
+  '/admin/content': typeof AdminContentRoute
   '/admin/opportunities': typeof AdminOpportunitiesRoute
+  '/admin/site-settings': typeof AdminSiteSettingsRoute
   '/admin/sources': typeof AdminSourcesRoute
   '/admin/users': typeof AdminUsersRoute
   '/admin/login': typeof AdminLoginRoute
@@ -446,18 +494,23 @@ export interface FileRoutesByFullPath {
   '/app/web': typeof AuthenticatedAppWebRoute
   '/demo/opportunities/$id': typeof DemoOpportunitiesIdRoute
   '/app/opportunities/$id': typeof AuthenticatedAppOpportunitiesIdRoute
+  '/api/public/brand/$name': typeof ApiPublicBrandNameRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/about': typeof AboutRoute
   '/auth': typeof AuthRoute
   '/contact': typeof ContactRoute
   '/email-verification': typeof EmailVerificationRoute
+  '/faqs': typeof FaqsRoute
   '/forgot-password': typeof ForgotPasswordRoute
   '/how-it-works': typeof HowItWorksRoute
   '/login': typeof LoginRoute
   '/pricing': typeof PricingRoute
+  '/privacy': typeof PrivacyRoute
   '/reset-password': typeof ResetPasswordRoute
   '/signup': typeof SignupRoute
+  '/terms': typeof TermsRoute
   '/alerts': typeof AuthenticatedAlertsRoute
   '/dashboard': typeof AuthenticatedDashboardRoute
   '/opportunities': typeof AuthenticatedOpportunitiesRoute
@@ -467,7 +520,9 @@ export interface FileRoutesByTo {
   '/tracker': typeof AuthenticatedTrackerRoute
   '/admin/access': typeof AdminAccessRoute
   '/admin/audit': typeof AdminAuditRoute
+  '/admin/content': typeof AdminContentRoute
   '/admin/opportunities': typeof AdminOpportunitiesRoute
+  '/admin/site-settings': typeof AdminSiteSettingsRoute
   '/admin/sources': typeof AdminSourcesRoute
   '/admin/users': typeof AdminUsersRoute
   '/admin/login': typeof AdminLoginRoute
@@ -506,22 +561,27 @@ export interface FileRoutesByTo {
   '/app/web': typeof AuthenticatedAppWebRoute
   '/demo/opportunities/$id': typeof DemoOpportunitiesIdRoute
   '/app/opportunities/$id': typeof AuthenticatedAppOpportunitiesIdRoute
+  '/api/public/brand/$name': typeof ApiPublicBrandNameRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
   '/_authenticated': typeof AuthenticatedRouteRouteWithChildren
+  '/about': typeof AboutRoute
   '/admin': typeof AdminRouteWithChildren
   '/auth': typeof AuthRoute
   '/contact': typeof ContactRoute
   '/demo': typeof DemoRouteWithChildren
   '/email-verification': typeof EmailVerificationRoute
+  '/faqs': typeof FaqsRoute
   '/forgot-password': typeof ForgotPasswordRoute
   '/how-it-works': typeof HowItWorksRoute
   '/login': typeof LoginRoute
   '/pricing': typeof PricingRoute
+  '/privacy': typeof PrivacyRoute
   '/reset-password': typeof ResetPasswordRoute
   '/signup': typeof SignupRoute
+  '/terms': typeof TermsRoute
   '/_authenticated/alerts': typeof AuthenticatedAlertsRoute
   '/_authenticated/dashboard': typeof AuthenticatedDashboardRoute
   '/_authenticated/opportunities': typeof AuthenticatedOpportunitiesRoute
@@ -531,7 +591,9 @@ export interface FileRoutesById {
   '/_authenticated/tracker': typeof AuthenticatedTrackerRoute
   '/admin/access': typeof AdminAccessRoute
   '/admin/audit': typeof AdminAuditRoute
+  '/admin/content': typeof AdminContentRoute
   '/admin/opportunities': typeof AdminOpportunitiesRoute
+  '/admin/site-settings': typeof AdminSiteSettingsRoute
   '/admin/sources': typeof AdminSourcesRoute
   '/admin/users': typeof AdminUsersRoute
   '/admin_/login': typeof AdminLoginRoute
@@ -570,22 +632,27 @@ export interface FileRoutesById {
   '/_authenticated/app/web': typeof AuthenticatedAppWebRoute
   '/demo/opportunities/$id': typeof DemoOpportunitiesIdRoute
   '/_authenticated/app/opportunities/$id': typeof AuthenticatedAppOpportunitiesIdRoute
+  '/api/public/brand/$name': typeof ApiPublicBrandNameRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
   fullPaths:
     | '/'
+    | '/about'
     | '/admin'
     | '/auth'
     | '/contact'
     | '/demo'
     | '/email-verification'
+    | '/faqs'
     | '/forgot-password'
     | '/how-it-works'
     | '/login'
     | '/pricing'
+    | '/privacy'
     | '/reset-password'
     | '/signup'
+    | '/terms'
     | '/alerts'
     | '/dashboard'
     | '/opportunities'
@@ -595,7 +662,9 @@ export interface FileRouteTypes {
     | '/tracker'
     | '/admin/access'
     | '/admin/audit'
+    | '/admin/content'
     | '/admin/opportunities'
+    | '/admin/site-settings'
     | '/admin/sources'
     | '/admin/users'
     | '/admin/login'
@@ -634,18 +703,23 @@ export interface FileRouteTypes {
     | '/app/web'
     | '/demo/opportunities/$id'
     | '/app/opportunities/$id'
+    | '/api/public/brand/$name'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
+    | '/about'
     | '/auth'
     | '/contact'
     | '/email-verification'
+    | '/faqs'
     | '/forgot-password'
     | '/how-it-works'
     | '/login'
     | '/pricing'
+    | '/privacy'
     | '/reset-password'
     | '/signup'
+    | '/terms'
     | '/alerts'
     | '/dashboard'
     | '/opportunities'
@@ -655,7 +729,9 @@ export interface FileRouteTypes {
     | '/tracker'
     | '/admin/access'
     | '/admin/audit'
+    | '/admin/content'
     | '/admin/opportunities'
+    | '/admin/site-settings'
     | '/admin/sources'
     | '/admin/users'
     | '/admin/login'
@@ -694,21 +770,26 @@ export interface FileRouteTypes {
     | '/app/web'
     | '/demo/opportunities/$id'
     | '/app/opportunities/$id'
+    | '/api/public/brand/$name'
   id:
     | '__root__'
     | '/'
     | '/_authenticated'
+    | '/about'
     | '/admin'
     | '/auth'
     | '/contact'
     | '/demo'
     | '/email-verification'
+    | '/faqs'
     | '/forgot-password'
     | '/how-it-works'
     | '/login'
     | '/pricing'
+    | '/privacy'
     | '/reset-password'
     | '/signup'
+    | '/terms'
     | '/_authenticated/alerts'
     | '/_authenticated/dashboard'
     | '/_authenticated/opportunities'
@@ -718,7 +799,9 @@ export interface FileRouteTypes {
     | '/_authenticated/tracker'
     | '/admin/access'
     | '/admin/audit'
+    | '/admin/content'
     | '/admin/opportunities'
+    | '/admin/site-settings'
     | '/admin/sources'
     | '/admin/users'
     | '/admin_/login'
@@ -757,23 +840,29 @@ export interface FileRouteTypes {
     | '/_authenticated/app/web'
     | '/demo/opportunities/$id'
     | '/_authenticated/app/opportunities/$id'
+    | '/api/public/brand/$name'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   AuthenticatedRouteRoute: typeof AuthenticatedRouteRouteWithChildren
+  AboutRoute: typeof AboutRoute
   AdminRoute: typeof AdminRouteWithChildren
   AuthRoute: typeof AuthRoute
   ContactRoute: typeof ContactRoute
   DemoRoute: typeof DemoRouteWithChildren
   EmailVerificationRoute: typeof EmailVerificationRoute
+  FaqsRoute: typeof FaqsRoute
   ForgotPasswordRoute: typeof ForgotPasswordRoute
   HowItWorksRoute: typeof HowItWorksRoute
   LoginRoute: typeof LoginRoute
   PricingRoute: typeof PricingRoute
+  PrivacyRoute: typeof PrivacyRoute
   ResetPasswordRoute: typeof ResetPasswordRoute
   SignupRoute: typeof SignupRoute
+  TermsRoute: typeof TermsRoute
   AdminLoginRoute: typeof AdminLoginRoute
+  ApiPublicBrandNameRoute: typeof ApiPublicBrandNameRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -790,6 +879,13 @@ declare module '@tanstack/react-router' {
       path: ''
       fullPath: '/'
       preLoaderRoute: typeof AuthenticatedRouteRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/about': {
+      id: '/about'
+      path: '/about'
+      fullPath: '/about'
+      preLoaderRoute: typeof AboutRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/admin': {
@@ -827,6 +923,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof EmailVerificationRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/faqs': {
+      id: '/faqs'
+      path: '/faqs'
+      fullPath: '/faqs'
+      preLoaderRoute: typeof FaqsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/forgot-password': {
       id: '/forgot-password'
       path: '/forgot-password'
@@ -855,6 +958,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof PricingRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/privacy': {
+      id: '/privacy'
+      path: '/privacy'
+      fullPath: '/privacy'
+      preLoaderRoute: typeof PrivacyRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/reset-password': {
       id: '/reset-password'
       path: '/reset-password'
@@ -867,6 +977,13 @@ declare module '@tanstack/react-router' {
       path: '/signup'
       fullPath: '/signup'
       preLoaderRoute: typeof SignupRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/terms': {
+      id: '/terms'
+      path: '/terms'
+      fullPath: '/terms'
+      preLoaderRoute: typeof TermsRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/_authenticated/alerts': {
@@ -939,11 +1056,25 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AdminAuditRouteImport
       parentRoute: typeof AdminRoute
     }
+    '/admin/content': {
+      id: '/admin/content'
+      path: '/content'
+      fullPath: '/admin/content'
+      preLoaderRoute: typeof AdminContentRouteImport
+      parentRoute: typeof AdminRoute
+    }
     '/admin/opportunities': {
       id: '/admin/opportunities'
       path: '/opportunities'
       fullPath: '/admin/opportunities'
       preLoaderRoute: typeof AdminOpportunitiesRouteImport
+      parentRoute: typeof AdminRoute
+    }
+    '/admin/site-settings': {
+      id: '/admin/site-settings'
+      path: '/site-settings'
+      fullPath: '/admin/site-settings'
+      preLoaderRoute: typeof AdminSiteSettingsRouteImport
       parentRoute: typeof AdminRoute
     }
     '/admin/sources': {
@@ -1205,6 +1336,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedAppOpportunitiesIdRouteImport
       parentRoute: typeof AuthenticatedRouteRoute
     }
+    '/api/public/brand/$name': {
+      id: '/api/public/brand/$name'
+      path: '/api/public/brand/$name'
+      fullPath: '/api/public/brand/$name'
+      preLoaderRoute: typeof ApiPublicBrandNameRouteImport
+      parentRoute: typeof rootRouteImport
+    }
   }
 }
 
@@ -1269,7 +1407,9 @@ const AuthenticatedRouteRouteWithChildren =
 interface AdminRouteChildren {
   AdminAccessRoute: typeof AdminAccessRoute
   AdminAuditRoute: typeof AdminAuditRoute
+  AdminContentRoute: typeof AdminContentRoute
   AdminOpportunitiesRoute: typeof AdminOpportunitiesRoute
+  AdminSiteSettingsRoute: typeof AdminSiteSettingsRoute
   AdminSourcesRoute: typeof AdminSourcesRoute
   AdminUsersRoute: typeof AdminUsersRoute
   AdminIndexRoute: typeof AdminIndexRoute
@@ -1278,7 +1418,9 @@ interface AdminRouteChildren {
 const AdminRouteChildren: AdminRouteChildren = {
   AdminAccessRoute: AdminAccessRoute,
   AdminAuditRoute: AdminAuditRoute,
+  AdminContentRoute: AdminContentRoute,
   AdminOpportunitiesRoute: AdminOpportunitiesRoute,
+  AdminSiteSettingsRoute: AdminSiteSettingsRoute,
   AdminSourcesRoute: AdminSourcesRoute,
   AdminUsersRoute: AdminUsersRoute,
   AdminIndexRoute: AdminIndexRoute,
@@ -1331,18 +1473,23 @@ const DemoRouteWithChildren = DemoRoute._addFileChildren(DemoRouteChildren)
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   AuthenticatedRouteRoute: AuthenticatedRouteRouteWithChildren,
+  AboutRoute: AboutRoute,
   AdminRoute: AdminRouteWithChildren,
   AuthRoute: AuthRoute,
   ContactRoute: ContactRoute,
   DemoRoute: DemoRouteWithChildren,
   EmailVerificationRoute: EmailVerificationRoute,
+  FaqsRoute: FaqsRoute,
   ForgotPasswordRoute: ForgotPasswordRoute,
   HowItWorksRoute: HowItWorksRoute,
   LoginRoute: LoginRoute,
   PricingRoute: PricingRoute,
+  PrivacyRoute: PrivacyRoute,
   ResetPasswordRoute: ResetPasswordRoute,
   SignupRoute: SignupRoute,
+  TermsRoute: TermsRoute,
   AdminLoginRoute: AdminLoginRoute,
+  ApiPublicBrandNameRoute: ApiPublicBrandNameRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
