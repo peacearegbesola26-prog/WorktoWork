@@ -12,7 +12,6 @@ import { useEffect, type ReactNode } from "react";
 
 import appCss from "../styles.css?url";
 import { reportLovableError } from "../lib/lovable-error-reporting";
-import { DemoProvider } from "@/features/demo/context";
 import { AccountAuthProvider } from "@/features/account/auth-provider";
 import { Toaster } from "sonner";
 
@@ -137,10 +136,8 @@ function RootComponent() {
     <QueryClientProvider client={queryClient}>
       {/* Required: nested routes render here. Removing <Outlet /> breaks all child routes. */}
       <AccountAuthProvider>
-        <DemoProvider>
-          <Outlet />
-          <Toaster richColors position="bottom-right" />
-        </DemoProvider>
+        <Outlet />
+        <Toaster richColors position="bottom-right" />
       </AccountAuthProvider>
     </QueryClientProvider>
   );

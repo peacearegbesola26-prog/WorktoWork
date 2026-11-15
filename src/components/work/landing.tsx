@@ -9,18 +9,12 @@ import {
   LayoutDashboard,
   BriefcaseBusiness,
   Bell,
-  Check,
   ShieldCheck,
-  Play,
 } from "lucide-react";
 import workspace from "@/assets/workspace.jpg";
-import { PublicShell, Brand, SourceIcon, OpportunityCard, DemoBadge, ActionLink } from "./shared";
+import { PublicShell, Brand, SourceIcon, EmptyState, StatusBadge, ActionLink } from "./shared";
 import { Button } from "@/components/ui/button";
-import { opportunities, demoStats } from "@/features/demo/model";
-import { useDemo } from "@/features/demo/use-demo";
 export function DashboardPreview() {
-  const demo = useDemo();
-  const stats = demoStats(demo.saved, demo.tracker, demo.alerts);
   return (
     <div className="preview-window">
       <aside className="preview-sidebar">
@@ -48,7 +42,7 @@ export function DashboardPreview() {
       <div className="preview-body">
         <div className="preview-toolbar">
           <span>YOUR OPPORTUNITY WORKSPACE</span>
-          <DemoBadge>Sample data</DemoBadge>
+          <StatusBadge>Workspace overview</StatusBadge>
         </div>
         <div className="preview-greeting">
           <div>
@@ -56,39 +50,15 @@ export function DashboardPreview() {
             <p>Your next opportunity could be just one search away.</p>
           </div>
           <Button asChild size="sm">
-            <Link to="/demo/social">
+            <Link to="/app/social">
               <Search /> Find opportunities
             </Link>
           </Button>
         </div>
-        <div className="preview-stats">
-          {Object.entries(stats).map(([key, value], i) => (
-            <div className="preview-stat" key={key}>
-              <span>
-                {
-                  [
-                    "Available opportunities",
-                    "Saved opportunities",
-                    "Tracked applications",
-                    "Active demo alerts",
-                  ][i]
-                }
-              </span>
-              <strong>{value}</strong>
-            </div>
-          ))}
-        </div>
-        <div className="section-heading">
-          <h2 className="text-sm">Recommended opportunities</h2>
-          <Link to="/demo/dashboard">
-            Explore dashboard <ArrowUpRight size={12} />
-          </Link>
-        </div>
-        <div className="preview-cards">
-          {opportunities.slice(0, 2).map((o) => (
-            <OpportunityCard key={o.id} opportunity={o} compact />
-          ))}
-        </div>
+        <EmptyState
+          title="Your opportunities, in one place"
+          description="Sign in to view your saved opportunities and applications. Live discovery is not connected yet."
+        />
       </div>
     </div>
   );
@@ -117,20 +87,19 @@ export function Landing() {
               <span>Everywhere.</span>
             </h1>
             <p className="hero-description">
-              Discover relevant work opportunities across supported sources and the wider web, with
-              AI tools to help you prepare your next application.
+              Organise your skills, work preferences and applications in a private workspace. Live
+              discovery and AI career tools are not connected yet.
             </p>
             <div className="hero-actions">
               <ActionLink to="/signup">Start Finding Opportunities</ActionLink>
               <Button asChild variant="outline" size="lg">
-                <Link to="/demo/dashboard">
-                  <Play size={14} /> Explore the Demo
+                <Link to="/app/dashboard">
+                  <ArrowUpRight size={14} /> Open workspace
                 </Link>
               </Button>
             </div>
             <p className="hero-note">
-              <ShieldCheck size={13} /> Explore freely. No account or credit card required for the
-              demo.
+              <ShieldCheck size={13} /> Real accounts. Private profiles and application tracking.
             </p>
           </div>
         </div>
@@ -170,7 +139,7 @@ export function Landing() {
           </div>
           <DashboardPreview />
           <p className="legal-note text-center">
-            An interactive dashboard preview using fictional demonstration records.
+            Your workspace shows only your actual account records.
           </p>
         </div>
       </section>
@@ -191,7 +160,7 @@ export function Landing() {
                 Explore social discovery and the wider web in separate, focused searches. Narrow
                 your results by skills, location, and work preferences.
               </p>
-              <Link to="/demo/social">
+              <Link to="/app/social">
                 Explore discovery <ArrowRight size={14} />
               </Link>
             </div>
@@ -204,7 +173,7 @@ export function Landing() {
                 Save the opportunities that stand out and follow each application from your first
                 shortlist through to an offer.
               </p>
-              <Link to="/demo/tracker">
+              <Link to="/app/tracker">
                 See the application tracker <ArrowRight size={14} />
               </Link>
             </div>
@@ -214,10 +183,10 @@ export function Landing() {
               </div>
               <h3>Put your best work forward</h3>
               <p>
-                Build your resume today. Resume optimisation, profile improvements, and application
-                preparation will be available when AI is connected.
+                Draft your resume for this session. Resume optimisation and application preparation
+                will be available when AI is connected.
               </p>
-              <Link to="/demo/toolkit">
+              <Link to="/app/toolkit">
                 Discover your career toolkit <ArrowRight size={14} />
               </Link>
             </div>
@@ -243,7 +212,7 @@ export function Landing() {
               <span className="step-number">02</span>
               <h3>Explore the possibilities</h3>
               <p>
-                Browse labelled sample results now. Future discovery will use official APIs,
+                Live discovery is not connected yet. Future discovery will use official APIs,
                 licensed services, and other permitted sources.
               </p>
             </div>
@@ -262,7 +231,7 @@ export function Landing() {
         <p className="eyebrow">A NEW CHAPTER AWAITS</p>
         <h2>Make room for your next opportunity.</h2>
         <p>Take a look around your future workspace.</p>
-        <ActionLink to="/demo/dashboard">Explore the Demo</ActionLink>
+        <ActionLink to="/app/dashboard">Open your workspace</ActionLink>
       </section>
     </PublicShell>
   );

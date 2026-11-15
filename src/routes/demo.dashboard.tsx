@@ -1,10 +1,8 @@
-import { createFileRoute } from "@tanstack/react-router";
-import { Dashboard } from "@/components/work/workspace";
+import { createFileRoute, redirect } from "@tanstack/react-router";
 import { pageHead } from "@/lib/page-head";
 export const Route = createFileRoute("/demo/dashboard")({
-  head: () => pageHead("Demo Dashboard", "Your sample opportunity workspace."),
-  component: Page,
+  head: () => pageHead("Workspace redirect", "Continue to your real Work to Work workspace."),
+  beforeLoad: () => {
+    throw redirect({ to: "/app/dashboard", replace: true });
+  },
 });
-function Page() {
-  return <Dashboard />;
-}

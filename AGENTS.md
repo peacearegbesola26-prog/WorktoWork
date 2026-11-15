@@ -33,13 +33,11 @@ use the editor.
 
 ## Application architecture
 
-- Keep fictional demo state separate from Cloud-owned accounts and records; never import demo browser state into real accounts.
-- Use one typed fictional opportunity dataset and shared demo context across routes so counts, saves and tracking stay consistent.
-- Persist only validated sample IDs and non-sensitive work-location preferences; alerts, tracking and all personal form content remain in memory for privacy.
-- Put named content on individual TanStack routes and wrap demo children in the shared app shell to preserve typed navigation.
+- Use only Cloud-owned account records in the application; never import legacy browser sample state or seed fictional opportunities.
+- Put real workspace pages under /app within the authenticated layout; preserve old addresses with redirects rather than a second experience.
+- Keep unsaved resume drafts in component memory with an explicit not-saved notice until durable resume storage is implemented.
 - Express the visual system in semantic global CSS tokens and use the shared Button for actions to keep styling and focus behavior consistent.
-- Cancel pending demo searches on reset, replacement or unmount so delayed callbacks cannot restore stale results.
-- Keep the demo context and hook separate from the provider component so frontend refreshes preserve a consistent context identity.
+- Keep source connector contracts separate from pages and without live adapters until permitted integrations are configured.
 - Put real workspace pages under the authenticated route layout and enforce ownership in RLS and authenticated server functions, because navigation alone is not an access boundary.
 - Store roles separately from profiles with no client role writes; initial administrator assignment requires a trusted project-owner operation.
 - Defer router and query invalidation outside auth event callbacks so session checks cannot deadlock the auth lock.

@@ -1,10 +1,8 @@
-import { createFileRoute } from "@tanstack/react-router";
-import { Toolkit } from "@/components/work/workspace";
+import { createFileRoute, redirect } from "@tanstack/react-router";
 import { pageHead } from "@/lib/page-head";
 export const Route = createFileRoute("/demo/toolkit")({
-  head: () => pageHead("Career Toolkit", "Explore resume editing and planned career tools."),
-  component: Page,
+  head: () => pageHead("Workspace redirect", "Continue to your real Work to Work workspace."),
+  beforeLoad: () => {
+    throw redirect({ to: "/app/toolkit", replace: true });
+  },
 });
-function Page() {
-  return <Toolkit />;
-}

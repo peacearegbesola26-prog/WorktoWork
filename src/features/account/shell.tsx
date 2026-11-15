@@ -3,6 +3,10 @@ import { Link, useNavigate } from "@tanstack/react-router";
 import { useQueryClient } from "@tanstack/react-query";
 import {
   Menu,
+  Globe2,
+  Sparkles,
+  PanelLeftClose,
+  PanelLeftOpen,
   LayoutDashboard,
   Search,
   Bookmark,
@@ -25,13 +29,15 @@ import { supabase } from "@/integrations/supabase/client";
 import { useAccountAuth } from "./auth";
 import { toast } from "sonner";
 const nav = [
-  { to: "/dashboard", label: "Dashboard", icon: LayoutDashboard },
-  { to: "/opportunities", label: "Discovery", icon: Search },
-  { to: "/saved", label: "Saved Opportunities", icon: Bookmark },
-  { to: "/tracker", label: "Application Tracker", icon: BriefcaseBusiness },
-  { to: "/alerts", label: "Alerts", icon: Bell },
-  { to: "/profile", label: "Profile", icon: UserRound },
-  { to: "/settings", label: "Settings", icon: Settings },
+  { to: "/app/dashboard", label: "Dashboard", icon: LayoutDashboard },
+  { to: "/app/social", label: "Social Discovery", icon: Search },
+  { to: "/app/web", label: "Web Discovery", icon: Globe2 },
+  { to: "/app/toolkit", label: "Career Toolkit", icon: Sparkles },
+  { to: "/app/saved", label: "Saved Opportunities", icon: Bookmark },
+  { to: "/app/tracker", label: "Application Tracker", icon: BriefcaseBusiness },
+  { to: "/app/alerts", label: "Alerts", icon: Bell },
+  { to: "/app/profile", label: "Profile", icon: UserRound },
+  { to: "/app/settings", label: "Settings", icon: Settings },
 ] as const;
 export function SignOutButton() {
   const client = useQueryClient();
@@ -44,7 +50,7 @@ export function SignOutButton() {
       client.clear();
       const { error } = await supabase.auth.signOut();
       if (error) throw error;
-      await navigate({ to: "/auth", search: { next: "/dashboard" }, replace: true });
+      await navigate({ to: "/auth", search: { next: "/app/dashboard" }, replace: true });
     } catch {
       toast.error("Sign out failed. Please try again.");
     } finally {
@@ -60,6 +66,7 @@ export function SignOutButton() {
 }
 export function AccountShell({ children }: { children: ReactNode }) {
   const [open, setOpen] = useState(false);
+  const [collapsed, setCollapsed] = useState(false);
   const { user } = useAccountAuth();
   const navigation = (
     <nav className="app-nav" aria-label="Account navigation">
@@ -69,20 +76,28 @@ export function AccountShell({ children }: { children: ReactNode }) {
           to={item.to}
           onClick={() => setOpen(false)}
           activeProps={{ className: "active" }}
+          title={collapsed ? item.label : undefined}
         >
           <item.icon size={19} />
-          <span>{item.label}</span>
+          <span className={collapsed ? "hidden" : ""}>{item.label}</span>
         </Link>
       ))}
     </nav>
   );
   return (
-    <div className="app-shell">
+    <div className={`app-shell ${collapsed ? "sidebar-collapsed" : ""}`}>
       <aside className="desktop-sidebar">
         <Brand />
         {navigation}
         <div className="sidebar-bottom">
-          <Link to="/demo/dashboard">Explore Demo</Link>
+          <Button
+            variant="ghost"
+            size="icon"
+            onClick={() => setCollapsed(!collapsed)}
+            aria-label={collapsed ? "Expand navigation" : "Collapse navigation"}
+          >
+            {collapsed ? <PanelLeftOpen /> : <PanelLeftClose />}
+          </Button>
         </div>
       </aside>
       <div className="app-main">
@@ -103,7 +118,7 @@ export function AccountShell({ children }: { children: ReactNode }) {
           </div>
           <span className="header-breadcrumb">Your workspace</span>
           <div className="flex items-center gap-2">
-            <Link to="/profile" className="avatar" aria-label="Your profile">
+            <Link to="/app/profile" className="avatar" aria-label="Your profile">
               {user?.email?.slice(0, 1).toUpperCase() ?? "W"}
             </Link>
             <SignOutButton />
@@ -111,7 +126,7 @@ export function AccountShell({ children }: { children: ReactNode }) {
         </header>
         <main className="workspace-content">{children}</main>
         <footer className="app-footer">
-          Work to Work · Your private workspace <Link to="/demo/dashboard">Explore Demo</Link>
+          Work to Work · Your private workspace <Link to="/">Back to website</Link>
         </footer>
       </div>
     </div>

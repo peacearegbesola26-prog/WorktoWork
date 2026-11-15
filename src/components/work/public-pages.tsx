@@ -2,7 +2,7 @@ import { useState } from "react";
 import { Link } from "@tanstack/react-router";
 import { Check, ArrowUpRight, ArrowRight } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { PublicShell, Field, DemoBadge, DemoNotice, ActionLink } from "./shared";
+import { PublicShell, Field, StatusBadge, ActionLink } from "./shared";
 export function HowItWorks() {
   return (
     <PublicShell>
@@ -42,10 +42,10 @@ export function HowItWorks() {
             </div>
           </div>
         </section>
-        <DemoNotice>
-          Stage 1 searches fictional demonstration records only. Live discovery and AI require later
-          integrations.
-        </DemoNotice>
+        <p className="legal-note">
+          Accounts, profiles and application tracking are available. Live discovery and AI
+          processing are not connected.
+        </p>
         <section className="section narrow-content">
           <h2 className="text-2xl mb-5">Discovery, with clear boundaries.</h2>
           <p className="legal-note">
@@ -57,7 +57,7 @@ export function HowItWorks() {
             AI career tools will prepare suggestions for you to review, never silently send
             applications or publish changes on your behalf.
           </p>
-          <ActionLink to="/demo/dashboard">Explore the Demo</ActionLink>
+          <ActionLink to="/app/dashboard">Open your workspace</ActionLink>
         </section>
       </div>
     </PublicShell>
@@ -95,7 +95,7 @@ export function Pricing() {
     <PublicShell>
       <div className="site-container">
         <header className="public-page-head">
-          <DemoBadge>Planned pricing</DemoBadge>
+          <StatusBadge>Planned pricing</StatusBadge>
           <h1>A plan for your next chapter.</h1>
           <p>
             These are proposed plans, not available subscriptions. Prices, limits and features will
@@ -118,8 +118,8 @@ export function Pricing() {
                 ))}
               </ul>
               <Button asChild variant={i === 1 ? "default" : "outline"}>
-                <Link to="/demo/dashboard">
-                  Explore the free demo <ArrowUpRight />
+                <Link to="/app/dashboard">
+                  Open workspace <ArrowUpRight />
                 </Link>
               </Button>
             </article>
@@ -145,37 +145,33 @@ export function Contact() {
         <div className="contact-layout">
           <div>
             <h2>A better next chapter starts with a conversation.</h2>
-            <p>
-              Our contact channel will be available when messaging is connected. For now, you can
-              review the form in demonstration mode.
-            </p>
-            <DemoBadge>Contact delivery not connected</DemoBadge>
+            <p>Our contact channel is not connected yet. No messages can be sent.</p>
+            <StatusBadge>Contact delivery not connected</StatusBadge>
           </div>
           <form
             className="form-stack"
             onSubmit={(e) => {
               e.preventDefault();
-              setMessage(
-                "Message not sent. Contact delivery is not connected in this demonstration.",
-              );
+              setMessage("Message not sent. Contact delivery is not connected.");
             }}
           >
             <Field label="Name">
-              <input required placeholder="Demo name" autoComplete="off" />
+              <input required placeholder="Your name" disabled autoComplete="off" />
             </Field>
             <Field label="Email address">
               <input
                 required
                 type="email"
-                placeholder="Use a fictional demo email"
+                placeholder="Email address"
+                disabled
                 autoComplete="off"
               />
             </Field>
             <Field label="Message">
-              <textarea required placeholder="Your question or feedback" />
+              <textarea disabled placeholder="Contact delivery not connected" />
             </Field>
-            <Button type="submit">
-              Preview contact request <ArrowRight />
+            <Button type="submit" disabled>
+              Contact not connected <ArrowRight />
             </Button>
             {message && (
               <p role="status" className="error-inline">

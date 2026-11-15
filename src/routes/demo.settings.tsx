@@ -1,10 +1,8 @@
-import { createFileRoute } from "@tanstack/react-router";
-import { Settings } from "@/components/work/workspace";
+import { createFileRoute, redirect } from "@tanstack/react-router";
 import { pageHead } from "@/lib/page-head";
 export const Route = createFileRoute("/demo/settings")({
-  head: () => pageHead("Demo Settings", "Set safe demo preferences and reset sample records."),
-  component: Page,
+  head: () => pageHead("Workspace redirect", "Continue to your real Work to Work workspace."),
+  beforeLoad: () => {
+    throw redirect({ to: "/app/settings", replace: true });
+  },
 });
-function Page() {
-  return <Settings />;
-}

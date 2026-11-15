@@ -26,3 +26,11 @@ Hosted preview verification remains unavailable from the test browser: it opens 
 - [x] Verify account journeys, refresh persistence and cross-user database restrictions
 - [x] Report results, exact manual checks and secure administrator setup; do not publish
 - [ ] Complete real inbox verification and recovery-link journey — requires the user's real email inbox; exact steps are in README and completion report
+
+## Single real application
+
+- [x] Verify existing Cloud, real authentication and database persistence
+- [x] Move useful page designs into protected /app pages and update all navigation
+- [x] Remove fictional records and demo entry points; redirect legacy addresses
+- [x] Verify authenticated persistence, legacy redirects, privacy rules and mobile layout
+- [x] Report functioning features and remaining integrations; do not publish

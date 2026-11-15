@@ -1,14 +1,8 @@
-import { createFileRoute } from "@tanstack/react-router";
-import { Admin } from "@/components/work/workspace";
+import { createFileRoute, redirect } from "@tanstack/react-router";
 import { pageHead } from "@/lib/page-head";
 export const Route = createFileRoute("/demo/admin")({
-  head: () =>
-    pageHead(
-      "Read-only Admin Preview",
-      "Public read-only administration demonstration with fictional data.",
-    ),
-  component: Page,
+  head: () => pageHead("Workspace redirect", "Continue to your real Work to Work workspace."),
+  beforeLoad: () => {
+    throw redirect({ to: "/app/admin", replace: true });
+  },
 });
-function Page() {
-  return <Admin />;
-}

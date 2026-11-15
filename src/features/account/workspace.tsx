@@ -22,7 +22,7 @@ type Data = Awaited<ReturnType<typeof getWorkspace>>;
 export function WorkspacePage({
   view,
 }: {
-  view: "dashboard" | "profile" | "settings" | "saved" | "tracker" | "alerts" | "opportunities";
+  view: "dashboard" | "profile" | "settings" | "saved" | "tracker" | "alerts" | "social" | "web";
 }) {
   const { data } = useSuspenseQuery(workspaceOptions);
   const client = useQueryClient();
@@ -70,15 +70,20 @@ export function WorkspacePage({
               label: "Saved opportunities",
               count: data.counts.saved,
               icon: Bookmark,
-              to: "/saved",
+              to: "/app/saved",
             },
             {
               label: "Tracked applications",
               count: data.counts.tracker,
               icon: BriefcaseBusiness,
-              to: "/tracker",
+              to: "/app/tracker",
             },
-            { label: "Alert preferences", count: data.counts.alerts, icon: Bell, to: "/alerts" },
+            {
+              label: "Alert preferences",
+              count: data.counts.alerts,
+              icon: Bell,
+              to: "/app/alerts",
+            },
           ].map((item) => (
             <article className="stat-card" key={item.label}>
               <item.icon size={20} />
@@ -97,7 +102,7 @@ export function WorkspacePage({
             payments are not active.
           </p>
           <Button asChild>
-            <Link to="/opportunities">Explore opportunities</Link>
+            <Link to="/app/social">Explore opportunities</Link>
           </Button>
         </section>
       </>
@@ -109,7 +114,7 @@ export function WorkspacePage({
         {data.saved.length === 0 ? (
           <EmptyState
             title="No saved opportunities yet"
-            description="Live sources are not connected yet. Fictional demo records stay in Explore Demo."
+            description="Live sources are not connected yet. Your saved opportunities will appear here once sources are available."
           />
         ) : (
           <div className="opportunity-grid">
@@ -143,7 +148,14 @@ export function WorkspacePage({
         )}
       </>
     );
-  return <Discovery data={data} save={save} busy={mutation.isPending} />;
+  return (
+    <Discovery
+      mode={view === "web" ? "web" : "social"}
+      data={data}
+      save={save}
+      busy={mutation.isPending}
+    />
+  );
 }
 function ProfileForm({
   profile,
@@ -506,24 +518,34 @@ function Alerts({
   );
 }
 function Discovery({
+  mode,
   data,
   save,
   busy,
 }: {
+  mode: "social" | "web";
   data: Data;
   save: (c: Command) => Promise<unknown>;
   busy: boolean;
 }) {
   const [query, setQuery] = useState("");
-  const rows = data.opportunities.filter((row) =>
-    (row.title + " " + row.company + " " + row.skills.join(" "))
-      .toLowerCase()
-      .includes(query.toLowerCase()),
+  const [country, setCountry] = useState("");
+  const [work, setWork] = useState("All");
+  const [platform, setPlatform] = useState("All");
+  const rows = data.opportunities.filter(
+    (row) =>
+      (mode === "web" ? row.sources?.platform === "Web" : row.sources?.platform !== "Web") &&
+      (platform === "All" || row.sources?.platform === platform) &&
+      (!country || (row.country ?? "").toLowerCase().includes(country.toLowerCase())) &&
+      (work === "All" || row.work_location === work) &&
+      (row.title + " " + row.company + " " + row.skills.join(" "))
+        .toLowerCase()
+        .includes(query.toLowerCase()),
   );
   return (
     <>
       <PageHeading
-        title="Opportunity discovery"
+        title={mode === "web" ? "Web Discovery" : "Social Discovery"}
         description="Opportunities from connected, permitted sources."
       />
       <Field label="Search opportunities">
@@ -533,6 +555,29 @@ function Discovery({
           placeholder="Title, company or skill"
         />
       </Field>
+      <div className="filter-grid mt-4">
+        <Field label="Country">
+          <input value={country} onChange={(e) => setCountry(e.target.value)} />
+        </Field>
+        <SelectField
+          label="Work location"
+          value={work}
+          onChange={setWork}
+          options={[...locations]}
+        />
+        {mode === "social" && (
+          <SelectField
+            label="Source"
+            value={platform}
+            onChange={setPlatform}
+            options={["All", "Facebook", "LinkedIn", "Instagram", "TikTok", "Reddit"]}
+          />
+        )}
+      </div>
+      <p className="legal-note mt-4">
+        {mode === "web" ? "Web discovery" : "Facebook, LinkedIn, Instagram, TikTok and Reddit"}: not
+        connected. Access requires permitted integrations.
+      </p>
       {rows.length === 0 ? (
         <EmptyState
           title={
@@ -543,12 +588,7 @@ function Discovery({
           description={
             data.opportunities.length
               ? "Try another search."
-              : "No live results are available. Explore Demo contains fictional examples only."
-          }
-          action={
-            <Button variant="outline" asChild>
-              <Link to="/demo/dashboard">Explore Demo</Link>
-            </Button>
+              : "No live results are available until permitted sources are connected."
           }
         />
       ) : (

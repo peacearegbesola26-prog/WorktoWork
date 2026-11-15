@@ -1,10 +1,8 @@
-import { createFileRoute } from "@tanstack/react-router";
-import { AITool } from "@/components/work/workspace";
+import { createFileRoute, redirect } from "@tanstack/react-router";
 import { pageHead } from "@/lib/page-head";
 export const Route = createFileRoute("/demo/cover-letter")({
-  head: () => pageHead("Cover Letter Generator", "Preview the planned AI cover letter tool."),
-  component: Page,
+  head: () => pageHead("Workspace redirect", "Continue to your real Work to Work workspace."),
+  beforeLoad: () => {
+    throw redirect({ to: "/app/cover-letter", replace: true });
+  },
 });
-function Page() {
-  return <AITool kind="cover" />;
-}

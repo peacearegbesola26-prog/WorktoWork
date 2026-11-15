@@ -28,7 +28,7 @@ export const getWorkspace = createServerFn({ method: "GET" })
           .limit(100),
         s
           .from("opportunities")
-          .select("*")
+          .select("*, sources(platform)")
           .eq("published", true)
           .order("created_at", { ascending: false })
           .limit(100),

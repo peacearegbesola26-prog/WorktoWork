@@ -5,7 +5,7 @@ export const Route = createFileRoute("/")({
   head: () =>
     pageHead(
       "Find Your Next Opportunity. Everywhere.",
-      "Work to Work helps freelancers discover opportunities across supported sources and prepare stronger applications. Explore the frontend demo.",
+      "Work to Work provides private profiles and application tracking for freelancers. Live discovery and AI tools are not connected yet.",
     ),
   component: Landing,
 });

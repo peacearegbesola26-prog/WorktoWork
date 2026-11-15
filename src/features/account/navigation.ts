@@ -1,6 +1,8 @@
 export function safeNext(value: unknown) {
   return typeof value === "string" &&
-    /^\/(dashboard|profile|settings|saved|tracker|alerts|opportunities)(\?|$)/.test(value)
+    /^\/app\/(dashboard|profile|settings|saved|tracker|alerts|social|web|toolkit|resume-builder|resume-optimizer|resume-tailoring|linkedin-optimizer|cover-letter|admin)(\?|$)/.test(
+      value,
+    )
     ? value
-    : "/dashboard";
+    : "/app/dashboard";
 }

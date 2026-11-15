@@ -1,14 +1,6 @@
-import { createFileRoute } from "@tanstack/react-router";
-import { WorkspacePage } from "@/features/account/workspace";
-import { workspaceOptions } from "@/features/account/query";
-import { pageHead } from "@/lib/page-head";
+import { createFileRoute, redirect } from "@tanstack/react-router";
 export const Route = createFileRoute("/_authenticated/opportunities")({
-  head: () => pageHead("Opportunities", "Your private Work to Work opportunities workspace."),
-  loader: ({ context }) => context.queryClient.ensureQueryData(workspaceOptions),
-  pendingComponent: () => (
-    <p className="p-8" role="status">
-      Loading your workspace…
-    </p>
-  ),
-  component: () => <WorkspacePage view="opportunities" />,
+  beforeLoad: () => {
+    throw redirect({ to: "/app/social", replace: true });
+  },
 });

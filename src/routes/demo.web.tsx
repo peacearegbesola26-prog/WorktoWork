@@ -1,10 +1,8 @@
-import { createFileRoute } from "@tanstack/react-router";
-import { Discovery } from "@/components/work/workspace";
+import { createFileRoute, redirect } from "@tanstack/react-router";
 import { pageHead } from "@/lib/page-head";
 export const Route = createFileRoute("/demo/web")({
-  head: () => pageHead("Web Discovery", "Search the shared web opportunity demonstration records."),
-  component: Page,
+  head: () => pageHead("Workspace redirect", "Continue to your real Work to Work workspace."),
+  beforeLoad: () => {
+    throw redirect({ to: "/app/web", replace: true });
+  },
 });
-function Page() {
-  return <Discovery web />;
-}

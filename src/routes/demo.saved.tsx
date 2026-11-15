@@ -1,10 +1,8 @@
-import { createFileRoute } from "@tanstack/react-router";
-import { Saved } from "@/components/work/workspace";
+import { createFileRoute, redirect } from "@tanstack/react-router";
 import { pageHead } from "@/lib/page-head";
 export const Route = createFileRoute("/demo/saved")({
-  head: () => pageHead("Saved Opportunities", "Your saved demonstration opportunity shortlist."),
-  component: Page,
+  head: () => pageHead("Workspace redirect", "Continue to your real Work to Work workspace."),
+  beforeLoad: () => {
+    throw redirect({ to: "/app/saved", replace: true });
+  },
 });
-function Page() {
-  return <Saved />;
-}

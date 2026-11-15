@@ -7,7 +7,7 @@ import { useAccountAuth } from "./auth";
 import { safeNext } from "./navigation";
 export function AccountAuthPage({
   kind,
-  next = "/dashboard",
+  next = "/app/dashboard",
 }: {
   kind: "login" | "signup" | "verification" | "forgot" | "reset";
   next?: string;
@@ -129,7 +129,7 @@ export function AccountAuthPage({
                 Your email is verified.
               </p>
               <Button asChild>
-                <Link to="/dashboard">Open workspace</Link>
+                <Link to="/app/dashboard">Open workspace</Link>
               </Button>
             </>
           ) : (
@@ -218,16 +218,11 @@ export function AccountAuthPage({
             <Link to="/signup">Create account</Link>
             <Link to="/forgot-password">Forgot password?</Link>
           </div>
-          <div className="auth-demo">
-            <Button asChild variant="outline">
-              <Link to="/demo/dashboard">Explore Demo</Link>
+          {kind === "reset" && message && (
+            <Button asChild>
+              <Link to="/app/dashboard">Open workspace</Link>
             </Button>
-            {kind === "reset" && message && (
-              <Button asChild>
-                <Link to="/dashboard">Open workspace</Link>
-              </Button>
-            )}
-          </div>
+          )}
         </div>
       </section>
     </PublicShell>

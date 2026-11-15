@@ -30,8 +30,8 @@ npm run dev
 
 ## Real accounts stage
 
-Real account routes: `/dashboard`, `/profile`, `/settings`, `/saved`, `/tracker`, `/alerts`, `/opportunities`.
-`/demo/*` remains fictional and never imports into accounts. Email/password sign-in is enabled with verification required.
+Real account routes: `/app/dashboard`, `/app/social`, `/app/web`, `/app/saved`, `/app/tracker`, `/app/alerts`, `/app/toolkit`, `/app/settings`, and `/app/profile`.
+There is no separate demo experience or fictional dataset. All old `/demo/*` pages and old real account addresses redirect to the corresponding protected pages. Email/password sign-in is enabled with verification required.
 All account requests use authenticated server functions and owner-scoped database policies. Roles are separate and cannot be assigned by browser requests.
 
 ### Initial administrator
@@ -42,9 +42,10 @@ Register and verify the project owner's account first. In Lovable's trusted Clou
 
 - Passed real isolated-account browser checks: login, logout, refresh restoration, protected-route redirect, profile/preferences updates, application creation/readback, alerts, zero-count dashboard, empty discovery, mobile navigation and persistence after re-login.
 - Passed six live security regression tests in `tests/account_security.py`: profile isolation; no self-admin grants; admin-only source/opportunity writes; anonymous private reads blocked/empty; unique private saves; isolated tracker/alert reads and writes. Temporary users and source/opportunity fixtures were removed.
-- Passed 26 frontend tests. Registration confirmation and recovery redirects are also covered by mocked regression tests, not claimed as email delivery tests.
+- Passed 18 current frontend tests after removing obsolete fictional-demo tests. These include protected return destinations, registration confirmation and recovery redirects. Mocked tests are not claimed as email delivery tests.
 - Registration with a reserved test address was rejected clearly by the hosted auth service. Actual inbox delivery, verification-link completion and password reset remain manual checks: register with a real address in the Lovable preview, open its confirmation email, log in, request Forgot password, open its email link, set a new password, then log out and log in with that new password.
 - Preview and existing hosted domain redirect URLs were read and are allowed. No agent tool changes that list. Local email-link testing additionally needs `http://127.0.0.1:8080/**` in More → Users → Auth settings → Advanced → Redirect URLs; do not use localhost for email return links.
 - The security advisor flags the role-check security-definer helper, which intentionally supports RLS role checks. It has a fixed search path and no writes.
+- Verified every requested /app page rejects signed-out access, and all 15 old demo content pages redirect correctly both signed out and signed in. Rechecked real profile, settings, applications and alerts across refresh and logout/login; no browser runtime errors. Confirmed zero source/opportunity fixtures and zero temporary test users remain.
 
-Live platform connectors, AI processing, resume uploads, billing, automatic notification scheduling/delivery and administrator management screens remain deferred. The private storage bucket is reserved with owner-folder policies; no upload control is enabled. Nothing was published during this stage.
+Live platform connectors, AI processing, resume uploads, billing, contact delivery, automatic notification scheduling/delivery and administrator management screens remain deferred. The Career Toolkit preserves the resume editor layout for unsaved session-only drafting, with no AI results simulated. The private storage bucket is reserved with owner-folder policies; no upload control is enabled. Nothing was published during this stage.
