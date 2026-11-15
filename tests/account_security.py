@@ -1,4 +1,4 @@
-"""Live RLS regression tests. Requires Cloud server variables; creates and removes isolated fixtures."""
+"""Live RLS tests: isolated auth users only; never insert fictional opportunities or sources."""
 import os, unittest, uuid, secrets, requests
 BASE=os.environ['SUPABASE_URL'].rstrip('/')
 KEY=os.environ['SUPABASE_SERVICE_ROLE_KEY']
@@ -16,8 +16,6 @@ class AccountSecurity(unittest.TestCase):
    user=r.json();uid=user.get('id') or user['user']['id'];cls.users.append({'id':uid,'email':email})
    login=call('/auth/v1/token?grant_type=password','POST',{'email':email,'password':cls.password},{'apikey':PUB});assert login.ok,login.status_code
    cls.users[-1]['headers']={'apikey':PUB,'Authorization':'Bearer '+login.json()['access_token']}
-  r=call('/rest/v1/sources','POST',{'name':'RLS verification '+uuid.uuid4().hex,'platform':'Web','enabled':True},{**ADMIN,'Prefer':'return=representation'});assert r.ok;cls.source=r.json()[0]['id']
-  r=call('/rest/v1/opportunities','POST',{'source_id':cls.source,'title':'Temporary security verification fixture','published':True},{**ADMIN,'Prefer':'return=representation'});assert r.ok;cls.op=r.json()[0]['id']
  @classmethod
  def tearDownClass(cls):
   if cls.op:call('/rest/v1/opportunities?id=eq.'+cls.op,'DELETE')
@@ -41,14 +39,12 @@ class AccountSecurity(unittest.TestCase):
    response=call('/rest/v1/'+table,headers={'apikey':PUB})
    if response.ok:self.assertEqual(response.json(),[],table)
    else:self.assertGreaterEqual(response.status_code,400)
- def test_duplicate_saves_are_prevented_and_isolated(self):
-  a,b=self.users;body={'user_id':a['id'],'opportunity_id':self.op}
-  self.assertLess(call('/rest/v1/saved_opportunities','POST',body,a['headers']).status_code,300)
-  self.assertEqual(call('/rest/v1/saved_opportunities','POST',body,a['headers']).status_code,409)
+ def test_saves_reject_missing_opportunities_and_other_owners(self):
+  a,b=self.users;body={'user_id':a['id'],'opportunity_id':str(uuid.uuid4())}
+  self.assertGreaterEqual(call('/rest/v1/saved_opportunities','POST',body,a['headers']).status_code,400)
+  self.assertGreaterEqual(call('/rest/v1/saved_opportunities','POST',body,b['headers']).status_code,400)
+  self.assertEqual(call('/rest/v1/saved_opportunities',headers=a['headers']).json(),[])
   self.assertEqual(call('/rest/v1/saved_opportunities',headers=b['headers']).json(),[])
-  self.assertGreaterEqual(call('/rest/v1/saved_opportunities','POST',{'user_id':a['id'],'opportunity_id':self.op},b['headers']).status_code,400)
-  self.assertEqual(call('/rest/v1/saved_opportunities?user_id=eq.'+a['id'],'DELETE',headers={**b['headers'],'Prefer':'return=representation'}).json(),[])
-  self.assertEqual(len(call('/rest/v1/saved_opportunities',headers=a['headers']).json()),1)
  def test_tracking_and_alerts_are_isolated(self):
   a,b=self.users
   for table,body in [('tracked_applications',{'title':'Private application','status':'Applied'}),('alert_preferences',{'name':'Private alert'})]:

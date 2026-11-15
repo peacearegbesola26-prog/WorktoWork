@@ -9,6 +9,10 @@ export const profileSchema = z.object({
   preferred_countries: list,
   work_preference: z.enum(locations),
 });
+export const preferencesSchema = profileSchema.pick({
+  preferred_countries: true,
+  work_preference: true,
+});
 export const applicationSchema = z.object({
   title: z.string().trim().min(1).max(300),
   company: z.string().trim().max(200),
@@ -24,6 +28,7 @@ export const alertSchema = z.object({
 });
 export const commandSchema = z.discriminatedUnion("action", [
   z.object({ action: z.literal("profile"), value: profileSchema }),
+  z.object({ action: z.literal("preferences"), value: preferencesSchema }),
   z.object({
     action: z.literal("application"),
     id: z.string().uuid().optional(),

@@ -72,6 +72,7 @@ export const updateWorkspace = createServerFn({ method: "POST" })
     let result;
     switch (data.action) {
       case "profile":
+      case "preferences":
         result = await s.from("profiles").update(data.value).eq("id", userId).select("id").single();
         break;
       case "application":

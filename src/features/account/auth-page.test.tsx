@@ -7,13 +7,20 @@ const mocks = vi.hoisted(() => ({
   reset: vi.fn(),
   update: vi.fn(),
   navigate: vi.fn(),
+  login: vi.fn(),
+  auth: { user: null as null | { id: string }, loading: false, recovery: false },
 }));
 vi.mock("@/integrations/supabase/client", () => ({
   supabase: {
-    auth: { signUp: mocks.signup, resetPasswordForEmail: mocks.reset, updateUser: mocks.update },
+    auth: {
+      signInWithPassword: mocks.login,
+      signUp: mocks.signup,
+      resetPasswordForEmail: mocks.reset,
+      updateUser: mocks.update,
+    },
   },
 }));
-vi.mock("./auth", () => ({ useAccountAuth: () => ({ user: null, loading: false }) }));
+vi.mock("./auth", () => ({ useAccountAuth: () => mocks.auth }));
 vi.mock("@tanstack/react-router", () => ({
   Link: ({ children }: { children: ReactNode }) => children,
   useNavigate: () => mocks.navigate,
@@ -32,9 +39,13 @@ describe("Real account flows", () => {
     vi.clearAllMocks();
     mocks.signup.mockResolvedValue({ data: { session: null }, error: null });
     mocks.reset.mockResolvedValue({ error: null });
+    mocks.login.mockResolvedValue({ error: null });
+    mocks.update.mockResolvedValue({ error: null });
+    mocks.auth.user = null;
+    mocks.auth.recovery = false;
   });
   it("does not sign in a signup awaiting email confirmation", async () => {
-    render(<AccountAuthPage kind="signup" />);
+    render(<AccountAuthPage kind="signup" next="/app/saved" />);
     fireEvent.change(screen.getByLabelText("Full name"), { target: { value: "Peace" } });
     fireEvent.change(screen.getByLabelText("Email address"), {
       target: { value: "peace@example.org" },
@@ -46,7 +57,7 @@ describe("Real account flows", () => {
     fireEvent.click(screen.getByRole("button", { name: "Create account" }));
     await waitFor(() => expect(mocks.signup).toHaveBeenCalled());
     expect(mocks.signup.mock.calls[0]?.[0].options.emailRedirectTo).toBe(
-      window.location.origin + "/email-verification",
+      window.location.origin + "/email-verification?next=%2Fapp%2Fsaved",
     );
     expect(mocks.navigate).not.toHaveBeenCalled();
   });
@@ -66,5 +77,27 @@ describe("Real account flows", () => {
     render(<AccountAuthPage kind="reset" />);
     expect(screen.getByRole("button", { name: "Update password" })).toBeDisabled();
     expect(mocks.update).not.toHaveBeenCalled();
+  });
+  it("returns a successful login to the intended protected page", async () => {
+    render(<AccountAuthPage kind="login" next="/app/tracker" />);
+    fireEvent.change(screen.getByLabelText("Email address"), {
+      target: { value: "peace@example.org" },
+    });
+    fireEvent.change(screen.getByLabelText("Password"), { target: { value: "testpass123" } });
+    fireEvent.click(screen.getByRole("button", { name: "Log in" }));
+    await waitFor(() =>
+      expect(mocks.navigate).toHaveBeenCalledWith({ to: "/app/tracker", replace: true }),
+    );
+  });
+  it("updates a recovery password without requesting a current password", async () => {
+    mocks.auth.user = { id: "recovery-user" };
+    mocks.auth.recovery = true;
+    render(<AccountAuthPage kind="reset" />);
+    fireEvent.change(screen.getByLabelText("Password"), { target: { value: "newpassword123" } });
+    fireEvent.change(screen.getByLabelText("Confirm password"), {
+      target: { value: "newpassword123" },
+    });
+    fireEvent.click(screen.getByRole("button", { name: "Update password" }));
+    await waitFor(() => expect(mocks.update).toHaveBeenCalledWith({ password: "newpassword123" }));
   });
 });

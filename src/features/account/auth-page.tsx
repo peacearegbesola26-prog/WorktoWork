@@ -22,6 +22,12 @@ export function AccountAuthPage({
   const [recovery, setRecovery] = useState(false);
   const { user, loading, recovery: sessionRecovery } = useAccountAuth();
   const navigate = useNavigate();
+  const destination = safeNext(next);
+  function verificationUrl() {
+    const url = new URL("/email-verification", window.location.origin);
+    url.searchParams.set("next", destination);
+    return url.toString();
+  }
   useEffect(() => {
     if (kind === "reset") {
       const hash = new URLSearchParams(window.location.hash.slice(1));
@@ -60,7 +66,7 @@ export function AccountAuthPage({
           password,
           options: {
             data: { name },
-            emailRedirectTo: window.location.origin + "/email-verification",
+            emailRedirectTo: verificationUrl(),
           },
         });
         if (r.error) throw r.error;
@@ -81,7 +87,7 @@ export function AccountAuthPage({
         const r = await supabase.auth.resend({
           type: "signup",
           email,
-          options: { emailRedirectTo: window.location.origin + "/email-verification" },
+          options: { emailRedirectTo: verificationUrl() },
         });
         if (r.error) throw r.error;
         setMessage("A verification email has been requested. Check your inbox and spam folder.");
@@ -129,7 +135,7 @@ export function AccountAuthPage({
                 Your email is verified.
               </p>
               <Button asChild>
-                <Link to="/app/dashboard">Open workspace</Link>
+                <Link to={destination}>Open workspace</Link>
               </Button>
             </>
           ) : (
@@ -214,8 +220,12 @@ export function AccountAuthPage({
             </p>
           )}
           <div className="auth-links">
-            <Link to="/login">Log in</Link>
-            <Link to="/signup">Create account</Link>
+            <Link to="/login" search={{ next: destination }}>
+              Log in
+            </Link>
+            <Link to="/signup" search={{ next: destination }}>
+              Create account
+            </Link>
             <Link to="/forgot-password">Forgot password?</Link>
           </div>
           {kind === "reset" && message && (

@@ -32,4 +32,24 @@ describe("Account record validation", () => {
   it("does not accept administrator commands", () => {
     expect(commandSchema.safeParse({ action: "assignRole", role: "admin" }).success).toBe(false);
   });
+  it("settings updates contain only work preferences, not hidden profile or role fields", () => {
+    expect(
+      commandSchema.parse({
+        action: "preferences",
+        value: {
+          preferred_countries: ["Nigeria"],
+          work_preference: "Remote",
+          name: "Stale name",
+          skills: ["Stale skill"],
+          role: "admin",
+        },
+      }),
+    ).toEqual({
+      action: "preferences",
+      value: {
+        preferred_countries: ["Nigeria"],
+        work_preference: "Remote",
+      },
+    });
+  });
 });

@@ -42,3 +42,6 @@ use the editor.
 - Store roles separately from profiles with no client role writes; initial administrator assignment requires a trusted project-owner operation.
 - Defer router and query invalidation outside auth event callbacks so session checks cannot deadlock the auth lock.
 - Keep account query options and navigation validation separate from React component exports for stable refresh behavior.
+- Preserve validated intended destinations in account links and verification callbacks so changing account forms does not lose the protected destination.
+- Save settings with a preferences-only command so stale hidden profile fields cannot overwrite newer profile edits.
+- Live production verification must never create fictional opportunities; test save rejection and constraints without populating discovery.

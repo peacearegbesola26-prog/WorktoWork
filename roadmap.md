@@ -34,3 +34,10 @@ Hosted preview verification remains unavailable from the test browser: it opens 
 - [x] Remove fictional records and demo entry points; redirect legacy addresses
 - [x] Verify authenticated persistence, legacy redirects, privacy rules and mobile layout
 - [x] Report functioning features and remaining integrations; do not publish
+
+## Account foundation re-verification
+
+- [ ] Preserve intended pages across login, registration and verification links
+- [ ] Verify private data updates, refresh/session restoration and logout/login persistence
+- [ ] Verify backend access controls without inserting fictional opportunities
+- [ ] Report passed checks, unresolved checks, email-inbox steps and trusted initial admin assignment

@@ -11,6 +11,7 @@ import {
   applicationSchema,
   alertSchema,
   profileSchema,
+  preferencesSchema,
   splitList,
   locations,
   statuses,
@@ -177,19 +178,24 @@ function ProfileForm({
   async function submit(e: React.FormEvent) {
     e.preventDefault();
     setError("");
-    const parsed = profileSchema.safeParse({
+    const value = {
       name,
       skills: splitList(skills),
       services: splitList(services),
       preferred_countries: splitList(countries),
       work_preference: work,
-    });
+    };
+    const parsed = settings ? preferencesSchema.safeParse(value) : profileSchema.safeParse(value);
     if (!parsed.success) {
       setError("Please check the profile fields and try again.");
       return;
     }
     try {
-      await save({ action: "profile", value: parsed.data });
+      if (settings) {
+        await save({ action: "preferences", value: preferencesSchema.parse(value) });
+      } else {
+        await save({ action: "profile", value: profileSchema.parse(value) });
+      }
     } catch {
       setError("Your profile could not be saved. Please try again.");
     }
@@ -422,7 +428,7 @@ function Alerts({
         description="Save the opportunities you want to hear about."
       />
       <p role="status" className="legal-note">
-        Preferences are saved, but notifications are not active. Scheduling and email delivery will
+        Not connected — notifications. Preferences are saved, but scheduling and email delivery will
         be connected in a later stage.
       </p>
       <form className="form-stack max-w-2xl mb-8" onSubmit={submit}>
@@ -575,8 +581,9 @@ function Discovery({
         )}
       </div>
       <p className="legal-note mt-4">
-        {mode === "web" ? "Web discovery" : "Facebook, LinkedIn, Instagram, TikTok and Reddit"}: not
-        connected. Access requires permitted integrations.
+        Not connected —{" "}
+        {mode === "web" ? "Web discovery" : "Facebook, LinkedIn, Instagram, TikTok and Reddit"}.
+        Access requires permitted integrations.
       </p>
       {rows.length === 0 ? (
         <EmptyState
