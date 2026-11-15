@@ -1,5 +1,15 @@
 # Stage 1
 
+## Saved resumes and factual AI optimization
+
+- [x] Inspect account prerequisites and ownership controls
+- [x] Add private saved resumes, editing, duplication, deletion and print layout
+- [x] Connect authenticated factual AI suggestions and feedback
+- [x] Verify persistence, ownership, all four real AI requests, approval/save and mobile layout
+- [x] Report verified results and remaining manual checks without publishing
+
+Resume-stage checks: 33 application tests passed; 13 live account/resume privacy checks passed; authenticated save/refresh, duplication, deletion, print-only rendering, signed-out rejection and all four real AI requests passed. Missing facts return questions without an apply action. Test resumes were removed. Browser Save as PDF output and real inbox links require the user's manual checks. Other source and career integrations remain disconnected.
+
 - [x] Public pages and authentication demonstration layouts
 - [x] Shared sample dataset, discovery, details, saved items and tracker
 - [x] Demo alerts, career toolkit, resume editor, profile and settings

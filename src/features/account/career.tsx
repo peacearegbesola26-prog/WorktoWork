@@ -1,16 +1,8 @@
-import { useState } from "react";
 import { Link } from "@tanstack/react-router";
-import {
-  FileText,
-  Sparkles,
-  BriefcaseBusiness,
-  UserRound,
-  Mail,
-  RotateCcw,
-  ShieldCheck,
-} from "lucide-react";
+import { FileText, Sparkles, BriefcaseBusiness, UserRound, Mail } from "lucide-react";
+import { ResumePage } from "@/features/resumes/resume-page";
 import { Button } from "@/components/ui/button";
-import { PageHeading, Field, AIRequired, EmptyState } from "@/components/work/shared";
+import { PageHeading, AIRequired, EmptyState } from "@/components/work/shared";
 const tools = [
   {
     title: "Resume Builder",
@@ -21,10 +13,10 @@ const tools = [
   },
   {
     title: "Resume Optimizer",
-    description: "Review structure, clarity and achievements when AI processing is connected.",
+    description: "Review your summary, experience and achievements with factual AI suggestions.",
     to: "/app/resume-optimizer",
     icon: Sparkles,
-    available: false,
+    available: true,
   },
   {
     title: "Job-specific Resume Tailoring",
@@ -59,7 +51,8 @@ export function CareerPage({
     | "linkedin-optimizer"
     | "cover-letter";
 }) {
-  if (view === "resume-builder") return <ResumeBuilder />;
+  if (view === "resume-builder") return <ResumePage />;
+  if (view === "resume-optimizer") return <ResumePage optimizer />;
   if (view !== "toolkit")
     return (
       <>
@@ -85,8 +78,8 @@ export function CareerPage({
         description="A stronger application starts with a clearer story."
       />
       <p className="legal-note">
-        Resume editing is available for this session only. AI processing and resume uploads are not
-        connected.
+        Save private resumes and request AI suggestions. Resume uploads and the other AI career
+        tools are not connected.
       </p>
       <div className="toolkit-grid">
         {tools.map((t) => (
@@ -97,98 +90,11 @@ export function CareerPage({
             <h2>{t.title}</h2>
             <p>{t.description}</p>
             <Button asChild variant={t.available ? "default" : "outline"}>
-              <Link to={t.to}>{t.available ? "Start building" : "View availability"}</Link>
+              <Link to={t.to}>{t.available ? "Open tool" : "View availability"}</Link>
             </Button>
             {!t.available && <p className="sample-label mt-3">AI not connected</p>}
           </article>
         ))}
-      </div>
-    </>
-  );
-}
-function ResumeBuilder() {
-  const [resume, setResume] = useState({
-    name: "",
-    title: "",
-    summary: "",
-    experience: "",
-    education: "",
-    skills: "",
-    portfolio: "",
-  });
-  const labels = {
-    name: "Full name",
-    title: "Professional title",
-    summary: "Professional summary",
-    experience: "Experience",
-    education: "Education",
-    skills: "Skills",
-    portfolio: "Portfolio links",
-  };
-  return (
-    <>
-      <PageHeading
-        title="Resume Builder"
-        description="Bring your experience together with a live preview."
-      />
-      <p className="legal-note">
-        <ShieldCheck className="inline mr-2" size={15} />
-        Resume content is not saved or uploaded. Refreshing or leaving this page clears your
-        entries.
-      </p>
-      <div className="editor-layout">
-        <div className="form-stack">
-          {(Object.keys(resume) as Array<keyof typeof resume>).map((key) => (
-            <Field key={key} label={labels[key]}>
-              {["summary", "experience", "education"].includes(key) ? (
-                <textarea
-                  value={resume[key]}
-                  onChange={(e) => setResume((p) => ({ ...p, [key]: e.target.value }))}
-                />
-              ) : (
-                <input
-                  value={resume[key]}
-                  onChange={(e) => setResume((p) => ({ ...p, [key]: e.target.value }))}
-                />
-              )}
-            </Field>
-          ))}
-          <AIRequired />
-          <Button disabled className="resume-ai-action">
-            <Sparkles />
-            Enhance with AI — not connected
-          </Button>
-          <Button
-            variant="outline"
-            onClick={() =>
-              setResume({
-                name: "",
-                title: "",
-                summary: "",
-                experience: "",
-                education: "",
-                skills: "",
-                portfolio: "",
-              })
-            }
-          >
-            <RotateCcw />
-            Clear resume
-          </Button>
-        </div>
-        <div>
-          <p className="preview-label">LIVE RESUME PREVIEW · NOT SAVED</p>
-          <article className="resume-preview">
-            <h2>{resume.name || "Your name"}</h2>
-            <p className="resume-title">{resume.title || "Your professional title"}</p>
-            {(["summary", "experience", "education", "skills", "portfolio"] as const).map((key) => (
-              <section key={key}>
-                <h3>{labels[key]}</h3>
-                <p>{resume[key] || "—"}</p>
-              </section>
-            ))}
-          </article>
-        </div>
       </div>
     </>
   );

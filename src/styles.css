@@ -32,6 +32,8 @@
   --radius-xl: 8px;
 }
 :root {
+  --print-background: oklch(1 0 0);
+  --print-foreground: oklch(0.15 0 0);
   --background: oklch(1 0 0);
   --foreground: oklch(0.235 0.05 263);
   --card: oklch(1 0 0);
@@ -1322,7 +1324,7 @@ td select {
 }
 .resume-preview h3 {
   font-size: 10px;
-  letter-spacing: 0.1em;
+  letter-spacing: 0;
   text-transform: uppercase;
   border-bottom: 1px solid var(--border);
   padding-bottom: 8px;
@@ -1338,6 +1340,100 @@ td select {
   font-size: 10px;
   color: var(--muted-foreground);
   margin-bottom: 12px;
+}
+.resume-picker {
+  max-width: 420px;
+  margin-bottom: 20px;
+}
+.resume-toolbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 14px;
+  margin-bottom: 24px;
+}
+.resume-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+.resume-ai-panel {
+  display: grid;
+  gap: 16px;
+  border-top: 1px solid var(--border);
+  padding-top: 24px;
+}
+.resume-ai-panel h2 {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 18px;
+}
+.resume-suggestion {
+  border-left: 3px solid var(--primary);
+  padding-left: 16px;
+  overflow-wrap: anywhere;
+}
+.resume-suggestion h3 {
+  font-size: 13px;
+  margin-bottom: 10px;
+}
+.resume-suggestion p {
+  white-space: pre-wrap;
+  margin-bottom: 16px;
+}
+.resume-preview-column {
+  min-width: 0;
+}
+@media print {
+  @page {
+    size: A4;
+    margin: 16mm;
+  }
+  body {
+    background: var(--print-background);
+    color: var(--print-foreground);
+  }
+  body * {
+    visibility: hidden;
+  }
+  .print-resume,
+  .print-resume * {
+    visibility: visible;
+  }
+  .no-print {
+    display: none !important;
+  }
+  .print-resume {
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 100%;
+    min-height: 0;
+    border: 0;
+    box-shadow: none;
+    padding: 0;
+    background: var(--print-background);
+    color: var(--print-foreground);
+  }
+  .print-resume p,
+  .print-resume .resume-title {
+    color: var(--print-foreground);
+    font-size: 11pt;
+    line-height: 1.5;
+  }
+  .print-resume h3 {
+    font-size: 11pt;
+    break-after: avoid;
+  }
+  .print-resume h2 {
+    font-size: 24pt;
+  }
+  .print-resume p {
+    orphans: 3;
+    widows: 3;
+  }
 }
 .upload-future {
   border: 1px dashed var(--border);

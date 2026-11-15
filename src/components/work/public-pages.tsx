@@ -43,8 +43,8 @@ export function HowItWorks() {
           </div>
         </section>
         <p className="legal-note">
-          Accounts, profiles and application tracking are available. Live discovery and AI
-          processing are not connected.
+          Accounts, profiles, application tracking, saved resumes and AI resume suggestions are
+          available. Live discovery and other AI career tools are not connected.
         </p>
         <section className="section narrow-content">
           <h2 className="text-2xl mb-5">Discovery, with clear boundaries.</h2>

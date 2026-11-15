@@ -87,8 +87,8 @@ export function Landing() {
               <span>Everywhere.</span>
             </h1>
             <p className="hero-description">
-              Organise your skills, work preferences and applications in a private workspace. Live
-              discovery and AI career tools are not connected yet.
+              Organise your applications, save private resumes and request AI resume suggestions.
+              Live discovery is not connected yet.
             </p>
             <div className="hero-actions">
               <ActionLink to="/signup">Start Finding Opportunities</ActionLink>
@@ -183,8 +183,8 @@ export function Landing() {
               </div>
               <h3>Put your best work forward</h3>
               <p>
-                Draft your resume for this session. Resume optimisation and application preparation
-                will be available when AI is connected.
+                Save your resumes and review AI suggestions grounded in your own experience. Other
+                application preparation tools are not connected yet.
               </p>
               <Link to="/app/toolkit">
                 Discover your career toolkit <ArrowRight size={14} />

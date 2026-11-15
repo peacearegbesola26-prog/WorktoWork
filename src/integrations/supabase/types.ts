@@ -204,6 +204,54 @@ export type Database = {
         }
         Relationships: []
       }
+      resume_ai_access: {
+        Row: {
+          message: string
+          scope: string
+          status: number
+          updated_at: string
+        }
+        Insert: {
+          message: string
+          scope: string
+          status: number
+          updated_at?: string
+        }
+        Update: {
+          message?: string
+          scope?: string
+          status?: number
+          updated_at?: string
+        }
+        Relationships: []
+      }
+      resumes: {
+        Row: {
+          content: Json
+          created_at: string
+          id: string
+          name: string
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          content?: Json
+          created_at?: string
+          id?: string
+          name?: string
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          content?: Json
+          created_at?: string
+          id?: string
+          name?: string
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
       saved_opportunities: {
         Row: {
           created_at: string

@@ -22,6 +22,13 @@
       "when": 1794735064291,
       "tag": "0002_admin_opportunity_management",
       "breakpoints": true
+    },
+    {
+      "idx": 3,
+      "version": "7",
+      "when": 1794736256424,
+      "tag": "0003_private_resumes_and_ai_access",
+      "breakpoints": true
     }
   ]
 }

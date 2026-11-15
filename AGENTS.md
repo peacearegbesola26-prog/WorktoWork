@@ -35,7 +35,8 @@ use the editor.
 
 - Use only Cloud-owned account records in the application; never import legacy browser sample state or seed fictional opportunities.
 - Put real workspace pages under /app within the authenticated layout; preserve old addresses with redirects rather than a second experience.
-- Keep unsaved resume drafts in component memory with an explicit not-saved notice until durable resume storage is implemented.
+- Persist resumes through owner-scoped authenticated commands and RLS; keep unsaved edits in memory with an explicit status so drafts never enter browser storage.
+- Keep resume AI prompts and gateway helpers server-only; fetch owner resumes before processing, return reviewable suggestions without overwriting facts, and persist terminal provider denials to prevent repeated blocked requests.
 - Express the visual system in semantic global CSS tokens and use the shared Button for actions to keep styling and focus behavior consistent.
 - Keep source connector contracts separate from pages and without live adapters until permitted integrations are configured.
 - Put real workspace pages under the authenticated route layout and enforce ownership in RLS and authenticated server functions, because navigation alone is not an access boundary.
