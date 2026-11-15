@@ -30,6 +30,8 @@ export const getWorkspace = createServerFn({ method: "GET" })
           .from("opportunities")
           .select("*, sources(platform)")
           .eq("published", true)
+          .eq("status", "published")
+          .or(`closing_date.is.null,closing_date.gte.${new Date().toISOString().slice(0, 10)}`)
           .order("created_at", { ascending: false })
           .limit(100),
         s
@@ -144,6 +146,8 @@ export const updateWorkspace = createServerFn({ method: "POST" })
           .select("title,company")
           .eq("id", data.id)
           .eq("published", true)
+          .eq("status", "published")
+          .or(`closing_date.is.null,closing_date.gte.${new Date().toISOString().slice(0, 10)}`)
           .single();
         if (item.error || !item.data) throw new Error("This opportunity is no longer available.");
         result = await s

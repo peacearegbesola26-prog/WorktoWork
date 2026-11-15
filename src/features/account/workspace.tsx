@@ -2,7 +2,8 @@ import { useState } from "react";
 import { useSuspenseQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { useServerFn } from "@tanstack/react-start";
 import { Link } from "@tanstack/react-router";
-import { Bookmark, BriefcaseBusiness, Bell, Search, Trash2, Pencil } from "lucide-react";
+import { Bookmark, BriefcaseBusiness, Bell, Trash2, Pencil } from "lucide-react";
+import { DiscoveryPage } from "@/features/discovery/discovery-page";
 import { toast } from "sonner";
 import { Button } from "@/components/ui/button";
 import { Field, PageHeading, EmptyState, SelectField } from "@/components/work/shared";
@@ -115,7 +116,7 @@ export function WorkspacePage({
         {data.saved.length === 0 ? (
           <EmptyState
             title="No saved opportunities yet"
-            description="Live sources are not connected yet. Your saved opportunities will appear here once sources are available."
+            description="Save a published opportunity from Social, Web or Direct Work to Work discovery."
           />
         ) : (
           <div className="opportunity-grid">
@@ -123,6 +124,13 @@ export function WorkspacePage({
               <article className="opportunity-card" key={row.opportunity_id}>
                 <h3>{row.opportunities?.title ?? "Opportunity unavailable"}</h3>
                 <p>{row.opportunities?.company}</p>
+                {row.opportunities && (
+                  <Button asChild variant="link">
+                    <Link to="/app/opportunities/$id" params={{ id: row.opportunity_id }}>
+                      View opportunity
+                    </Link>
+                  </Button>
+                )}
                 <Button
                   variant="outline"
                   disabled={mutation.isPending || !row.opportunities}
@@ -149,14 +157,7 @@ export function WorkspacePage({
         )}
       </>
     );
-  return (
-    <Discovery
-      mode={view === "web" ? "web" : "social"}
-      data={data}
-      save={save}
-      busy={mutation.isPending}
-    />
-  );
+  return <DiscoveryPage section={view === "web" ? "web" : "social"} />;
 }
 function ProfileForm({
   profile,
@@ -515,122 +516,6 @@ function Alerts({
                 }}
               >
                 Delete
-              </Button>
-            </article>
-          ))}
-        </div>
-      )}
-    </>
-  );
-}
-function Discovery({
-  mode,
-  data,
-  save,
-  busy,
-}: {
-  mode: "social" | "web";
-  data: Data;
-  save: (c: Command) => Promise<unknown>;
-  busy: boolean;
-}) {
-  const [query, setQuery] = useState("");
-  const [country, setCountry] = useState("");
-  const [work, setWork] = useState("All");
-  const [platform, setPlatform] = useState("All");
-  const rows = data.opportunities.filter(
-    (row) =>
-      (mode === "web" ? row.sources?.platform === "Web" : row.sources?.platform !== "Web") &&
-      (platform === "All" || row.sources?.platform === platform) &&
-      (!country || (row.country ?? "").toLowerCase().includes(country.toLowerCase())) &&
-      (work === "All" || row.work_location === work) &&
-      (row.title + " " + row.company + " " + row.skills.join(" "))
-        .toLowerCase()
-        .includes(query.toLowerCase()),
-  );
-  return (
-    <>
-      <PageHeading
-        title={mode === "web" ? "Web Discovery" : "Social Discovery"}
-        description="Opportunities from connected, permitted sources."
-      />
-      <Field label="Search opportunities">
-        <input
-          value={query}
-          onChange={(e) => setQuery(e.target.value)}
-          placeholder="Title, company or skill"
-        />
-      </Field>
-      <div className="filter-grid mt-4">
-        <Field label="Country">
-          <input value={country} onChange={(e) => setCountry(e.target.value)} />
-        </Field>
-        <SelectField
-          label="Work location"
-          value={work}
-          onChange={setWork}
-          options={[...locations]}
-        />
-        {mode === "social" && (
-          <SelectField
-            label="Source"
-            value={platform}
-            onChange={setPlatform}
-            options={["All", "Facebook", "LinkedIn", "Instagram", "TikTok", "Reddit"]}
-          />
-        )}
-      </div>
-      <p className="legal-note mt-4">
-        Not connected —{" "}
-        {mode === "web" ? "Web discovery" : "Facebook, LinkedIn, Instagram, TikTok and Reddit"}.
-        Access requires permitted integrations.
-      </p>
-      {rows.length === 0 ? (
-        <EmptyState
-          title={
-            data.opportunities.length
-              ? "No matching opportunities"
-              : "Live sources are not connected yet"
-          }
-          description={
-            data.opportunities.length
-              ? "Try another search."
-              : "No live results are available until permitted sources are connected."
-          }
-        />
-      ) : (
-        <div className="opportunity-grid mt-6">
-          {rows.map((row) => (
-            <article className="opportunity-card" key={row.id}>
-              <Search size={18} />
-              <h3>{row.title}</h3>
-              <p>{row.company}</p>
-              <p>{row.summary}</p>
-              <p>
-                {row.country ?? "Country unknown"} · {row.work_location}
-              </p>
-              <Button
-                disabled={busy}
-                variant="outline"
-                onClick={() =>
-                  void save({
-                    action: data.saved.some((s) => s.opportunity_id === row.id) ? "unsave" : "save",
-                    id: row.id,
-                  }).catch(() => {})
-                }
-              >
-                {data.saved.some((s) => s.opportunity_id === row.id)
-                  ? "Unsave"
-                  : "Save opportunity"}
-              </Button>
-              <Button
-                disabled={busy}
-                variant="ghost"
-                onClick={() =>
-                  void save({ action: "trackOpportunity", id: row.id }).catch(() => {})
-                }
-              >
-                Track application
               </Button>
             </article>
           ))}

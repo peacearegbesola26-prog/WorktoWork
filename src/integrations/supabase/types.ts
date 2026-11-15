@@ -14,6 +14,36 @@ export type Database = {
   }
   public: {
     Tables: {
+      admin_audit: {
+        Row: {
+          action: string
+          actor_id: string
+          after_value: Json | null
+          before_value: Json | null
+          created_at: string
+          id: string
+          opportunity_id: string
+        }
+        Insert: {
+          action: string
+          actor_id: string
+          after_value?: Json | null
+          before_value?: Json | null
+          created_at?: string
+          id?: string
+          opportunity_id: string
+        }
+        Update: {
+          action?: string
+          actor_id?: string
+          after_value?: Json | null
+          before_value?: Json | null
+          created_at?: string
+          id?: string
+          opportunity_id?: string
+        }
+        Relationships: []
+      }
       alert_preferences: {
         Row: {
           countries: string[]
@@ -57,47 +87,80 @@ export type Database = {
       }
       opportunities: {
         Row: {
+          application_instructions: string
+          application_url: string | null
+          budget: number | null
+          closing_date: string | null
           company: string
           country: string | null
           created_at: string
+          currency: string | null
+          description: string
+          discovery_section: string
           id: string
           opportunity_type: string
+          origin: string
           posted_at: string | null
           published: boolean
+          service_category: string
           skills: string[]
           source_id: string | null
+          status: string
           summary: string
           title: string
+          updated_at: string
           url: string | null
           work_location: string
         }
         Insert: {
+          application_instructions?: string
+          application_url?: string | null
+          budget?: number | null
+          closing_date?: string | null
           company?: string
           country?: string | null
           created_at?: string
+          currency?: string | null
+          description?: string
+          discovery_section?: string
           id?: string
           opportunity_type?: string
+          origin?: string
           posted_at?: string | null
           published?: boolean
+          service_category?: string
           skills?: string[]
           source_id?: string | null
+          status?: string
           summary?: string
           title: string
+          updated_at?: string
           url?: string | null
           work_location?: string
         }
         Update: {
+          application_instructions?: string
+          application_url?: string | null
+          budget?: number | null
+          closing_date?: string | null
           company?: string
           country?: string | null
           created_at?: string
+          currency?: string | null
+          description?: string
+          discovery_section?: string
           id?: string
           opportunity_type?: string
+          origin?: string
           posted_at?: string | null
           published?: boolean
+          service_category?: string
           skills?: string[]
           source_id?: string | null
+          status?: string
           summary?: string
           title?: string
+          updated_at?: string
           url?: string | null
           work_location?: string
         }
@@ -179,6 +242,7 @@ export type Database = {
           created_at: string
           enabled: boolean
           id: string
+          integration_configured: boolean
           name: string
           platform: string
         }
@@ -186,6 +250,7 @@ export type Database = {
           created_at?: string
           enabled?: boolean
           id?: string
+          integration_configured?: boolean
           name: string
           platform: string
         }
@@ -193,6 +258,7 @@ export type Database = {
           created_at?: string
           enabled?: boolean
           id?: string
+          integration_configured?: boolean
           name?: string
           platform?: string
         }
@@ -269,11 +335,16 @@ export type Database = {
       [_ in never]: never
     }
     Functions: {
+      admin_overview: { Args: never; Returns: Json }
       has_role: {
         Args: {
           _role: Database["public"]["Enums"]["app_role"]
           _user_id: string
         }
+        Returns: boolean
+      }
+      opportunity_is_active: {
+        Args: { o: Database["public"]["Tables"]["opportunities"]["Row"] }
         Returns: boolean
       }
     }

@@ -37,7 +37,16 @@ Hosted preview verification remains unavailable from the test browser: it opens 
 
 ## Account foundation re-verification
 
-- [ ] Preserve intended pages across login, registration and verification links
-- [ ] Verify private data updates, refresh/session restoration and logout/login persistence
-- [ ] Verify backend access controls without inserting fictional opportunities
-- [ ] Report passed checks, unresolved checks, email-inbox steps and trusted initial admin assignment
+- [x] Preserve intended pages across login, registration and verification links
+- [x] Verify private data updates, refresh/session restoration and logout/login persistence
+- [x] Verify backend access controls without inserting fictional opportunities
+- [x] Report passed checks, unresolved checks, email-inbox steps and trusted initial admin assignment
+
+## Real administration and opportunity management
+
+- [x] Extend opportunity fields, active visibility, source states and immutable admin audit trail
+- [x] Add backend-enforced /admin overview, opportunity editing and source management
+- [x] Connect real social, web and direct discovery, details, filters and pagination
+- [x] Verify available privacy, input-validation, session and desktop/mobile checks
+- [ ] Verify full administrator publication, audit, populated filters/pagination and opportunity-action persistence — requires trusted initial admin assignment and genuine opportunity data; isolated transactional account creation is blocked by sandbox permissions
+- [x] Report verified checks and initial administrator/inbox manual steps; do not publish

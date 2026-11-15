@@ -121,10 +121,12 @@ export function PublicHeader() {
           ) : (
             <>
               <Button variant="ghost" asChild>
-                <Link to="/login">Log in</Link>
+                <Link to="/login" search={{ next: "/app/dashboard" }}>
+                  Log in
+                </Link>
               </Button>
               <Button asChild>
-                <Link to="/signup">
+                <Link to="/signup" search={{ next: "/app/dashboard" }}>
                   Get started <ArrowUpRight />
                 </Link>
               </Button>
@@ -158,10 +160,18 @@ export function PublicHeader() {
                 ))}
                 {!user && (
                   <>
-                    <Link to="/login" onClick={() => setOpen(false)}>
+                    <Link
+                      to="/login"
+                      search={{ next: "/app/dashboard" }}
+                      onClick={() => setOpen(false)}
+                    >
                       Log in
                     </Link>
-                    <Link to="/signup" onClick={() => setOpen(false)}>
+                    <Link
+                      to="/signup"
+                      search={{ next: "/app/dashboard" }}
+                      onClick={() => setOpen(false)}
+                    >
                       Get started
                     </Link>
                   </>

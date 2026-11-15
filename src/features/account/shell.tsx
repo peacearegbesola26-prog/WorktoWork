@@ -1,6 +1,9 @@
 import { useState, type ReactNode } from "react";
 import { Link, useNavigate } from "@tanstack/react-router";
 import { useQueryClient } from "@tanstack/react-query";
+import { useQuery } from "@tanstack/react-query";
+import { useServerFn } from "@tanstack/react-start";
+import { adminAccess } from "@/features/admin/admin.functions";
 import {
   Menu,
   Globe2,
@@ -32,6 +35,7 @@ const nav = [
   { to: "/app/dashboard", label: "Dashboard", icon: LayoutDashboard },
   { to: "/app/social", label: "Social Discovery", icon: Search },
   { to: "/app/web", label: "Web Discovery", icon: Globe2 },
+  { to: "/app/direct", label: "Direct Work to Work", icon: BriefcaseBusiness },
   { to: "/app/toolkit", label: "Career Toolkit", icon: Sparkles },
   { to: "/app/saved", label: "Saved Opportunities", icon: Bookmark },
   { to: "/app/tracker", label: "Application Tracker", icon: BriefcaseBusiness },
@@ -68,6 +72,12 @@ export function AccountShell({ children }: { children: ReactNode }) {
   const [open, setOpen] = useState(false);
   const [collapsed, setCollapsed] = useState(false);
   const { user } = useAccountAuth();
+  const checkAdmin = useServerFn(adminAccess);
+  const { data: isAdmin } = useQuery({
+    queryKey: ["admin-access", user?.id],
+    queryFn: () => checkAdmin(),
+    enabled: !!user,
+  });
   const navigation = (
     <nav className="app-nav" aria-label="Account navigation">
       {nav.map((item) => (
@@ -82,6 +92,12 @@ export function AccountShell({ children }: { children: ReactNode }) {
           <span className={collapsed ? "hidden" : ""}>{item.label}</span>
         </Link>
       ))}
+      {isAdmin && (
+        <Link to="/admin" onClick={() => setOpen(false)} activeProps={{ className: "active" }}>
+          <Settings size={19} />
+          <span className={collapsed ? "hidden" : ""}>Administration</span>
+        </Link>
+      )}
     </nav>
   );
   return (

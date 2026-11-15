@@ -45,3 +45,5 @@ use the editor.
 - Preserve validated intended destinations in account links and verification callbacks so changing account forms does not lose the protected destination.
 - Save settings with a preferences-only command so stale hidden profile fields cannot overwrite newer profile edits.
 - Live production verification must never create fictional opportunities; test save rejection and constraints without populating discovery.
+- Administration lives under the authenticated /admin subtree with role checks in every callable handler; database policies remain the direct-request boundary.
+- Opportunity lifecycle and audit history are enforced by database triggers; search is paginated against active database rows, never a limited browser sample.

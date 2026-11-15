@@ -57,20 +57,9 @@ export function CareerPage({
     | "resume-optimizer"
     | "resume-tailoring"
     | "linkedin-optimizer"
-    | "cover-letter"
-    | "admin";
+    | "cover-letter";
 }) {
   if (view === "resume-builder") return <ResumeBuilder />;
-  if (view === "admin")
-    return (
-      <>
-        <PageHeading title="Administration" description="Source and opportunity management." />
-        <EmptyState
-          title="Administration tools are not connected"
-          description="Source and opportunity writes remain restricted to administrators in the database. No administrator is assigned automatically."
-        />
-      </>
-    );
   if (view !== "toolkit")
     return (
       <>
