@@ -65,12 +65,12 @@ class JobSecurity(unittest.TestCase):
         # A buyer can draft a job; a seller cannot create one at all.
         draft = {
             "buyer_id": a["id"],
-            "title": "Landing page for a Lagos bakery",
+            "title": "Landing page for an Austin bakery",
             "description": "Design and build a five page site with online ordering.",
             "category": "Design",
             "skills": ["Figma", "HTML"],
-            "budget_amount": 350000,
-            "budget_currency": "NGN",
+            "budget_amount": 3500,
+            "budget_currency": "USD",
             "closing_date": "2099-01-01",
         }
         made = call(

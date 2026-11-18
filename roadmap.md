@@ -107,6 +107,6 @@ Hosted preview verification remains unavailable from the test browser: it opens 
 - [x] A: buyer/seller choice at sign-up, onboarding for existing accounts, separate navigation and dashboards, backend seller-only rules
 - [x] B: buyer job posting (draft/publish/close/archive/delete), seller browsing of published jobs, applications, buyer review/hire, one-hire-per-job, dashboard counts; verified end-to-end in the browser and by live database checks
 - [ ] C: messaging, offers, contracts, milestones, deliveries
-- [ ] D: payment provider — registered in Nigeria as "Work to Work"; buyers choose currency, sellers paid in it; provider support still to be checked
+- [ ] D: payment provider — registered in the United States (Texas) as "Work to Work"; buyers choose currency, sellers paid in it; provider support still to be checked
 - [ ] E: admin marketplace management, disputes, notifications, end-to-end checks
 - [ ] Owner screen for account-type corrections (database command exists)
