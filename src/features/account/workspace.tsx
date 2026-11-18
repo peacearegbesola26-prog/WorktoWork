@@ -3,7 +3,7 @@ import { useState } from "react";
 import { useSuspenseQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { useServerFn } from "@tanstack/react-start";
 import { Link } from "@tanstack/react-router";
-import { Bookmark, BriefcaseBusiness, Bell, Trash2, Pencil } from "lucide-react";
+import { Bookmark, BriefcaseBusiness, Bell, Trash2, Pencil, Send } from "lucide-react";
 import { DiscoveryPage } from "@/features/discovery/discovery-page";
 import { toast } from "sonner";
 import { Button } from "@/components/ui/button";
@@ -67,17 +67,26 @@ export function WorkspacePage({
         <PageHeading
           title={data.profile?.name ? `Welcome, ${data.profile.name}.` : "Hire talent."}
           description="Your jobs, applications and hires, in one place."
+          action={
+            <Button asChild>
+              <Link to="/app/post-job">Post a job</Link>
+            </Button>
+          }
         />
         <div className="stat-grid">
           {[
-            { label: "Published jobs", to: "/app/jobs" },
-            { label: "Applications received", to: "/app/applications" },
-            { label: "Active contracts", to: "/app/contracts" },
+            { label: "Published jobs", count: data.marketplace.published, to: "/app/jobs" },
+            {
+              label: "Applications received",
+              count: data.marketplace.applications,
+              to: "/app/applications",
+            },
+            { label: "Draft jobs", count: data.marketplace.drafts, to: "/app/jobs" },
           ].map((item) => (
             <article className="stat-card" key={item.label}>
               <BriefcaseBusiness size={20} />
               <p>{item.label}</p>
-              <strong>0</strong>
+              <strong>{item.count}</strong>
               <Button asChild variant="link">
                 <Link to={item.to as "/app/dashboard"}>View</Link>
               </Button>
@@ -87,8 +96,8 @@ export function WorkspacePage({
         <section className="mt-8">
           <h2 className="text-xl mb-4">Hiring on Work to Work</h2>
           <p className="legal-note">
-            Job posting and applications are coming next. Payments are not connected, so no funds
-            can be collected, held or paid out yet.
+            Publish a job and seller accounts can apply with their own note and proposed amount.
+            Payments are not connected, so no funds can be collected, held or paid out yet.
           </p>
         </section>
       </>
@@ -119,6 +128,18 @@ export function WorkspacePage({
               count: data.counts.alerts,
               icon: Bell,
               to: "/app/alerts",
+            },
+            {
+              label: "Open jobs",
+              count: data.marketplace.openJobs,
+              icon: BriefcaseBusiness,
+              to: "/app/open-jobs",
+            },
+            {
+              label: "Applications sent",
+              count: data.marketplace.applications,
+              icon: Send,
+              to: "/app/my-applications",
             },
           ].map((item) => (
             <article className="stat-card" key={item.label}>

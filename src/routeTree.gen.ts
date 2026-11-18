@@ -61,11 +61,16 @@ import { Route as DemoWebRouteImport } from './routes/demo.web'
 import { Route as AuthenticatedAppSectionRouteImport } from './routes/_authenticated/app.$section'
 import { Route as AuthenticatedAppAdminRouteImport } from './routes/_authenticated/app.admin'
 import { Route as AuthenticatedAppAlertsRouteImport } from './routes/_authenticated/app.alerts'
+import { Route as AuthenticatedAppApplicationsRouteImport } from './routes/_authenticated/app.applications'
 import { Route as AuthenticatedAppCoverLetterRouteImport } from './routes/_authenticated/app.cover-letter'
 import { Route as AuthenticatedAppDashboardRouteImport } from './routes/_authenticated/app.dashboard'
 import { Route as AuthenticatedAppDirectRouteImport } from './routes/_authenticated/app.direct'
+import { Route as AuthenticatedAppJobsRouteImport } from './routes/_authenticated/app.jobs'
 import { Route as AuthenticatedAppLinkedinOptimizerRouteImport } from './routes/_authenticated/app.linkedin-optimizer'
+import { Route as AuthenticatedAppMyApplicationsRouteImport } from './routes/_authenticated/app.my-applications'
 import { Route as AuthenticatedAppOnboardingRouteImport } from './routes/_authenticated/app.onboarding'
+import { Route as AuthenticatedAppOpenJobsRouteImport } from './routes/_authenticated/app.open-jobs'
+import { Route as AuthenticatedAppPostJobRouteImport } from './routes/_authenticated/app.post-job'
 import { Route as AuthenticatedAppProfileRouteImport } from './routes/_authenticated/app.profile'
 import { Route as AuthenticatedAppResumeBuilderRouteImport } from './routes/_authenticated/app.resume-builder'
 import { Route as AuthenticatedAppResumeOptimizerRouteImport } from './routes/_authenticated/app.resume-optimizer'
@@ -77,6 +82,8 @@ import { Route as AuthenticatedAppToolkitRouteImport } from './routes/_authentic
 import { Route as AuthenticatedAppTrackerRouteImport } from './routes/_authenticated/app.tracker'
 import { Route as AuthenticatedAppWebRouteImport } from './routes/_authenticated/app.web'
 import { Route as DemoOpportunitiesIdRouteImport } from './routes/demo.opportunities.$id'
+import { Route as AuthenticatedAppOpenJobsIndexRouteImport } from './routes/_authenticated/app.open-jobs.index'
+import { Route as AuthenticatedAppOpenJobsIdRouteImport } from './routes/_authenticated/app.open-jobs.$id'
 import { Route as AuthenticatedAppOpportunitiesIdRouteImport } from './routes/_authenticated/app.opportunities.$id'
 import { Route as ApiPublicBrandNameRouteImport } from './routes/api/public/brand/$name'
 
@@ -340,6 +347,12 @@ const AuthenticatedAppAlertsRoute = AuthenticatedAppAlertsRouteImport.update({
   path: '/app/alerts',
   getParentRoute: () => AuthenticatedRouteRoute,
 } as any)
+const AuthenticatedAppApplicationsRoute =
+  AuthenticatedAppApplicationsRouteImport.update({
+    id: '/app/applications',
+    path: '/app/applications',
+    getParentRoute: () => AuthenticatedRouteRoute,
+  } as any)
 const AuthenticatedAppCoverLetterRoute =
   AuthenticatedAppCoverLetterRouteImport.update({
     id: '/app/cover-letter',
@@ -357,10 +370,21 @@ const AuthenticatedAppDirectRoute = AuthenticatedAppDirectRouteImport.update({
   path: '/app/direct',
   getParentRoute: () => AuthenticatedRouteRoute,
 } as any)
+const AuthenticatedAppJobsRoute = AuthenticatedAppJobsRouteImport.update({
+  id: '/app/jobs',
+  path: '/app/jobs',
+  getParentRoute: () => AuthenticatedRouteRoute,
+} as any)
 const AuthenticatedAppLinkedinOptimizerRoute =
   AuthenticatedAppLinkedinOptimizerRouteImport.update({
     id: '/app/linkedin-optimizer',
     path: '/app/linkedin-optimizer',
+    getParentRoute: () => AuthenticatedRouteRoute,
+  } as any)
+const AuthenticatedAppMyApplicationsRoute =
+  AuthenticatedAppMyApplicationsRouteImport.update({
+    id: '/app/my-applications',
+    path: '/app/my-applications',
     getParentRoute: () => AuthenticatedRouteRoute,
   } as any)
 const AuthenticatedAppOnboardingRoute =
@@ -369,6 +393,17 @@ const AuthenticatedAppOnboardingRoute =
     path: '/app/onboarding',
     getParentRoute: () => AuthenticatedRouteRoute,
   } as any)
+const AuthenticatedAppOpenJobsRoute =
+  AuthenticatedAppOpenJobsRouteImport.update({
+    id: '/app/open-jobs',
+    path: '/app/open-jobs',
+    getParentRoute: () => AuthenticatedRouteRoute,
+  } as any)
+const AuthenticatedAppPostJobRoute = AuthenticatedAppPostJobRouteImport.update({
+  id: '/app/post-job',
+  path: '/app/post-job',
+  getParentRoute: () => AuthenticatedRouteRoute,
+} as any)
 const AuthenticatedAppProfileRoute = AuthenticatedAppProfileRouteImport.update({
   id: '/app/profile',
   path: '/app/profile',
@@ -428,6 +463,18 @@ const DemoOpportunitiesIdRoute = DemoOpportunitiesIdRouteImport.update({
   path: '/opportunities/$id',
   getParentRoute: () => DemoRoute,
 } as any)
+const AuthenticatedAppOpenJobsIndexRoute =
+  AuthenticatedAppOpenJobsIndexRouteImport.update({
+    id: '/',
+    path: '/',
+    getParentRoute: () => AuthenticatedAppOpenJobsRoute,
+  } as any)
+const AuthenticatedAppOpenJobsIdRoute =
+  AuthenticatedAppOpenJobsIdRouteImport.update({
+    id: '/$id',
+    path: '/$id',
+    getParentRoute: () => AuthenticatedAppOpenJobsRoute,
+  } as any)
 const AuthenticatedAppOpportunitiesIdRoute =
   AuthenticatedAppOpportunitiesIdRouteImport.update({
     id: '/app/opportunities/$id',
@@ -492,11 +539,16 @@ export interface FileRoutesByFullPath {
   '/app/$section': typeof AuthenticatedAppSectionRoute
   '/app/admin': typeof AuthenticatedAppAdminRoute
   '/app/alerts': typeof AuthenticatedAppAlertsRoute
+  '/app/applications': typeof AuthenticatedAppApplicationsRoute
   '/app/cover-letter': typeof AuthenticatedAppCoverLetterRoute
   '/app/dashboard': typeof AuthenticatedAppDashboardRoute
   '/app/direct': typeof AuthenticatedAppDirectRoute
+  '/app/jobs': typeof AuthenticatedAppJobsRoute
   '/app/linkedin-optimizer': typeof AuthenticatedAppLinkedinOptimizerRoute
+  '/app/my-applications': typeof AuthenticatedAppMyApplicationsRoute
   '/app/onboarding': typeof AuthenticatedAppOnboardingRoute
+  '/app/open-jobs': typeof AuthenticatedAppOpenJobsRouteWithChildren
+  '/app/post-job': typeof AuthenticatedAppPostJobRoute
   '/app/profile': typeof AuthenticatedAppProfileRoute
   '/app/resume-builder': typeof AuthenticatedAppResumeBuilderRoute
   '/app/resume-optimizer': typeof AuthenticatedAppResumeOptimizerRoute
@@ -508,8 +560,10 @@ export interface FileRoutesByFullPath {
   '/app/tracker': typeof AuthenticatedAppTrackerRoute
   '/app/web': typeof AuthenticatedAppWebRoute
   '/demo/opportunities/$id': typeof DemoOpportunitiesIdRoute
+  '/app/open-jobs/$id': typeof AuthenticatedAppOpenJobsIdRoute
   '/app/opportunities/$id': typeof AuthenticatedAppOpportunitiesIdRoute
   '/api/public/brand/$name': typeof ApiPublicBrandNameRoute
+  '/app/open-jobs/': typeof AuthenticatedAppOpenJobsIndexRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
@@ -561,11 +615,15 @@ export interface FileRoutesByTo {
   '/app/$section': typeof AuthenticatedAppSectionRoute
   '/app/admin': typeof AuthenticatedAppAdminRoute
   '/app/alerts': typeof AuthenticatedAppAlertsRoute
+  '/app/applications': typeof AuthenticatedAppApplicationsRoute
   '/app/cover-letter': typeof AuthenticatedAppCoverLetterRoute
   '/app/dashboard': typeof AuthenticatedAppDashboardRoute
   '/app/direct': typeof AuthenticatedAppDirectRoute
+  '/app/jobs': typeof AuthenticatedAppJobsRoute
   '/app/linkedin-optimizer': typeof AuthenticatedAppLinkedinOptimizerRoute
+  '/app/my-applications': typeof AuthenticatedAppMyApplicationsRoute
   '/app/onboarding': typeof AuthenticatedAppOnboardingRoute
+  '/app/post-job': typeof AuthenticatedAppPostJobRoute
   '/app/profile': typeof AuthenticatedAppProfileRoute
   '/app/resume-builder': typeof AuthenticatedAppResumeBuilderRoute
   '/app/resume-optimizer': typeof AuthenticatedAppResumeOptimizerRoute
@@ -577,8 +635,10 @@ export interface FileRoutesByTo {
   '/app/tracker': typeof AuthenticatedAppTrackerRoute
   '/app/web': typeof AuthenticatedAppWebRoute
   '/demo/opportunities/$id': typeof DemoOpportunitiesIdRoute
+  '/app/open-jobs/$id': typeof AuthenticatedAppOpenJobsIdRoute
   '/app/opportunities/$id': typeof AuthenticatedAppOpportunitiesIdRoute
   '/api/public/brand/$name': typeof ApiPublicBrandNameRoute
+  '/app/open-jobs': typeof AuthenticatedAppOpenJobsIndexRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
@@ -634,11 +694,16 @@ export interface FileRoutesById {
   '/_authenticated/app/$section': typeof AuthenticatedAppSectionRoute
   '/_authenticated/app/admin': typeof AuthenticatedAppAdminRoute
   '/_authenticated/app/alerts': typeof AuthenticatedAppAlertsRoute
+  '/_authenticated/app/applications': typeof AuthenticatedAppApplicationsRoute
   '/_authenticated/app/cover-letter': typeof AuthenticatedAppCoverLetterRoute
   '/_authenticated/app/dashboard': typeof AuthenticatedAppDashboardRoute
   '/_authenticated/app/direct': typeof AuthenticatedAppDirectRoute
+  '/_authenticated/app/jobs': typeof AuthenticatedAppJobsRoute
   '/_authenticated/app/linkedin-optimizer': typeof AuthenticatedAppLinkedinOptimizerRoute
+  '/_authenticated/app/my-applications': typeof AuthenticatedAppMyApplicationsRoute
   '/_authenticated/app/onboarding': typeof AuthenticatedAppOnboardingRoute
+  '/_authenticated/app/open-jobs': typeof AuthenticatedAppOpenJobsRouteWithChildren
+  '/_authenticated/app/post-job': typeof AuthenticatedAppPostJobRoute
   '/_authenticated/app/profile': typeof AuthenticatedAppProfileRoute
   '/_authenticated/app/resume-builder': typeof AuthenticatedAppResumeBuilderRoute
   '/_authenticated/app/resume-optimizer': typeof AuthenticatedAppResumeOptimizerRoute
@@ -650,8 +715,10 @@ export interface FileRoutesById {
   '/_authenticated/app/tracker': typeof AuthenticatedAppTrackerRoute
   '/_authenticated/app/web': typeof AuthenticatedAppWebRoute
   '/demo/opportunities/$id': typeof DemoOpportunitiesIdRoute
+  '/_authenticated/app/open-jobs/$id': typeof AuthenticatedAppOpenJobsIdRoute
   '/_authenticated/app/opportunities/$id': typeof AuthenticatedAppOpportunitiesIdRoute
   '/api/public/brand/$name': typeof ApiPublicBrandNameRoute
+  '/_authenticated/app/open-jobs/': typeof AuthenticatedAppOpenJobsIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
@@ -707,11 +774,16 @@ export interface FileRouteTypes {
     | '/app/$section'
     | '/app/admin'
     | '/app/alerts'
+    | '/app/applications'
     | '/app/cover-letter'
     | '/app/dashboard'
     | '/app/direct'
+    | '/app/jobs'
     | '/app/linkedin-optimizer'
+    | '/app/my-applications'
     | '/app/onboarding'
+    | '/app/open-jobs'
+    | '/app/post-job'
     | '/app/profile'
     | '/app/resume-builder'
     | '/app/resume-optimizer'
@@ -723,8 +795,10 @@ export interface FileRouteTypes {
     | '/app/tracker'
     | '/app/web'
     | '/demo/opportunities/$id'
+    | '/app/open-jobs/$id'
     | '/app/opportunities/$id'
     | '/api/public/brand/$name'
+    | '/app/open-jobs/'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
@@ -776,11 +850,15 @@ export interface FileRouteTypes {
     | '/app/$section'
     | '/app/admin'
     | '/app/alerts'
+    | '/app/applications'
     | '/app/cover-letter'
     | '/app/dashboard'
     | '/app/direct'
+    | '/app/jobs'
     | '/app/linkedin-optimizer'
+    | '/app/my-applications'
     | '/app/onboarding'
+    | '/app/post-job'
     | '/app/profile'
     | '/app/resume-builder'
     | '/app/resume-optimizer'
@@ -792,8 +870,10 @@ export interface FileRouteTypes {
     | '/app/tracker'
     | '/app/web'
     | '/demo/opportunities/$id'
+    | '/app/open-jobs/$id'
     | '/app/opportunities/$id'
     | '/api/public/brand/$name'
+    | '/app/open-jobs'
   id:
     | '__root__'
     | '/'
@@ -848,11 +928,16 @@ export interface FileRouteTypes {
     | '/_authenticated/app/$section'
     | '/_authenticated/app/admin'
     | '/_authenticated/app/alerts'
+    | '/_authenticated/app/applications'
     | '/_authenticated/app/cover-letter'
     | '/_authenticated/app/dashboard'
     | '/_authenticated/app/direct'
+    | '/_authenticated/app/jobs'
     | '/_authenticated/app/linkedin-optimizer'
+    | '/_authenticated/app/my-applications'
     | '/_authenticated/app/onboarding'
+    | '/_authenticated/app/open-jobs'
+    | '/_authenticated/app/post-job'
     | '/_authenticated/app/profile'
     | '/_authenticated/app/resume-builder'
     | '/_authenticated/app/resume-optimizer'
@@ -864,8 +949,10 @@ export interface FileRouteTypes {
     | '/_authenticated/app/tracker'
     | '/_authenticated/app/web'
     | '/demo/opportunities/$id'
+    | '/_authenticated/app/open-jobs/$id'
     | '/_authenticated/app/opportunities/$id'
     | '/api/public/brand/$name'
+    | '/_authenticated/app/open-jobs/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -1256,6 +1343,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedAppAlertsRouteImport
       parentRoute: typeof AuthenticatedRouteRoute
     }
+    '/_authenticated/app/applications': {
+      id: '/_authenticated/app/applications'
+      path: '/app/applications'
+      fullPath: '/app/applications'
+      preLoaderRoute: typeof AuthenticatedAppApplicationsRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
     '/_authenticated/app/cover-letter': {
       id: '/_authenticated/app/cover-letter'
       path: '/app/cover-letter'
@@ -1277,6 +1371,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedAppDirectRouteImport
       parentRoute: typeof AuthenticatedRouteRoute
     }
+    '/_authenticated/app/jobs': {
+      id: '/_authenticated/app/jobs'
+      path: '/app/jobs'
+      fullPath: '/app/jobs'
+      preLoaderRoute: typeof AuthenticatedAppJobsRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
     '/_authenticated/app/linkedin-optimizer': {
       id: '/_authenticated/app/linkedin-optimizer'
       path: '/app/linkedin-optimizer'
@@ -1284,11 +1385,32 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedAppLinkedinOptimizerRouteImport
       parentRoute: typeof AuthenticatedRouteRoute
     }
+    '/_authenticated/app/my-applications': {
+      id: '/_authenticated/app/my-applications'
+      path: '/app/my-applications'
+      fullPath: '/app/my-applications'
+      preLoaderRoute: typeof AuthenticatedAppMyApplicationsRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
     '/_authenticated/app/onboarding': {
       id: '/_authenticated/app/onboarding'
       path: '/app/onboarding'
       fullPath: '/app/onboarding'
       preLoaderRoute: typeof AuthenticatedAppOnboardingRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
+    '/_authenticated/app/open-jobs': {
+      id: '/_authenticated/app/open-jobs'
+      path: '/app/open-jobs'
+      fullPath: '/app/open-jobs'
+      preLoaderRoute: typeof AuthenticatedAppOpenJobsRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
+    '/_authenticated/app/post-job': {
+      id: '/_authenticated/app/post-job'
+      path: '/app/post-job'
+      fullPath: '/app/post-job'
+      preLoaderRoute: typeof AuthenticatedAppPostJobRouteImport
       parentRoute: typeof AuthenticatedRouteRoute
     }
     '/_authenticated/app/profile': {
@@ -1368,6 +1490,20 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof DemoOpportunitiesIdRouteImport
       parentRoute: typeof DemoRoute
     }
+    '/_authenticated/app/open-jobs/': {
+      id: '/_authenticated/app/open-jobs/'
+      path: '/'
+      fullPath: '/app/open-jobs/'
+      preLoaderRoute: typeof AuthenticatedAppOpenJobsIndexRouteImport
+      parentRoute: typeof AuthenticatedAppOpenJobsRoute
+    }
+    '/_authenticated/app/open-jobs/$id': {
+      id: '/_authenticated/app/open-jobs/$id'
+      path: '/$id'
+      fullPath: '/app/open-jobs/$id'
+      preLoaderRoute: typeof AuthenticatedAppOpenJobsIdRouteImport
+      parentRoute: typeof AuthenticatedAppOpenJobsRoute
+    }
     '/_authenticated/app/opportunities/$id': {
       id: '/_authenticated/app/opportunities/$id'
       path: '/app/opportunities/$id'
@@ -1385,6 +1521,22 @@ declare module '@tanstack/react-router' {
   }
 }
 
+interface AuthenticatedAppOpenJobsRouteChildren {
+  AuthenticatedAppOpenJobsIdRoute: typeof AuthenticatedAppOpenJobsIdRoute
+  AuthenticatedAppOpenJobsIndexRoute: typeof AuthenticatedAppOpenJobsIndexRoute
+}
+
+const AuthenticatedAppOpenJobsRouteChildren: AuthenticatedAppOpenJobsRouteChildren =
+  {
+    AuthenticatedAppOpenJobsIdRoute: AuthenticatedAppOpenJobsIdRoute,
+    AuthenticatedAppOpenJobsIndexRoute: AuthenticatedAppOpenJobsIndexRoute,
+  }
+
+const AuthenticatedAppOpenJobsRouteWithChildren =
+  AuthenticatedAppOpenJobsRoute._addFileChildren(
+    AuthenticatedAppOpenJobsRouteChildren,
+  )
+
 interface AuthenticatedRouteRouteChildren {
   AuthenticatedAlertsRoute: typeof AuthenticatedAlertsRoute
   AuthenticatedDashboardRoute: typeof AuthenticatedDashboardRoute
@@ -1396,11 +1548,16 @@ interface AuthenticatedRouteRouteChildren {
   AuthenticatedAppSectionRoute: typeof AuthenticatedAppSectionRoute
   AuthenticatedAppAdminRoute: typeof AuthenticatedAppAdminRoute
   AuthenticatedAppAlertsRoute: typeof AuthenticatedAppAlertsRoute
+  AuthenticatedAppApplicationsRoute: typeof AuthenticatedAppApplicationsRoute
   AuthenticatedAppCoverLetterRoute: typeof AuthenticatedAppCoverLetterRoute
   AuthenticatedAppDashboardRoute: typeof AuthenticatedAppDashboardRoute
   AuthenticatedAppDirectRoute: typeof AuthenticatedAppDirectRoute
+  AuthenticatedAppJobsRoute: typeof AuthenticatedAppJobsRoute
   AuthenticatedAppLinkedinOptimizerRoute: typeof AuthenticatedAppLinkedinOptimizerRoute
+  AuthenticatedAppMyApplicationsRoute: typeof AuthenticatedAppMyApplicationsRoute
   AuthenticatedAppOnboardingRoute: typeof AuthenticatedAppOnboardingRoute
+  AuthenticatedAppOpenJobsRoute: typeof AuthenticatedAppOpenJobsRouteWithChildren
+  AuthenticatedAppPostJobRoute: typeof AuthenticatedAppPostJobRoute
   AuthenticatedAppProfileRoute: typeof AuthenticatedAppProfileRoute
   AuthenticatedAppResumeBuilderRoute: typeof AuthenticatedAppResumeBuilderRoute
   AuthenticatedAppResumeOptimizerRoute: typeof AuthenticatedAppResumeOptimizerRoute
@@ -1425,12 +1582,17 @@ const AuthenticatedRouteRouteChildren: AuthenticatedRouteRouteChildren = {
   AuthenticatedAppSectionRoute: AuthenticatedAppSectionRoute,
   AuthenticatedAppAdminRoute: AuthenticatedAppAdminRoute,
   AuthenticatedAppAlertsRoute: AuthenticatedAppAlertsRoute,
+  AuthenticatedAppApplicationsRoute: AuthenticatedAppApplicationsRoute,
   AuthenticatedAppCoverLetterRoute: AuthenticatedAppCoverLetterRoute,
   AuthenticatedAppDashboardRoute: AuthenticatedAppDashboardRoute,
   AuthenticatedAppDirectRoute: AuthenticatedAppDirectRoute,
+  AuthenticatedAppJobsRoute: AuthenticatedAppJobsRoute,
   AuthenticatedAppLinkedinOptimizerRoute:
     AuthenticatedAppLinkedinOptimizerRoute,
+  AuthenticatedAppMyApplicationsRoute: AuthenticatedAppMyApplicationsRoute,
   AuthenticatedAppOnboardingRoute: AuthenticatedAppOnboardingRoute,
+  AuthenticatedAppOpenJobsRoute: AuthenticatedAppOpenJobsRouteWithChildren,
+  AuthenticatedAppPostJobRoute: AuthenticatedAppPostJobRoute,
   AuthenticatedAppProfileRoute: AuthenticatedAppProfileRoute,
   AuthenticatedAppResumeBuilderRoute: AuthenticatedAppResumeBuilderRoute,
   AuthenticatedAppResumeOptimizerRoute: AuthenticatedAppResumeOptimizerRoute,

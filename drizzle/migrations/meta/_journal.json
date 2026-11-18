@@ -127,6 +127,27 @@
       "when": 1795032058579,
       "tag": "0017_seller_only_discovery",
       "breakpoints": true
+    },
+    {
+      "idx": 18,
+      "version": "7",
+      "when": 1795032340255,
+      "tag": "0018_marketplace_jobs_and_applications",
+      "breakpoints": true
+    },
+    {
+      "idx": 19,
+      "version": "7",
+      "when": 1795032382996,
+      "tag": "0019_application_seller_display_name",
+      "breakpoints": true
+    },
+    {
+      "idx": 20,
+      "version": "7",
+      "when": 1795032598800,
+      "tag": "0020_job_reads_visible_to_sellers",
+      "breakpoints": true
     }
   ]
 }

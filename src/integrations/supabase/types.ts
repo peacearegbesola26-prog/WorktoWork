@@ -157,6 +157,128 @@ export type Database = {
           },
         ]
       }
+      job_applications: {
+        Row: {
+          cover_note: string
+          created_at: string
+          id: string
+          job_id: string
+          proposed_amount: number | null
+          seller_id: string
+          seller_name: string
+          status: string
+          updated_at: string
+        }
+        Insert: {
+          cover_note: string
+          created_at?: string
+          id?: string
+          job_id: string
+          proposed_amount?: number | null
+          seller_id: string
+          seller_name?: string
+          status?: string
+          updated_at?: string
+        }
+        Update: {
+          cover_note?: string
+          created_at?: string
+          id?: string
+          job_id?: string
+          proposed_amount?: number | null
+          seller_id?: string
+          seller_name?: string
+          status?: string
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "job_applications_job_id_fkey"
+            columns: ["job_id"]
+            isOneToOne: false
+            referencedRelation: "jobs"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "job_applications_seller_id_fkey"
+            columns: ["seller_id"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      jobs: {
+        Row: {
+          budget_amount: number | null
+          budget_currency: string
+          budget_type: string
+          buyer_id: string
+          category: string
+          closed_at: string | null
+          closing_date: string | null
+          country: string
+          created_at: string
+          description: string
+          experience_level: string
+          id: string
+          location_type: string
+          published_at: string | null
+          skills: string[]
+          status: string
+          title: string
+          updated_at: string
+        }
+        Insert: {
+          budget_amount?: number | null
+          budget_currency?: string
+          budget_type?: string
+          buyer_id: string
+          category: string
+          closed_at?: string | null
+          closing_date?: string | null
+          country?: string
+          created_at?: string
+          description: string
+          experience_level?: string
+          id?: string
+          location_type?: string
+          published_at?: string | null
+          skills?: string[]
+          status?: string
+          title: string
+          updated_at?: string
+        }
+        Update: {
+          budget_amount?: number | null
+          budget_currency?: string
+          budget_type?: string
+          buyer_id?: string
+          category?: string
+          closed_at?: string | null
+          closing_date?: string | null
+          country?: string
+          created_at?: string
+          description?: string
+          experience_level?: string
+          id?: string
+          location_type?: string
+          published_at?: string | null
+          skills?: string[]
+          status?: string
+          title?: string
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "jobs_buyer_id_fkey"
+            columns: ["buyer_id"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       marketplace_accounts: {
         Row: {
           account_type: string
@@ -631,6 +753,7 @@ export type Database = {
         Returns: Json
       }
       assert_active_account: { Args: never; Returns: undefined }
+      buyer_workspace_counts: { Args: never; Returns: Json }
       choose_account_type: { Args: { type_value: string }; Returns: undefined }
       correct_account_type: {
         Args: { reason_value: string; target: string; type_value: string }
@@ -649,7 +772,10 @@ export type Database = {
         }
         Returns: boolean
       }
+      is_buyer: { Args: never; Returns: boolean }
       is_seller: { Args: never; Returns: boolean }
+      job_is_buyer: { Args: { job: string }; Returns: boolean }
+      job_open_for_application: { Args: { job: string }; Returns: boolean }
       opportunity_is_active: {
         Args: { o: Database["public"]["Tables"]["opportunities"]["Row"] }
         Returns: boolean
@@ -659,6 +785,7 @@ export type Database = {
         Args: { input_length: number; mode_value: string }
         Returns: string
       }
+      seller_workspace_counts: { Args: never; Returns: Json }
       set_account_suspension: {
         Args: { is_suspended: boolean; reason_value: string; target: string }
         Returns: undefined

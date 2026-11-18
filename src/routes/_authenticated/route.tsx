@@ -1,7 +1,11 @@
 import { getRouteApi, createFileRoute, Outlet, redirect } from "@tanstack/react-router";
 import { supabase } from "@/integrations/supabase/client";
 import { AccountShell } from "@/features/account/shell";
-import { accountRedirect, isAccountType, type AccountType } from "@/features/marketplace/account-type";
+import {
+  accountRedirect,
+  isAccountType,
+  type AccountType,
+} from "@/features/marketplace/account-type";
 export const Route = createFileRoute("/_authenticated")({
   ssr: false,
   beforeLoad: async ({ location }) => {
@@ -12,7 +16,9 @@ export const Route = createFileRoute("/_authenticated")({
       .select("account_type")
       .eq("user_id", data.user.id)
       .maybeSingle();
-    const accountType: AccountType | null = isAccountType(row.data?.account_type) ? row.data.account_type : null;
+    const accountType: AccountType | null = isAccountType(row.data?.account_type)
+      ? row.data.account_type
+      : null;
     if (!row.error) {
       const to = accountRedirect(accountType, location.pathname);
       if (to) throw redirect({ to, replace: true });

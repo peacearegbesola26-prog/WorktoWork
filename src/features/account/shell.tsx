@@ -42,6 +42,7 @@ const common = [
 ] as const;
 const sellerNav = [
   { to: "/app/dashboard", label: "Dashboard", icon: LayoutDashboard },
+  { to: "/app/open-jobs", label: "Open Jobs", icon: BriefcaseBusiness },
   { to: "/app/social", label: "Social Discovery", icon: Search },
   { to: "/app/web", label: "Web Discovery", icon: Globe2 },
   { to: "/app/direct", label: "Direct Work to Work", icon: BriefcaseBusiness },
@@ -65,7 +66,9 @@ const buyerNav = [
   { to: "/app/profile", label: "Profile", icon: UserRound },
   { to: "/app/settings", label: "Settings", icon: Settings },
 ] as const;
-const onboardingNav = [{ to: "/app/onboarding", label: "Choose account type", icon: UserRound }] as const;
+const onboardingNav = [
+  { to: "/app/onboarding", label: "Choose account type", icon: UserRound },
+] as const;
 export function SignOutButton({ staff = false }: { staff?: boolean }) {
   const client = useQueryClient();
   const navigate = useNavigate();
@@ -99,7 +102,8 @@ export function AccountShell({
   children: ReactNode;
   accountType?: "seller" | "buyer" | null;
 }) {
-  const nav = accountType === "buyer" ? buyerNav : accountType === "seller" ? sellerNav : onboardingNav;
+  const nav =
+    accountType === "buyer" ? buyerNav : accountType === "seller" ? sellerNav : onboardingNav;
   const [open, setOpen] = useState(false);
   const [collapsed, setCollapsed] = useState(false);
   const { user } = useAccountAuth();
@@ -153,7 +157,11 @@ export function AccountShell({
             </Sheet>
           </div>
           <span className="header-breadcrumb">
-            {accountType === "buyer" ? "Hiring workspace" : accountType === "seller" ? "Seller workspace" : "Your workspace"}
+            {accountType === "buyer"
+              ? "Hiring workspace"
+              : accountType === "seller"
+                ? "Seller workspace"
+                : "Your workspace"}
           </span>
           <div className="flex items-center gap-2">
             <Link to="/app/profile" className="avatar" aria-label="Your profile">

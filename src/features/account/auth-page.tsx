@@ -150,7 +150,10 @@ export function AccountAuthPage({
                 <fieldset className="grid gap-2" aria-label="Account type">
                   <legend className="font-medium mb-1">I want to</legend>
                   {ACCOUNT_TYPES.map((o) => (
-                    <label key={o.value} className="flex items-start gap-2 rounded-md border p-3 cursor-pointer">
+                    <label
+                      key={o.value}
+                      className="flex items-start gap-2 rounded-md border p-3 cursor-pointer"
+                    >
                       <input
                         type="radio"
                         name="account_type"

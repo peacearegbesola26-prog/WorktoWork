@@ -7,7 +7,10 @@ export const Route = createFileRoute("/_authenticated/app/$section")({
     if (!isSection(params.section)) throw notFound();
   },
   head: ({ params }) =>
-    pageHead(isSection(params.section) ? SECTIONS[params.section].title : "Not found", "Work to Work marketplace."),
+    pageHead(
+      isSection(params.section) ? SECTIONS[params.section].title : "Not found",
+      "Work to Work marketplace.",
+    ),
   component: Page,
 });
 function Page() {
@@ -16,7 +19,15 @@ function Page() {
   const s = SECTIONS[section];
   return (
     <>
-      <PageHeading title={s.title} description={s.text} action={<StatusBadge>{s.stage.startsWith("Payments") ? "Not connected" : "Coming soon"}</StatusBadge>} />
+      <PageHeading
+        title={s.title}
+        description={s.text}
+        action={
+          <StatusBadge>
+            {s.stage.startsWith("Payments") ? "Not connected" : "Coming soon"}
+          </StatusBadge>
+        }
+      />
       <EmptyState title="Nothing here yet" description={s.stage} />
     </>
   );

@@ -1,6 +1,14 @@
 import { createServerFn } from "@tanstack/react-start";
 import { requireActiveAccount } from "@/features/account/active-auth";
 import { commandSchema } from "./schemas";
+const emptyMarketplace = {
+  role: null as "buyer" | "seller" | null,
+  published: 0,
+  drafts: 0,
+  closed: 0,
+  applications: 0,
+  openJobs: 0,
+};
 export const getWorkspace = createServerFn({ method: "GET" })
   .middleware([requireActiveAccount])
   .handler(async ({ context }) => {
@@ -17,6 +25,7 @@ export const getWorkspace = createServerFn({ method: "GET" })
         alerts: [],
         opportunities: [],
         counts: { saved: 0, tracker: 0, alerts: 0 },
+        marketplace: emptyMarketplace,
       };
     }
     const [profile, saved, tracker, alerts, opportunities, savedCount, trackerCount, alertCount] =
@@ -67,6 +76,34 @@ export const getWorkspace = createServerFn({ method: "GET" })
       )
     )
       throw new Error("Your workspace could not be loaded. Please try again.");
+    const type = await s.rpc("current_account_type");
+    if (type.error) throw new Error("Your account type could not be checked. Please try again.");
+    let marketplace = emptyMarketplace;
+    if (type.data === "buyer") {
+      const c = await s.rpc("buyer_workspace_counts");
+      if (c.error) throw new Error("Your hiring counts could not be loaded. Please try again.");
+      const v = (c.data ?? {}) as Record<string, number>;
+      marketplace = {
+        role: "buyer",
+        published: v["published"] ?? 0,
+        drafts: v["drafts"] ?? 0,
+        closed: v["closed"] ?? 0,
+        applications: v["applications"] ?? 0,
+        openJobs: 0,
+      };
+    } else if (type.data === "seller") {
+      const c = await s.rpc("seller_workspace_counts");
+      if (c.error) throw new Error("Your seller counts could not be loaded. Please try again.");
+      const v = (c.data ?? {}) as Record<string, number>;
+      marketplace = {
+        role: "seller",
+        published: 0,
+        drafts: 0,
+        closed: 0,
+        applications: v["applications"] ?? 0,
+        openJobs: v["open_jobs"] ?? 0,
+      };
+    }
     return {
       profile: profile.data,
       saved: saved.data ?? [],
@@ -78,6 +115,7 @@ export const getWorkspace = createServerFn({ method: "GET" })
         tracker: trackerCount.count ?? 0,
         alerts: alertCount.count ?? 0,
       },
+      marketplace,
     };
   });
 export const updateWorkspace = createServerFn({ method: "POST" })
