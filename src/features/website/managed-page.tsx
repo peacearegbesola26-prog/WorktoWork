@@ -9,7 +9,7 @@ export function ManagedPublicPage({ page }: { page: string }) {
           <h1>{content?.title}</h1>
         </header>
         <section className="section narrow-content">
-          <div className="whitespace-pre-wrap break-words">{content?.text.body}</div>
+          <div className="whitespace-pre-wrap break-words">{content?.text["body"]}</div>
           {page === "faqs" &&
             (content?.faqs.length ? (
               content.faqs.map((f, i) => (

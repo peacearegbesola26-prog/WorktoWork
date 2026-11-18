@@ -1,0 +1,7 @@
+CREATE OR REPLACE FUNCTION public.validate_website_content() RETURNS trigger LANGUAGE plpgsql SET search_path=public AS $$ DECLARE c jsonb; link jsonb; v text; BEGIN FOREACH c IN ARRAY ARRAY[NEW.published,NEW.draft] LOOP
+IF jsonb_typeof(c)<>'object' OR jsonb_typeof(c->'text')<>'object' OR jsonb_typeof(c->'faqs')<>'array' OR length(c->>'title') NOT BETWEEN 1 AND 150 OR length(c->>'description') NOT BETWEEN 1 AND 500 THEN RAISE EXCEPTION 'Invalid website content'; END IF;
+IF EXISTS(SELECT 1 FROM jsonb_object_keys(c) k WHERE k NOT IN ('title','description','text','faqs','links','primaryCta','secondaryCta')) THEN RAISE EXCEPTION 'Unsupported content field'; END IF;
+IF jsonb_array_length(c->'faqs')>100 OR EXISTS(SELECT 1 FROM jsonb_each(c->'text') t WHERE jsonb_typeof(t.value)<>'string' OR length(t.value#>>'{}')>20000) THEN RAISE EXCEPTION 'Content too large'; END IF;
+FOR v IN SELECT c->>'primaryCta' UNION ALL SELECT c->>'secondaryCta' LOOP IF v IS NOT NULL AND v<>'' AND v !~ '^/($|[a-zA-Z0-9][a-zA-Z0-9/?.=&_%#-]*$)' AND v !~ '^https://[^@[:space:]]+$' THEN RAISE EXCEPTION 'Invalid action URL'; END IF; END LOOP;
+FOR link IN SELECT value FROM jsonb_array_elements(COALESCE(c->'links','[]'::jsonb)) LOOP v:=link->>'url'; IF length(link->>'label') NOT BETWEEN 1 AND 100 OR (v<>'' AND v !~ '^/($|[a-zA-Z0-9][a-zA-Z0-9/?.=&_%#-]*$)' AND v !~ '^https://[^@[:space:]]+$') THEN RAISE EXCEPTION 'Invalid footer link'; END IF; END LOOP;
+END LOOP; RETURN NEW; END $$;

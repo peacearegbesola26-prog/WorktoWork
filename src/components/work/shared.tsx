@@ -239,7 +239,7 @@ export function PublicFooter() {
           <Link to="/faqs">FAQs</Link>
           <Link to="/privacy">Privacy</Link>
           <Link to="/terms">Terms</Link>
-          {pages.footer?.links.map((l, i) => (
+          {pages["footer"]?.links.map((l, i) => (
             <a key={i} href={l.url} rel="noopener noreferrer">
               {l.label}
             </a>

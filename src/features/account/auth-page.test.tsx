@@ -21,6 +21,9 @@ vi.mock("@/integrations/supabase/client", () => ({
   },
 }));
 vi.mock("./auth", () => ({ useAccountAuth: () => mocks.auth }));
+vi.mock("@/features/website/context", () => ({
+  useWebsite: () => ({ settings: { registrationEnabled: true } }),
+}));
 vi.mock("@tanstack/react-router", () => ({
   Link: ({ children }: { children: ReactNode }) => children,
   useNavigate: () => mocks.navigate,

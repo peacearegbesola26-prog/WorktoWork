@@ -5,6 +5,20 @@ export const getWorkspace = createServerFn({ method: "GET" })
   .middleware([requireActiveAccount])
   .handler(async ({ context }) => {
     const { supabase: s, userId } = context;
+    const available = await s.rpc("website_available");
+    if (available.error) throw new Error("Workspace availability could not be checked.");
+    if (!available.data) {
+      const profile = await s.from("profiles").select("*").eq("id", userId).single();
+      if (profile.error) throw new Error("Account settings could not be loaded.");
+      return {
+        profile: profile.data,
+        saved: [],
+        tracker: [],
+        alerts: [],
+        opportunities: [],
+        counts: { saved: 0, tracker: 0, alerts: 0 },
+      };
+    }
     const [profile, saved, tracker, alerts, opportunities, savedCount, trackerCount, alertCount] =
       await Promise.all([
         s.from("profiles").select("*").eq("id", userId).single(),

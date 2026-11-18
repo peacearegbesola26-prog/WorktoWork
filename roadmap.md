@@ -3,11 +3,14 @@
 ## Administration substages
 
 ### Current request: C — website content and site settings
-- [ ] Import current public wording; add draft, staff preview, publication and version restoration
-- [ ] Add owner brand images, supported colours, support email and announcement settings
-- [ ] Enforce registration availability in the account-creation backend; preserve account recovery and staff during maintenance
-- [ ] Verify permissions, persistence, public visibility, restoration and desktop/mobile presentation
-- [ ] Report actual checks and D–E blockers without publishing the application
+- [x] Import current public wording; add draft, staff preview, publication and version restoration
+- [x] Add owner brand images, supported colours, support email and announcement settings
+- [x] Enforce registration availability in the account-creation backend; preserve account recovery and staff during maintenance
+- [x] Verify permissions, persistence, public visibility, restoration and desktop/mobile presentation
+- [x] Report actual checks and D–E blockers without publishing the application
+- [ ] Supply approved privacy policy/terms and real support email — awaits owner content
+
+C verification: owner browser verified private draft save/reload, restricted preview, public publication and restoration; settings save/reload and public announcement; raster upload/render, SVG rejection; maintenance public screen with staff and privacy access; 1280/390/695-width layouts. Live tests verify ordinary/moderator denial, admin publishing but no site settings, revocation, published-only projection, version restore, audit records, real account-creation rejection during registration closure and maintenance record/AI rejection. Original public wording and operating settings restored after checks. Registration closure uses the existing backend account-creation trigger, not a hosted authentication-configuration switch; direct auth signup is rejected. Existing resume privacy tests pass; gateway and AI limits retained. Legal wording/support email remain unset rather than invented. No app publication or opportunity records added.
 
 ### Separate permission-controlled staff area
 - [x] Separate staff login/layout/navigation and remove ordinary-menu admin links
@@ -29,7 +32,7 @@ Staff-area verification: 41 application tests passed; 13 direct staff-area check
 - [x] Verify ordinary-user/admin/moderator restrictions, AI daily/input enforcement and existing resume privacy
 - [x] Verify owner role UI, last-owner rejection and AI controls save/reload — verified after explicit trusted owner assignment
 - [x] B: implement user/suspension and opportunity moderation management; populated opportunity end-to-end verification still awaits genuine data
-- [ ] C: published website content and owner site settings
+- [x] C: published website content and owner site settings
 - [ ] D: remaining source, plan and notification controls
 - [ ] E: reports, support inbox, analytics and searchable full audit
 

@@ -2,7 +2,7 @@ import { createServerFn } from "@tanstack/react-start";
 import { setResponseHeader } from "@tanstack/react-start/server";
 import { z } from "zod";
 import { requireStaff } from "@/features/admin/staff-auth";
-import { defaultSettings, imageFormat, pageKeys, pageSchema, settingsSchema } from "./schema";
+import { defaultSettings, pageKeys, pageSchema, settingsSchema } from "./schema";
 export const getPublishedWebsite = createServerFn({ method: "GET" }).handler(async () => {
   setResponseHeader("Cache-Control", "no-store");
   const key = process.env["SUPABASE_PUBLISHABLE_KEY"];
@@ -25,7 +25,8 @@ export const getWebsiteEditor = createServerFn({ method: "GET" })
       context.supabase.rpc("has_permission", { p: "site.manage" }),
     ]);
     if (pages.error || versions.error) throw new Error("Content could not be loaded.");
-    let settings = defaultSettings;
+    const publicSettings = await context.supabase.rpc("published_website");
+    let settings = z.object({ settings: settingsSchema }).parse(publicSettings.data).settings;
     if (owner.data) {
       const r = await context.supabase
         .from("website_settings")
@@ -63,7 +64,7 @@ export const saveWebsitePage = createServerFn({ method: "POST" })
       content_value: data.content,
       action_value: data.action,
       expected_revision: data.revision,
-      version_id: data.version,
+      ...(data.version ? { version_id: data.version } : {}),
     });
     if (result.error)
       throw new Error(
@@ -83,22 +84,21 @@ export const saveWebsiteSettings = createServerFn({ method: "POST" })
   });
 export const uploadBrandImage = createServerFn({ method: "POST" })
   .middleware([requireStaff])
-  .inputValidator(z.object({ base64: z.string().max(2800000) }))
+  .inputValidator(
+    z.object({ base64: z.string().max(2800000), purpose: z.enum(["logo", "favicon"]) }),
+  )
   .handler(async ({ data, context }) => {
     const permission = await context.supabase.rpc("has_permission", { p: "site.manage" });
     if (permission.error || !permission.data) throw new Error("Owner access required.");
     const bytes = Uint8Array.from(atob(data.base64), (c) => c.charCodeAt(0));
-    const format = imageFormat(bytes);
-    if (!format)
-      throw new Error("Upload a PNG, JPEG or WebP image no larger than 2 MB. SVG is not accepted.");
+    const { validateBrandImage } = await import("./images.server");
+    const format = validateBrandImage(bytes, data.purpose);
     const path = `brand/${crypto.randomUUID()}.${format}`;
     const { supabaseAdmin } = await import("@/integrations/supabase/client.server");
-    const result = await supabaseAdmin.storage
-      .from("website-brand")
-      .upload(path, bytes, {
-        contentType: format === "jpg" ? "image/jpeg" : `image/${format}`,
-        upsert: false,
-      });
+    const result = await supabaseAdmin.storage.from("website-brand").upload(path, bytes, {
+      contentType: format === "jpg" ? "image/jpeg" : `image/${format}`,
+      upsert: false,
+    });
     if (result.error) throw new Error("Image could not be uploaded.");
     return { path };
   });

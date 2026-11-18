@@ -42,7 +42,7 @@ export function SiteSettingsPage() {
       const bytes = new Uint8Array(await file.arrayBuffer());
       let binary = "";
       for (const b of bytes) binary += String.fromCharCode(b);
-      const result = await upload({ data: { base64: btoa(binary) } });
+      const result = await upload({ data: { base64: btoa(binary), purpose: field } });
       update({ [field]: result.path });
     } catch (e) {
       setError(e instanceof Error ? e.message : "Upload failed.");
@@ -77,6 +77,7 @@ export function SiteSettingsPage() {
       >
         <Field label="Site display name">
           <input
+            aria-label="Site display name"
             value={value.displayName}
             maxLength={100}
             onChange={(e) => update({ displayName: e.target.value })}
@@ -89,6 +90,7 @@ export function SiteSettingsPage() {
               hint="PNG, JPEG or WebP · up to 2 MB. SVG is not accepted."
             >
               <input
+                aria-label={k === "logo" ? "Logo" : "Favicon"}
                 type="file"
                 accept="image/png,image/jpeg,image/webp"
                 disabled={busy}
@@ -143,6 +145,7 @@ export function SiteSettingsPage() {
         </Field>
         <Field label="Announcement banner">
           <textarea
+            aria-label="Announcement banner"
             value={value.announcement}
             maxLength={300}
             onChange={(e) => update({ announcement: e.target.value })}

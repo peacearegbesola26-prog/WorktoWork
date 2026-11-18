@@ -41,7 +41,13 @@ export function WebsiteProvider({
   const { user, loading } = useAccountAuth();
   const staff = useQuery({
     queryKey: ["maintenance-staff", user?.id],
-    queryFn: () => getStaffPermissions().catch(() => []),
+    queryFn: async (): Promise<string[]> => {
+      try {
+        return await getStaffPermissions();
+      } catch {
+        return [];
+      }
+    },
     enabled: value.settings.maintenance && !!user,
   });
   useEffect(() => {
@@ -95,7 +101,9 @@ export function WebsiteProvider({
                 </>
               ) : (
                 <Button asChild>
-                  <Link to="/login">Log in</Link>
+                  <Link to="/login" search={{ next: "/app/dashboard" }}>
+                    Log in
+                  </Link>
                 </Button>
               )}
             </div>

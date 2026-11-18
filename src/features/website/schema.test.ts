@@ -1,10 +1,78 @@
-import {describe,it,expect} from "vitest";
-import {defaultSettings,imageFormat,maintenanceBlocks,pageSchema,safeLink,settingsSchema} from "./schema";
-describe("website controls",()=>{
-  it("rejects executable or credential-bearing URLs",()=>{for(const url of ["javascript:alert(1)","//example.com","data:text/html,test","https://user:pass@example.com"]){expect(safeLink.safeParse(url).success).toBe(false);}expect(safeLink.parse("/app/dashboard")).toBe("/app/dashboard");expect(safeLink.parse("https://example.com/contact")).toBe("https://example.com/contact");});
-  it("accepts supported colours only with readable contrast",()=>{expect(settingsSchema.safeParse({...defaultSettings,primary:"#ffffff"}).success).toBe(false);expect(settingsSchema.safeParse({...defaultSettings,primary:"red;display:none"}).success).toBe(false);expect(settingsSchema.parse({...defaultSettings,primary:"#2455d6"}).primary).toBe("#2455d6");});
-  it("rejects SVG and uploads larger than 2 MB",()=>{expect(imageFormat(new TextEncoder().encode('<svg xmlns="http://www.w3.org/2000/svg"/>'))).toBe(null);expect(imageFormat(new Uint8Array(2*1024*1024+1))).toBe(null);expect(imageFormat(Uint8Array.from([137,80,78,71,13,10,26,10,0,0,0,0]))).toBe("png");});
-  it("restricts settings images to validated brand paths",()=>{expect(settingsSchema.safeParse({...defaultSettings,logo:"https://example.com/x.svg"}).success).toBe(false);expect(settingsSchema.safeParse({...defaultSettings,logo:"brand/abc.svg"}).success).toBe(false);});
-  it("retains staff and necessary account/privacy access during maintenance",()=>{expect(maintenanceBlocks("/app/resume-builder",false)).toBe(true);for(const path of ["/admin/content","/admin/login","/app/settings","/app/profile","/privacy","/terms","/reset-password","/forgot-password"]){expect(maintenanceBlocks(path,false)).toBe(false);}expect(maintenanceBlocks("/app/resume-builder",true)).toBe(false);});
-  it("preserves FAQ order and accepts plain text rather than executable markup",()=>{const p=pageSchema.parse({title:"FAQs",description:"Questions",text:{body:"<script>"},faqs:[{question:"First?",answer:"One"},{question:"Second?",answer:"Two"}]});expect(p.faqs.map(x=>x.question)).toEqual(["First?","Second?"]);expect(pageSchema.safeParse({...p,html:"<script>"}).success).toBe(false);});
+import { describe, it, expect } from "vitest";
+import {
+  defaultSettings,
+  imageFormat,
+  maintenanceBlocks,
+  pageSchema,
+  safeLink,
+  settingsSchema,
+} from "./schema";
+describe("website controls", () => {
+  it("rejects executable or credential-bearing URLs", () => {
+    for (const url of [
+      "javascript:alert(1)",
+      "//example.com",
+      "data:text/html,test",
+      "https://user:pass@example.com",
+    ]) {
+      expect(safeLink.safeParse(url).success).toBe(false);
+    }
+    expect(safeLink.parse("/app/dashboard")).toBe("/app/dashboard");
+    expect(safeLink.parse("https://example.com/contact")).toBe("https://example.com/contact");
+  });
+  it("accepts supported colours only with readable contrast", () => {
+    expect(settingsSchema.safeParse({ ...defaultSettings, primary: "#ffffff" }).success).toBe(
+      false,
+    );
+    expect(
+      settingsSchema.safeParse({ ...defaultSettings, primary: "red;display:none" }).success,
+    ).toBe(false);
+    expect(settingsSchema.parse({ ...defaultSettings, primary: "#2455d6" }).primary).toBe(
+      "#2455d6",
+    );
+  });
+  it("rejects SVG and uploads larger than 2 MB", () => {
+    expect(imageFormat(new TextEncoder().encode('<svg xmlns="http://www.w3.org/2000/svg"/>'))).toBe(
+      null,
+    );
+    expect(imageFormat(new Uint8Array(2 * 1024 * 1024 + 1))).toBe(null);
+    expect(imageFormat(Uint8Array.from([137, 80, 78, 71, 13, 10, 26, 10, 0, 0, 0, 0]))).toBe("png");
+  });
+  it("restricts settings images to validated brand paths", () => {
+    expect(
+      settingsSchema.safeParse({ ...defaultSettings, logo: "https://example.com/x.svg" }).success,
+    ).toBe(false);
+    expect(settingsSchema.safeParse({ ...defaultSettings, logo: "brand/abc.svg" }).success).toBe(
+      false,
+    );
+  });
+  it("retains staff and necessary account/privacy access during maintenance", () => {
+    expect(maintenanceBlocks("/app/resume-builder", false)).toBe(true);
+    for (const path of [
+      "/admin/content",
+      "/admin/login",
+      "/app/settings",
+      "/app/profile",
+      "/privacy",
+      "/terms",
+      "/reset-password",
+      "/forgot-password",
+    ]) {
+      expect(maintenanceBlocks(path, false)).toBe(false);
+    }
+    expect(maintenanceBlocks("/app/resume-builder", true)).toBe(false);
+  });
+  it("preserves FAQ order and accepts plain text rather than executable markup", () => {
+    const p = pageSchema.parse({
+      title: "FAQs",
+      description: "Questions",
+      text: { body: "<script>" },
+      faqs: [
+        { question: "First?", answer: "One" },
+        { question: "Second?", answer: "Two" },
+      ],
+    });
+    expect(p.faqs.map((x) => x.question)).toEqual(["First?", "Second?"]);
+    expect(pageSchema.safeParse({ ...p, html: "<script>" }).success).toBe(false);
+  });
 });

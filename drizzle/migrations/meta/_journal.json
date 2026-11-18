@@ -92,6 +92,27 @@
       "when": 1794767058054,
       "tag": "0012_website_validation_and_maintenance_guards",
       "breakpoints": true
+    },
+    {
+      "idx": 13,
+      "version": "7",
+      "when": 1794991356275,
+      "tag": "0013_correct_website_url_validation",
+      "breakpoints": true
+    },
+    {
+      "idx": 14,
+      "version": "7",
+      "when": 1794991479849,
+      "tag": "0014_maintenance_ai_reservation",
+      "breakpoints": true
+    },
+    {
+      "idx": 15,
+      "version": "7",
+      "when": 1794991718410,
+      "tag": "0015_website_settings_shape_validation",
+      "breakpoints": true
     }
   ]
 }

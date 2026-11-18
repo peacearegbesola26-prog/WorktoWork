@@ -9,6 +9,8 @@ describe("staff navigation", () => {
     expect(permissionForAdminPath("/admin/access")).toBe("ai.manage");
     expect(permissionForAdminPath("/admin/opportunities")).toBe("opportunities.manage");
     expect(permissionForAdminPath("/admin")).toBe("admin.access");
+    expect(permissionForAdminPath("/admin/content")).toBe("content.manage");
+    expect(permissionForAdminPath("/admin/site-settings")).toBe("site.manage");
   });
   it("preserves protected admin settings after sign in", () =>
     expect(safeNext("/admin/access")).toBe("/admin/access"));

@@ -5,6 +5,7 @@ import { PublicShell, Field } from "@/components/work/shared";
 import { supabase } from "@/integrations/supabase/client";
 import { useAccountAuth } from "./auth";
 import { safeNext } from "./navigation";
+import { useWebsite } from "@/features/website/context";
 export function AccountAuthPage({
   kind,
   next = "/app/dashboard",
@@ -23,6 +24,7 @@ export function AccountAuthPage({
   const { user, loading, recovery: sessionRecovery } = useAccountAuth();
   const navigate = useNavigate();
   const destination = safeNext(next);
+  const { settings } = useWebsite();
   function verificationUrl() {
     const url = new URL("/email-verification", window.location.origin);
     url.searchParams.set("next", destination);
@@ -61,6 +63,7 @@ export function AccountAuthPage({
         await navigate({ to: safeNext(next), replace: true });
       }
       if (kind === "signup") {
+        if (!settings.registrationEnabled) throw new Error("Registration is currently closed.");
         const r = await supabase.auth.signUp({
           email,
           password,
@@ -193,7 +196,12 @@ export function AccountAuthPage({
               )}
               <Button
                 type="submit"
-                disabled={busy || loading || (kind === "reset" && (!recovery || !user))}
+                disabled={
+                  busy ||
+                  loading ||
+                  (kind === "signup" && !settings.registrationEnabled) ||
+                  (kind === "reset" && (!recovery || !user))
+                }
               >
                 {busy
                   ? "Please wait…"
@@ -201,7 +209,9 @@ export function AccountAuthPage({
                     ? "Checking session…"
                     : {
                         login: "Log in",
-                        signup: "Create account",
+                        signup: settings.registrationEnabled
+                          ? "Create account"
+                          : "Registration closed",
                         verification: "Resend verification email",
                         forgot: "Send reset link",
                         reset: "Update password",

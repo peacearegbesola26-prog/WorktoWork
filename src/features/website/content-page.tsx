@@ -72,6 +72,7 @@ export function ContentEditor() {
       <PageHeading title="Website content" description="Published pages and private drafts." />
       <Field label="Page">
         <select
+          aria-label="Page"
           value={key}
           onChange={(e) => {
             if (edited && !window.confirm("Discard unsaved changes?")) return;
@@ -148,6 +149,7 @@ export function ContentEditor() {
           <h2 className="text-xl">Search and sharing</h2>
           <Field label="SEO title">
             <input
+              aria-label="SEO title"
               value={value.title}
               maxLength={150}
               onChange={(e) => update({ title: e.target.value })}
@@ -155,6 +157,7 @@ export function ContentEditor() {
           </Field>
           <Field label="SEO description">
             <textarea
+              aria-label="SEO description"
               value={value.description}
               maxLength={500}
               onChange={(e) => update({ description: e.target.value })}
@@ -171,6 +174,7 @@ export function ContentEditor() {
               }
             >
               <textarea
+                aria-label={`Content field ${id}`}
                 value={text}
                 onChange={(e) => update({ text: { ...value.text, [id]: e.target.value } })}
               />
