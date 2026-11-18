@@ -55,3 +55,4 @@ use the editor.
 - Live production verification must never create fictional opportunities; test save rejection and constraints without populating discovery.
 - Administration uses a separate client-only staff layout at /admin with dedicated login and permission-scoped navigation; every callable handler and database policy rechecks active permissions so existing sessions cannot bypass revocation.
 - Opportunity lifecycle and audit history are enforced by database triggers; search is paginated against active database rows, never a limited browser sample.
+- Marketplace buyer/seller type lives in `marketplace_accounts`, separate from staff roles; users choose once via RPC, only the owner corrects it (audited), and seller-only tables use restrictive `is_seller()` policies so hiding navigation is never the only boundary.

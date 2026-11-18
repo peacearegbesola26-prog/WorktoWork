@@ -15,6 +15,13 @@ import {
   UserRound,
   Settings,
   LogOut,
+  MessagesSquare,
+  FileSignature,
+  PackageCheck,
+  Send,
+  Wallet,
+  PlusCircle,
+  Inbox,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import {
@@ -28,11 +35,19 @@ import { Brand } from "@/components/work/shared";
 import { supabase } from "@/integrations/supabase/client";
 import { useAccountAuth } from "./auth";
 import { toast } from "sonner";
-const nav = [
+const common = [
+  { to: "/app/messages", label: "Messages", icon: MessagesSquare },
+  { to: "/app/contracts", label: "Contracts and Milestones", icon: FileSignature },
+  { to: "/app/deliveries", label: "Deliveries", icon: PackageCheck },
+] as const;
+const sellerNav = [
   { to: "/app/dashboard", label: "Dashboard", icon: LayoutDashboard },
   { to: "/app/social", label: "Social Discovery", icon: Search },
   { to: "/app/web", label: "Web Discovery", icon: Globe2 },
   { to: "/app/direct", label: "Direct Work to Work", icon: BriefcaseBusiness },
+  { to: "/app/my-applications", label: "My Applications", icon: Send },
+  ...common,
+  { to: "/app/earnings", label: "Earnings and Payouts", icon: Wallet },
   { to: "/app/toolkit", label: "Career Toolkit", icon: Sparkles },
   { to: "/app/saved", label: "Saved Opportunities", icon: Bookmark },
   { to: "/app/tracker", label: "Application Tracker", icon: BriefcaseBusiness },
@@ -40,6 +55,17 @@ const nav = [
   { to: "/app/profile", label: "Profile", icon: UserRound },
   { to: "/app/settings", label: "Settings", icon: Settings },
 ] as const;
+const buyerNav = [
+  { to: "/app/dashboard", label: "Hiring Dashboard", icon: LayoutDashboard },
+  { to: "/app/post-job", label: "Post a Job", icon: PlusCircle },
+  { to: "/app/jobs", label: "My Jobs", icon: BriefcaseBusiness },
+  { to: "/app/applications", label: "Applications", icon: Inbox },
+  ...common,
+  { to: "/app/payments", label: "Payments", icon: Wallet },
+  { to: "/app/profile", label: "Profile", icon: UserRound },
+  { to: "/app/settings", label: "Settings", icon: Settings },
+] as const;
+const onboardingNav = [{ to: "/app/onboarding", label: "Choose account type", icon: UserRound }] as const;
 export function SignOutButton({ staff = false }: { staff?: boolean }) {
   const client = useQueryClient();
   const navigate = useNavigate();
@@ -66,7 +92,14 @@ export function SignOutButton({ staff = false }: { staff?: boolean }) {
     </Button>
   );
 }
-export function AccountShell({ children }: { children: ReactNode }) {
+export function AccountShell({
+  children,
+  accountType = null,
+}: {
+  children: ReactNode;
+  accountType?: "seller" | "buyer" | null;
+}) {
+  const nav = accountType === "buyer" ? buyerNav : accountType === "seller" ? sellerNav : onboardingNav;
   const [open, setOpen] = useState(false);
   const [collapsed, setCollapsed] = useState(false);
   const { user } = useAccountAuth();
@@ -75,7 +108,8 @@ export function AccountShell({ children }: { children: ReactNode }) {
       {nav.map((item) => (
         <Link
           key={item.to}
-          to={item.to}
+          // Marketplace sections resolve through /app/$section, so their paths are plain strings.
+          to={item.to as "/app/dashboard"}
           onClick={() => setOpen(false)}
           activeProps={{ className: "active" }}
           title={collapsed ? item.label : undefined}
@@ -118,7 +152,9 @@ export function AccountShell({ children }: { children: ReactNode }) {
               </SheetContent>
             </Sheet>
           </div>
-          <span className="header-breadcrumb">Your workspace</span>
+          <span className="header-breadcrumb">
+            {accountType === "buyer" ? "Hiring workspace" : accountType === "seller" ? "Seller workspace" : "Your workspace"}
+          </span>
           <div className="flex items-center gap-2">
             <Link to="/app/profile" className="avatar" aria-label="Your profile">
               {user?.email?.slice(0, 1).toUpperCase() ?? "W"}

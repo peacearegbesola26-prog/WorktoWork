@@ -6,6 +6,7 @@ import { supabase } from "@/integrations/supabase/client";
 import { useAccountAuth } from "./auth";
 import { safeNext } from "./navigation";
 import { useWebsite } from "@/features/website/context";
+import { ACCOUNT_TYPES, type AccountType } from "@/features/marketplace/account-type";
 export function AccountAuthPage({
   kind,
   next = "/app/dashboard",
@@ -15,6 +16,7 @@ export function AccountAuthPage({
 }) {
   const [email, setEmail] = useState("");
   const [name, setName] = useState("");
+  const [accountType, setAccountType] = useState<AccountType | null>(null);
   const [password, setPassword] = useState("");
   const [confirm, setConfirm] = useState("");
   const [busy, setBusy] = useState(false);
@@ -64,11 +66,12 @@ export function AccountAuthPage({
       }
       if (kind === "signup") {
         if (!settings.registrationEnabled) throw new Error("Registration is currently closed.");
+        if (!accountType) throw new Error("Choose whether you want to find work or hire talent.");
         const r = await supabase.auth.signUp({
           email,
           password,
           options: {
-            data: { name },
+            data: { name, account_type: accountType },
             emailRedirectTo: verificationUrl(),
           },
         });
@@ -143,6 +146,28 @@ export function AccountAuthPage({
             </>
           ) : (
             <form className="auth-form" onSubmit={submit}>
+              {kind === "signup" && (
+                <fieldset className="grid gap-2" aria-label="Account type">
+                  <legend className="font-medium mb-1">I want to</legend>
+                  {ACCOUNT_TYPES.map((o) => (
+                    <label key={o.value} className="flex items-start gap-2 rounded-md border p-3 cursor-pointer">
+                      <input
+                        type="radio"
+                        name="account_type"
+                        required
+                        value={o.value}
+                        checked={accountType === o.value}
+                        onChange={() => setAccountType(o.value)}
+                      />
+                      <span>
+                        <strong>{o.label}</strong>
+                        <br />
+                        <span className="text-muted-foreground text-sm">{o.description}</span>
+                      </span>
+                    </label>
+                  ))}
+                </fieldset>
+              )}
               {kind === "signup" && (
                 <Field label="Full name">
                   <input

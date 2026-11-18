@@ -102,3 +102,11 @@ Hosted preview verification remains unavailable from the test browser: it opens 
 - [x] Verify available privacy, input-validation, session and desktop/mobile checks
 - [ ] Verify full administrator publication, audit, populated filters/pagination and opportunity-action persistence — requires trusted initial admin assignment and genuine opportunity data; isolated transactional account creation is blocked by sandbox permissions
 - [x] Report verified checks and initial administrator/inbox manual steps; do not publish
+
+## Marketplace (two-sided)
+- [x] A: buyer/seller choice at sign-up, onboarding for existing accounts, separate navigation and dashboards, backend seller-only rules
+- [ ] B: direct job posting, seller visibility, applications
+- [ ] C: messaging, offers, contracts, milestones, deliveries
+- [ ] D: payment provider — waiting on legal registration country (business name: Work to Work; buyers choose currency)
+- [ ] E: admin marketplace management, disputes, notifications, end-to-end checks
+- [ ] Owner screen for account-type corrections (database command exists)

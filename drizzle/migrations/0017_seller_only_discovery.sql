@@ -1,0 +1,1 @@
+CREATE POLICY seller_discovery ON public.opportunities AS RESTRICTIVE FOR SELECT TO authenticated USING (public.is_seller() OR public.has_permission('opportunities.manage'));

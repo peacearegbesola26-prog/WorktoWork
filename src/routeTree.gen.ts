@@ -58,12 +58,14 @@ import { Route as DemoSocialRouteImport } from './routes/demo.social'
 import { Route as DemoToolkitRouteImport } from './routes/demo.toolkit'
 import { Route as DemoTrackerRouteImport } from './routes/demo.tracker'
 import { Route as DemoWebRouteImport } from './routes/demo.web'
+import { Route as AuthenticatedAppSectionRouteImport } from './routes/_authenticated/app.$section'
 import { Route as AuthenticatedAppAdminRouteImport } from './routes/_authenticated/app.admin'
 import { Route as AuthenticatedAppAlertsRouteImport } from './routes/_authenticated/app.alerts'
 import { Route as AuthenticatedAppCoverLetterRouteImport } from './routes/_authenticated/app.cover-letter'
 import { Route as AuthenticatedAppDashboardRouteImport } from './routes/_authenticated/app.dashboard'
 import { Route as AuthenticatedAppDirectRouteImport } from './routes/_authenticated/app.direct'
 import { Route as AuthenticatedAppLinkedinOptimizerRouteImport } from './routes/_authenticated/app.linkedin-optimizer'
+import { Route as AuthenticatedAppOnboardingRouteImport } from './routes/_authenticated/app.onboarding'
 import { Route as AuthenticatedAppProfileRouteImport } from './routes/_authenticated/app.profile'
 import { Route as AuthenticatedAppResumeBuilderRouteImport } from './routes/_authenticated/app.resume-builder'
 import { Route as AuthenticatedAppResumeOptimizerRouteImport } from './routes/_authenticated/app.resume-optimizer'
@@ -323,6 +325,11 @@ const DemoWebRoute = DemoWebRouteImport.update({
   path: '/web',
   getParentRoute: () => DemoRoute,
 } as any)
+const AuthenticatedAppSectionRoute = AuthenticatedAppSectionRouteImport.update({
+  id: '/app/$section',
+  path: '/app/$section',
+  getParentRoute: () => AuthenticatedRouteRoute,
+} as any)
 const AuthenticatedAppAdminRoute = AuthenticatedAppAdminRouteImport.update({
   id: '/app/admin',
   path: '/app/admin',
@@ -354,6 +361,12 @@ const AuthenticatedAppLinkedinOptimizerRoute =
   AuthenticatedAppLinkedinOptimizerRouteImport.update({
     id: '/app/linkedin-optimizer',
     path: '/app/linkedin-optimizer',
+    getParentRoute: () => AuthenticatedRouteRoute,
+  } as any)
+const AuthenticatedAppOnboardingRoute =
+  AuthenticatedAppOnboardingRouteImport.update({
+    id: '/app/onboarding',
+    path: '/app/onboarding',
     getParentRoute: () => AuthenticatedRouteRoute,
   } as any)
 const AuthenticatedAppProfileRoute = AuthenticatedAppProfileRouteImport.update({
@@ -476,12 +489,14 @@ export interface FileRoutesByFullPath {
   '/demo/web': typeof DemoWebRoute
   '/admin/': typeof AdminIndexRoute
   '/demo/': typeof DemoIndexRoute
+  '/app/$section': typeof AuthenticatedAppSectionRoute
   '/app/admin': typeof AuthenticatedAppAdminRoute
   '/app/alerts': typeof AuthenticatedAppAlertsRoute
   '/app/cover-letter': typeof AuthenticatedAppCoverLetterRoute
   '/app/dashboard': typeof AuthenticatedAppDashboardRoute
   '/app/direct': typeof AuthenticatedAppDirectRoute
   '/app/linkedin-optimizer': typeof AuthenticatedAppLinkedinOptimizerRoute
+  '/app/onboarding': typeof AuthenticatedAppOnboardingRoute
   '/app/profile': typeof AuthenticatedAppProfileRoute
   '/app/resume-builder': typeof AuthenticatedAppResumeBuilderRoute
   '/app/resume-optimizer': typeof AuthenticatedAppResumeOptimizerRoute
@@ -543,12 +558,14 @@ export interface FileRoutesByTo {
   '/demo/web': typeof DemoWebRoute
   '/admin': typeof AdminIndexRoute
   '/demo': typeof DemoIndexRoute
+  '/app/$section': typeof AuthenticatedAppSectionRoute
   '/app/admin': typeof AuthenticatedAppAdminRoute
   '/app/alerts': typeof AuthenticatedAppAlertsRoute
   '/app/cover-letter': typeof AuthenticatedAppCoverLetterRoute
   '/app/dashboard': typeof AuthenticatedAppDashboardRoute
   '/app/direct': typeof AuthenticatedAppDirectRoute
   '/app/linkedin-optimizer': typeof AuthenticatedAppLinkedinOptimizerRoute
+  '/app/onboarding': typeof AuthenticatedAppOnboardingRoute
   '/app/profile': typeof AuthenticatedAppProfileRoute
   '/app/resume-builder': typeof AuthenticatedAppResumeBuilderRoute
   '/app/resume-optimizer': typeof AuthenticatedAppResumeOptimizerRoute
@@ -614,12 +631,14 @@ export interface FileRoutesById {
   '/demo/web': typeof DemoWebRoute
   '/admin/': typeof AdminIndexRoute
   '/demo/': typeof DemoIndexRoute
+  '/_authenticated/app/$section': typeof AuthenticatedAppSectionRoute
   '/_authenticated/app/admin': typeof AuthenticatedAppAdminRoute
   '/_authenticated/app/alerts': typeof AuthenticatedAppAlertsRoute
   '/_authenticated/app/cover-letter': typeof AuthenticatedAppCoverLetterRoute
   '/_authenticated/app/dashboard': typeof AuthenticatedAppDashboardRoute
   '/_authenticated/app/direct': typeof AuthenticatedAppDirectRoute
   '/_authenticated/app/linkedin-optimizer': typeof AuthenticatedAppLinkedinOptimizerRoute
+  '/_authenticated/app/onboarding': typeof AuthenticatedAppOnboardingRoute
   '/_authenticated/app/profile': typeof AuthenticatedAppProfileRoute
   '/_authenticated/app/resume-builder': typeof AuthenticatedAppResumeBuilderRoute
   '/_authenticated/app/resume-optimizer': typeof AuthenticatedAppResumeOptimizerRoute
@@ -685,12 +704,14 @@ export interface FileRouteTypes {
     | '/demo/web'
     | '/admin/'
     | '/demo/'
+    | '/app/$section'
     | '/app/admin'
     | '/app/alerts'
     | '/app/cover-letter'
     | '/app/dashboard'
     | '/app/direct'
     | '/app/linkedin-optimizer'
+    | '/app/onboarding'
     | '/app/profile'
     | '/app/resume-builder'
     | '/app/resume-optimizer'
@@ -752,12 +773,14 @@ export interface FileRouteTypes {
     | '/demo/web'
     | '/admin'
     | '/demo'
+    | '/app/$section'
     | '/app/admin'
     | '/app/alerts'
     | '/app/cover-letter'
     | '/app/dashboard'
     | '/app/direct'
     | '/app/linkedin-optimizer'
+    | '/app/onboarding'
     | '/app/profile'
     | '/app/resume-builder'
     | '/app/resume-optimizer'
@@ -822,12 +845,14 @@ export interface FileRouteTypes {
     | '/demo/web'
     | '/admin/'
     | '/demo/'
+    | '/_authenticated/app/$section'
     | '/_authenticated/app/admin'
     | '/_authenticated/app/alerts'
     | '/_authenticated/app/cover-letter'
     | '/_authenticated/app/dashboard'
     | '/_authenticated/app/direct'
     | '/_authenticated/app/linkedin-optimizer'
+    | '/_authenticated/app/onboarding'
     | '/_authenticated/app/profile'
     | '/_authenticated/app/resume-builder'
     | '/_authenticated/app/resume-optimizer'
@@ -1210,6 +1235,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof DemoWebRouteImport
       parentRoute: typeof DemoRoute
     }
+    '/_authenticated/app/$section': {
+      id: '/_authenticated/app/$section'
+      path: '/app/$section'
+      fullPath: '/app/$section'
+      preLoaderRoute: typeof AuthenticatedAppSectionRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
     '/_authenticated/app/admin': {
       id: '/_authenticated/app/admin'
       path: '/app/admin'
@@ -1250,6 +1282,13 @@ declare module '@tanstack/react-router' {
       path: '/app/linkedin-optimizer'
       fullPath: '/app/linkedin-optimizer'
       preLoaderRoute: typeof AuthenticatedAppLinkedinOptimizerRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
+    '/_authenticated/app/onboarding': {
+      id: '/_authenticated/app/onboarding'
+      path: '/app/onboarding'
+      fullPath: '/app/onboarding'
+      preLoaderRoute: typeof AuthenticatedAppOnboardingRouteImport
       parentRoute: typeof AuthenticatedRouteRoute
     }
     '/_authenticated/app/profile': {
@@ -1354,12 +1393,14 @@ interface AuthenticatedRouteRouteChildren {
   AuthenticatedSavedRoute: typeof AuthenticatedSavedRoute
   AuthenticatedSettingsRoute: typeof AuthenticatedSettingsRoute
   AuthenticatedTrackerRoute: typeof AuthenticatedTrackerRoute
+  AuthenticatedAppSectionRoute: typeof AuthenticatedAppSectionRoute
   AuthenticatedAppAdminRoute: typeof AuthenticatedAppAdminRoute
   AuthenticatedAppAlertsRoute: typeof AuthenticatedAppAlertsRoute
   AuthenticatedAppCoverLetterRoute: typeof AuthenticatedAppCoverLetterRoute
   AuthenticatedAppDashboardRoute: typeof AuthenticatedAppDashboardRoute
   AuthenticatedAppDirectRoute: typeof AuthenticatedAppDirectRoute
   AuthenticatedAppLinkedinOptimizerRoute: typeof AuthenticatedAppLinkedinOptimizerRoute
+  AuthenticatedAppOnboardingRoute: typeof AuthenticatedAppOnboardingRoute
   AuthenticatedAppProfileRoute: typeof AuthenticatedAppProfileRoute
   AuthenticatedAppResumeBuilderRoute: typeof AuthenticatedAppResumeBuilderRoute
   AuthenticatedAppResumeOptimizerRoute: typeof AuthenticatedAppResumeOptimizerRoute
@@ -1381,6 +1422,7 @@ const AuthenticatedRouteRouteChildren: AuthenticatedRouteRouteChildren = {
   AuthenticatedSavedRoute: AuthenticatedSavedRoute,
   AuthenticatedSettingsRoute: AuthenticatedSettingsRoute,
   AuthenticatedTrackerRoute: AuthenticatedTrackerRoute,
+  AuthenticatedAppSectionRoute: AuthenticatedAppSectionRoute,
   AuthenticatedAppAdminRoute: AuthenticatedAppAdminRoute,
   AuthenticatedAppAlertsRoute: AuthenticatedAppAlertsRoute,
   AuthenticatedAppCoverLetterRoute: AuthenticatedAppCoverLetterRoute,
@@ -1388,6 +1430,7 @@ const AuthenticatedRouteRouteChildren: AuthenticatedRouteRouteChildren = {
   AuthenticatedAppDirectRoute: AuthenticatedAppDirectRoute,
   AuthenticatedAppLinkedinOptimizerRoute:
     AuthenticatedAppLinkedinOptimizerRoute,
+  AuthenticatedAppOnboardingRoute: AuthenticatedAppOnboardingRoute,
   AuthenticatedAppProfileRoute: AuthenticatedAppProfileRoute,
   AuthenticatedAppResumeBuilderRoute: AuthenticatedAppResumeBuilderRoute,
   AuthenticatedAppResumeOptimizerRoute: AuthenticatedAppResumeOptimizerRoute,

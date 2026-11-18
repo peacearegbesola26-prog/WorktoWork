@@ -49,6 +49,7 @@ describe("Real account flows", () => {
   });
   it("does not sign in a signup awaiting email confirmation", async () => {
     render(<AccountAuthPage kind="signup" next="/app/saved" />);
+    fireEvent.click(screen.getByRole("radio", { name: /Find Work/ }));
     fireEvent.change(screen.getByLabelText("Full name"), { target: { value: "Peace" } });
     fireEvent.change(screen.getByLabelText("Email address"), {
       target: { value: "peace@example.org" },
@@ -59,6 +60,7 @@ describe("Real account flows", () => {
     });
     fireEvent.click(screen.getByRole("button", { name: "Create account" }));
     await waitFor(() => expect(mocks.signup).toHaveBeenCalled());
+    expect(mocks.signup.mock.calls[0]?.[0].options.data.account_type).toBe("seller");
     expect(mocks.signup.mock.calls[0]?.[0].options.emailRedirectTo).toBe(
       window.location.origin + "/email-verification?next=%2Fapp%2Fsaved",
     );

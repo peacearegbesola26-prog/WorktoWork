@@ -113,6 +113,20 @@
       "when": 1794991718410,
       "tag": "0015_website_settings_shape_validation",
       "breakpoints": true
+    },
+    {
+      "idx": 16,
+      "version": "7",
+      "when": 1795032046883,
+      "tag": "0016_marketplace_account_types",
+      "breakpoints": true
+    },
+    {
+      "idx": 17,
+      "version": "7",
+      "when": 1795032058579,
+      "tag": "0017_seller_only_discovery",
+      "breakpoints": true
     }
   ]
 }

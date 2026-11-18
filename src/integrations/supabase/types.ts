@@ -157,6 +157,35 @@ export type Database = {
           },
         ]
       }
+      marketplace_accounts: {
+        Row: {
+          account_type: string
+          chosen_at: string
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          account_type: string
+          chosen_at?: string
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          account_type?: string
+          chosen_at?: string
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "marketplace_accounts_user_id_fkey"
+            columns: ["user_id"]
+            isOneToOne: true
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       opportunities: {
         Row: {
           application_instructions: string
@@ -602,6 +631,12 @@ export type Database = {
         Returns: Json
       }
       assert_active_account: { Args: never; Returns: undefined }
+      choose_account_type: { Args: { type_value: string }; Returns: undefined }
+      correct_account_type: {
+        Args: { reason_value: string; target: string; type_value: string }
+        Returns: undefined
+      }
+      current_account_type: { Args: never; Returns: string }
       finish_resume_ai: {
         Args: { request_id: string; request_status: string }
         Returns: undefined
@@ -614,6 +649,7 @@ export type Database = {
         }
         Returns: boolean
       }
+      is_seller: { Args: never; Returns: boolean }
       opportunity_is_active: {
         Args: { o: Database["public"]["Tables"]["opportunities"]["Row"] }
         Returns: boolean

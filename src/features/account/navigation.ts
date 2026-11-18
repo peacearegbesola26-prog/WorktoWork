@@ -8,7 +8,7 @@ export function safeNext(value: unknown) {
   )
     return value;
   return typeof value === "string" &&
-    /^\/app\/(dashboard|profile|settings|saved|tracker|alerts|social|web|direct|toolkit|resume-builder|resume-optimizer|resume-tailoring|linkedin-optimizer|cover-letter|admin)(\?|$)/.test(
+    /^\/app\/(dashboard|profile|settings|saved|tracker|alerts|social|web|direct|toolkit|resume-builder|resume-optimizer|resume-tailoring|linkedin-optimizer|cover-letter|admin|onboarding|my-applications|messages|contracts|deliveries|earnings|post-job|jobs|applications|payments)(\?|$)/.test(
       value,
     )
     ? value

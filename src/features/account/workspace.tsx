@@ -1,3 +1,4 @@
+import { getRouteApi } from "@tanstack/react-router";
 import { useState } from "react";
 import { useSuspenseQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { useServerFn } from "@tanstack/react-start";
@@ -27,6 +28,7 @@ export function WorkspacePage({
   view: "dashboard" | "profile" | "settings" | "saved" | "tracker" | "alerts" | "social" | "web";
 }) {
   const { data } = useSuspenseQuery(workspaceOptions);
+  const { accountType } = getRouteApi("/_authenticated").useRouteContext();
   const client = useQueryClient();
   const update = useServerFn(updateWorkspace);
   const mutation = useMutation({
@@ -59,6 +61,38 @@ export function WorkspacePage({
     );
   if (view === "tracker") return <Tracker data={data} save={save} busy={mutation.isPending} />;
   if (view === "alerts") return <Alerts data={data} save={save} busy={mutation.isPending} />;
+  if (view === "dashboard" && accountType === "buyer")
+    return (
+      <>
+        <PageHeading
+          title={data.profile?.name ? `Welcome, ${data.profile.name}.` : "Hire talent."}
+          description="Your jobs, applications and hires, in one place."
+        />
+        <div className="stat-grid">
+          {[
+            { label: "Published jobs", to: "/app/jobs" },
+            { label: "Applications received", to: "/app/applications" },
+            { label: "Active contracts", to: "/app/contracts" },
+          ].map((item) => (
+            <article className="stat-card" key={item.label}>
+              <BriefcaseBusiness size={20} />
+              <p>{item.label}</p>
+              <strong>0</strong>
+              <Button asChild variant="link">
+                <Link to={item.to as "/app/dashboard"}>View</Link>
+              </Button>
+            </article>
+          ))}
+        </div>
+        <section className="mt-8">
+          <h2 className="text-xl mb-4">Hiring on Work to Work</h2>
+          <p className="legal-note">
+            Job posting and applications are coming next. Payments are not connected, so no funds
+            can be collected, held or paid out yet.
+          </p>
+        </section>
+      </>
+    );
   if (view === "dashboard")
     return (
       <>
