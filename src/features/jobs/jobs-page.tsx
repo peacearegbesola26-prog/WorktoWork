@@ -140,7 +140,7 @@ function JobForm({ job }: { job?: MyJob | undefined }) {
           <input
             value={value.title}
             onChange={(e) => set("title", e.target.value)}
-            placeholder="e.g. Build a landing page for a Lagos bakery"
+            placeholder="e.g. Build a landing page for an Austin, Texas bakery"
           />
         </Field>
         <Field label="Category" hint="e.g. Design, Writing, Development, Data, Marketing">
@@ -185,7 +185,7 @@ function JobForm({ job }: { job?: MyJob | undefined }) {
             <input
               value={value.country}
               onChange={(e) => set("country", e.target.value)}
-              placeholder="e.g. Nigeria"
+              placeholder="e.g. United States (Texas)"
             />
           </Field>
         </div>
@@ -575,7 +575,7 @@ export function BrowseJobsPage() {
           <input
             value={filters.country}
             onChange={(e) => change("country", e.target.value)}
-            placeholder="e.g. Nigeria"
+            placeholder="e.g. United States (Texas)"
           />
         </Field>
         <SelectField

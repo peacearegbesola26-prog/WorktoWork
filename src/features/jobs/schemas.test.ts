@@ -13,15 +13,15 @@ import {
 
 const valid = {
   title: "Build a landing page",
-  description: "We need a landing page for a Lagos bakery with a menu and a contact form.",
+  description: "We need a landing page for an Austin, Texas bakery with a menu and a contact form.",
   category: "Design",
   skills: ["Figma", "HTML"],
   experience_level: "Intermediate",
   location_type: "Remote",
-  country: "Nigeria",
+  country: "United States",
   budget_type: "Fixed price",
   budget_amount: 350000,
-  budget_currency: "NGN",
+  budget_currency: "USD",
   closing_date: "2026-09-30",
 };
 
@@ -45,8 +45,8 @@ describe("job posting rules", () => {
     expect(jobSchema.safeParse({ ...valid, budget_amount: 100000001 }).success).toBe(false);
   });
   it("requires a three letter currency code", () => {
-    expect(jobSchema.safeParse({ ...valid, budget_currency: "naira" }).success).toBe(false);
-    expect(jobSchema.safeParse({ ...valid, budget_currency: "ngn" }).success).toBe(false);
+    expect(jobSchema.safeParse({ ...valid, budget_currency: "dollars" }).success).toBe(false);
+    expect(jobSchema.safeParse({ ...valid, budget_currency: "usd" }).success).toBe(false);
     expect(jobSchema.safeParse({ ...valid, budget_currency: "USD" }).success).toBe(true);
   });
   it("rejects a malformed closing date", () => {
@@ -116,11 +116,11 @@ describe("job search and money", () => {
     expect(splitList(" Figma , , HTML ,,")).toEqual(["Figma", "HTML"]);
   });
   it("shows a budget with its currency", () => {
-    expect(money(350000, "NGN")).toBe("NGN 350,000");
+    expect(money(350000, "USD")).toBe("USD 350,000");
     expect(money(1250.5, "USD")).toBe("USD 1,250.5");
-    expect(money(null, "NGN")).toBe("No budget set");
+    expect(money(null, "USD")).toBe("No budget set");
     expect(money(300, "")).toBe("300");
-    expect(amountOrNone(null, "NGN")).toBe("Not stated");
-    expect(amountOrNone(300, "NGN")).toBe("NGN 300");
+    expect(amountOrNone(null, "USD")).toBe("Not stated");
+    expect(amountOrNone(300, "USD")).toBe("USD 300");
   });
 });

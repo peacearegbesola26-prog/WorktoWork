@@ -14,7 +14,6 @@ export const applicationStatuses = [
 ] as const;
 /** Buyers choose the currency of each job budget; sellers are paid in that currency. */
 export const currencies = [
-  "NGN",
   "USD",
   "GBP",
   "EUR",
@@ -70,7 +69,7 @@ export const emptyJob: JobDraft = {
   country: "",
   budget_type: "Fixed price",
   budget_amount: null,
-  budget_currency: "NGN",
+  budget_currency: "USD",
   closing_date: "",
 };
 

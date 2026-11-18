@@ -7,14 +7,14 @@ describe("Account record validation", () => {
         name: "Peace",
         skills: ["Writing"],
         services: ["Editing"],
-        preferred_countries: ["Nigeria"],
+        preferred_countries: ["United States"],
         work_preference: "Remote",
       }),
     ).toEqual({
       name: "Peace",
       skills: ["Writing"],
       services: ["Editing"],
-      preferred_countries: ["Nigeria"],
+      preferred_countries: ["United States"],
       work_preference: "Remote",
     });
   });
@@ -37,7 +37,7 @@ describe("Account record validation", () => {
       commandSchema.parse({
         action: "preferences",
         value: {
-          preferred_countries: ["Nigeria"],
+          preferred_countries: ["United States"],
           work_preference: "Remote",
           name: "Stale name",
           skills: ["Stale skill"],
@@ -47,7 +47,7 @@ describe("Account record validation", () => {
     ).toEqual({
       action: "preferences",
       value: {
-        preferred_countries: ["Nigeria"],
+        preferred_countries: ["United States"],
         work_preference: "Remote",
       },
     });

@@ -44,10 +44,10 @@ describe.skipIf(process.env["WTW_ISOLATED_ADMIN_TESTS"] !== "1")(
             }),
           ).rejects.toThrow();
           await tx`select set_config('request.jwt.claim.sub',${admin},true)`;
-          await tx`update public.opportunities set status='published',skills=ARRAY['Writing'],country='Nigeria',work_location='Remote',posted_at=now() where id=${draft["id"]}`;
+          await tx`update public.opportunities set status='published',skills=ARRAY['Writing'],country='United States',work_location='Remote',posted_at=now() where id=${draft["id"]}`;
           await tx`select set_config('request.jwt.claim.sub',${user},true)`;
           expect(
-            await tx`select id from public.opportunities where discovery_section='web' and status='published' and country='Nigeria' and skills @> ARRAY['Writing'] and work_location='Remote' and title ilike '%verification%' and posted_at >= current_date`,
+            await tx`select id from public.opportunities where discovery_section='web' and status='published' and country='United States' and skills @> ARRAY['Writing'] and work_location='Remote' and title ilike '%verification%' and posted_at >= current_date`,
           ).toHaveLength(1);
           await tx`insert into public.saved_opportunities(user_id,opportunity_id) values(${user},${draft["id"]})`;
           await expect(
