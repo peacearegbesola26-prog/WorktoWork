@@ -62,12 +62,16 @@ import { Route as AuthenticatedAppSectionRouteImport } from './routes/_authentic
 import { Route as AuthenticatedAppAdminRouteImport } from './routes/_authenticated/app.admin'
 import { Route as AuthenticatedAppAlertsRouteImport } from './routes/_authenticated/app.alerts'
 import { Route as AuthenticatedAppApplicationsRouteImport } from './routes/_authenticated/app.applications'
+import { Route as AuthenticatedAppContractsRouteImport } from './routes/_authenticated/app.contracts'
 import { Route as AuthenticatedAppCoverLetterRouteImport } from './routes/_authenticated/app.cover-letter'
 import { Route as AuthenticatedAppDashboardRouteImport } from './routes/_authenticated/app.dashboard'
+import { Route as AuthenticatedAppDeliveriesRouteImport } from './routes/_authenticated/app.deliveries'
 import { Route as AuthenticatedAppDirectRouteImport } from './routes/_authenticated/app.direct'
 import { Route as AuthenticatedAppJobsRouteImport } from './routes/_authenticated/app.jobs'
 import { Route as AuthenticatedAppLinkedinOptimizerRouteImport } from './routes/_authenticated/app.linkedin-optimizer'
+import { Route as AuthenticatedAppMessagesRouteImport } from './routes/_authenticated/app.messages'
 import { Route as AuthenticatedAppMyApplicationsRouteImport } from './routes/_authenticated/app.my-applications'
+import { Route as AuthenticatedAppNotificationsRouteImport } from './routes/_authenticated/app.notifications'
 import { Route as AuthenticatedAppOnboardingRouteImport } from './routes/_authenticated/app.onboarding'
 import { Route as AuthenticatedAppOpenJobsRouteImport } from './routes/_authenticated/app.open-jobs'
 import { Route as AuthenticatedAppPostJobRouteImport } from './routes/_authenticated/app.post-job'
@@ -353,6 +357,12 @@ const AuthenticatedAppApplicationsRoute =
     path: '/app/applications',
     getParentRoute: () => AuthenticatedRouteRoute,
   } as any)
+const AuthenticatedAppContractsRoute =
+  AuthenticatedAppContractsRouteImport.update({
+    id: '/app/contracts',
+    path: '/app/contracts',
+    getParentRoute: () => AuthenticatedRouteRoute,
+  } as any)
 const AuthenticatedAppCoverLetterRoute =
   AuthenticatedAppCoverLetterRouteImport.update({
     id: '/app/cover-letter',
@@ -363,6 +373,12 @@ const AuthenticatedAppDashboardRoute =
   AuthenticatedAppDashboardRouteImport.update({
     id: '/app/dashboard',
     path: '/app/dashboard',
+    getParentRoute: () => AuthenticatedRouteRoute,
+  } as any)
+const AuthenticatedAppDeliveriesRoute =
+  AuthenticatedAppDeliveriesRouteImport.update({
+    id: '/app/deliveries',
+    path: '/app/deliveries',
     getParentRoute: () => AuthenticatedRouteRoute,
   } as any)
 const AuthenticatedAppDirectRoute = AuthenticatedAppDirectRouteImport.update({
@@ -381,10 +397,22 @@ const AuthenticatedAppLinkedinOptimizerRoute =
     path: '/app/linkedin-optimizer',
     getParentRoute: () => AuthenticatedRouteRoute,
   } as any)
+const AuthenticatedAppMessagesRoute =
+  AuthenticatedAppMessagesRouteImport.update({
+    id: '/app/messages',
+    path: '/app/messages',
+    getParentRoute: () => AuthenticatedRouteRoute,
+  } as any)
 const AuthenticatedAppMyApplicationsRoute =
   AuthenticatedAppMyApplicationsRouteImport.update({
     id: '/app/my-applications',
     path: '/app/my-applications',
+    getParentRoute: () => AuthenticatedRouteRoute,
+  } as any)
+const AuthenticatedAppNotificationsRoute =
+  AuthenticatedAppNotificationsRouteImport.update({
+    id: '/app/notifications',
+    path: '/app/notifications',
     getParentRoute: () => AuthenticatedRouteRoute,
   } as any)
 const AuthenticatedAppOnboardingRoute =
@@ -540,12 +568,16 @@ export interface FileRoutesByFullPath {
   '/app/admin': typeof AuthenticatedAppAdminRoute
   '/app/alerts': typeof AuthenticatedAppAlertsRoute
   '/app/applications': typeof AuthenticatedAppApplicationsRoute
+  '/app/contracts': typeof AuthenticatedAppContractsRoute
   '/app/cover-letter': typeof AuthenticatedAppCoverLetterRoute
   '/app/dashboard': typeof AuthenticatedAppDashboardRoute
+  '/app/deliveries': typeof AuthenticatedAppDeliveriesRoute
   '/app/direct': typeof AuthenticatedAppDirectRoute
   '/app/jobs': typeof AuthenticatedAppJobsRoute
   '/app/linkedin-optimizer': typeof AuthenticatedAppLinkedinOptimizerRoute
+  '/app/messages': typeof AuthenticatedAppMessagesRoute
   '/app/my-applications': typeof AuthenticatedAppMyApplicationsRoute
+  '/app/notifications': typeof AuthenticatedAppNotificationsRoute
   '/app/onboarding': typeof AuthenticatedAppOnboardingRoute
   '/app/open-jobs': typeof AuthenticatedAppOpenJobsRouteWithChildren
   '/app/post-job': typeof AuthenticatedAppPostJobRoute
@@ -616,12 +648,16 @@ export interface FileRoutesByTo {
   '/app/admin': typeof AuthenticatedAppAdminRoute
   '/app/alerts': typeof AuthenticatedAppAlertsRoute
   '/app/applications': typeof AuthenticatedAppApplicationsRoute
+  '/app/contracts': typeof AuthenticatedAppContractsRoute
   '/app/cover-letter': typeof AuthenticatedAppCoverLetterRoute
   '/app/dashboard': typeof AuthenticatedAppDashboardRoute
+  '/app/deliveries': typeof AuthenticatedAppDeliveriesRoute
   '/app/direct': typeof AuthenticatedAppDirectRoute
   '/app/jobs': typeof AuthenticatedAppJobsRoute
   '/app/linkedin-optimizer': typeof AuthenticatedAppLinkedinOptimizerRoute
+  '/app/messages': typeof AuthenticatedAppMessagesRoute
   '/app/my-applications': typeof AuthenticatedAppMyApplicationsRoute
+  '/app/notifications': typeof AuthenticatedAppNotificationsRoute
   '/app/onboarding': typeof AuthenticatedAppOnboardingRoute
   '/app/post-job': typeof AuthenticatedAppPostJobRoute
   '/app/profile': typeof AuthenticatedAppProfileRoute
@@ -695,12 +731,16 @@ export interface FileRoutesById {
   '/_authenticated/app/admin': typeof AuthenticatedAppAdminRoute
   '/_authenticated/app/alerts': typeof AuthenticatedAppAlertsRoute
   '/_authenticated/app/applications': typeof AuthenticatedAppApplicationsRoute
+  '/_authenticated/app/contracts': typeof AuthenticatedAppContractsRoute
   '/_authenticated/app/cover-letter': typeof AuthenticatedAppCoverLetterRoute
   '/_authenticated/app/dashboard': typeof AuthenticatedAppDashboardRoute
+  '/_authenticated/app/deliveries': typeof AuthenticatedAppDeliveriesRoute
   '/_authenticated/app/direct': typeof AuthenticatedAppDirectRoute
   '/_authenticated/app/jobs': typeof AuthenticatedAppJobsRoute
   '/_authenticated/app/linkedin-optimizer': typeof AuthenticatedAppLinkedinOptimizerRoute
+  '/_authenticated/app/messages': typeof AuthenticatedAppMessagesRoute
   '/_authenticated/app/my-applications': typeof AuthenticatedAppMyApplicationsRoute
+  '/_authenticated/app/notifications': typeof AuthenticatedAppNotificationsRoute
   '/_authenticated/app/onboarding': typeof AuthenticatedAppOnboardingRoute
   '/_authenticated/app/open-jobs': typeof AuthenticatedAppOpenJobsRouteWithChildren
   '/_authenticated/app/post-job': typeof AuthenticatedAppPostJobRoute
@@ -775,12 +815,16 @@ export interface FileRouteTypes {
     | '/app/admin'
     | '/app/alerts'
     | '/app/applications'
+    | '/app/contracts'
     | '/app/cover-letter'
     | '/app/dashboard'
+    | '/app/deliveries'
     | '/app/direct'
     | '/app/jobs'
     | '/app/linkedin-optimizer'
+    | '/app/messages'
     | '/app/my-applications'
+    | '/app/notifications'
     | '/app/onboarding'
     | '/app/open-jobs'
     | '/app/post-job'
@@ -851,12 +895,16 @@ export interface FileRouteTypes {
     | '/app/admin'
     | '/app/alerts'
     | '/app/applications'
+    | '/app/contracts'
     | '/app/cover-letter'
     | '/app/dashboard'
+    | '/app/deliveries'
     | '/app/direct'
     | '/app/jobs'
     | '/app/linkedin-optimizer'
+    | '/app/messages'
     | '/app/my-applications'
+    | '/app/notifications'
     | '/app/onboarding'
     | '/app/post-job'
     | '/app/profile'
@@ -929,12 +977,16 @@ export interface FileRouteTypes {
     | '/_authenticated/app/admin'
     | '/_authenticated/app/alerts'
     | '/_authenticated/app/applications'
+    | '/_authenticated/app/contracts'
     | '/_authenticated/app/cover-letter'
     | '/_authenticated/app/dashboard'
+    | '/_authenticated/app/deliveries'
     | '/_authenticated/app/direct'
     | '/_authenticated/app/jobs'
     | '/_authenticated/app/linkedin-optimizer'
+    | '/_authenticated/app/messages'
     | '/_authenticated/app/my-applications'
+    | '/_authenticated/app/notifications'
     | '/_authenticated/app/onboarding'
     | '/_authenticated/app/open-jobs'
     | '/_authenticated/app/post-job'
@@ -1350,6 +1402,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedAppApplicationsRouteImport
       parentRoute: typeof AuthenticatedRouteRoute
     }
+    '/_authenticated/app/contracts': {
+      id: '/_authenticated/app/contracts'
+      path: '/app/contracts'
+      fullPath: '/app/contracts'
+      preLoaderRoute: typeof AuthenticatedAppContractsRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
     '/_authenticated/app/cover-letter': {
       id: '/_authenticated/app/cover-letter'
       path: '/app/cover-letter'
@@ -1362,6 +1421,13 @@ declare module '@tanstack/react-router' {
       path: '/app/dashboard'
       fullPath: '/app/dashboard'
       preLoaderRoute: typeof AuthenticatedAppDashboardRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
+    '/_authenticated/app/deliveries': {
+      id: '/_authenticated/app/deliveries'
+      path: '/app/deliveries'
+      fullPath: '/app/deliveries'
+      preLoaderRoute: typeof AuthenticatedAppDeliveriesRouteImport
       parentRoute: typeof AuthenticatedRouteRoute
     }
     '/_authenticated/app/direct': {
@@ -1385,11 +1451,25 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedAppLinkedinOptimizerRouteImport
       parentRoute: typeof AuthenticatedRouteRoute
     }
+    '/_authenticated/app/messages': {
+      id: '/_authenticated/app/messages'
+      path: '/app/messages'
+      fullPath: '/app/messages'
+      preLoaderRoute: typeof AuthenticatedAppMessagesRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
     '/_authenticated/app/my-applications': {
       id: '/_authenticated/app/my-applications'
       path: '/app/my-applications'
       fullPath: '/app/my-applications'
       preLoaderRoute: typeof AuthenticatedAppMyApplicationsRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
+    '/_authenticated/app/notifications': {
+      id: '/_authenticated/app/notifications'
+      path: '/app/notifications'
+      fullPath: '/app/notifications'
+      preLoaderRoute: typeof AuthenticatedAppNotificationsRouteImport
       parentRoute: typeof AuthenticatedRouteRoute
     }
     '/_authenticated/app/onboarding': {
@@ -1549,12 +1629,16 @@ interface AuthenticatedRouteRouteChildren {
   AuthenticatedAppAdminRoute: typeof AuthenticatedAppAdminRoute
   AuthenticatedAppAlertsRoute: typeof AuthenticatedAppAlertsRoute
   AuthenticatedAppApplicationsRoute: typeof AuthenticatedAppApplicationsRoute
+  AuthenticatedAppContractsRoute: typeof AuthenticatedAppContractsRoute
   AuthenticatedAppCoverLetterRoute: typeof AuthenticatedAppCoverLetterRoute
   AuthenticatedAppDashboardRoute: typeof AuthenticatedAppDashboardRoute
+  AuthenticatedAppDeliveriesRoute: typeof AuthenticatedAppDeliveriesRoute
   AuthenticatedAppDirectRoute: typeof AuthenticatedAppDirectRoute
   AuthenticatedAppJobsRoute: typeof AuthenticatedAppJobsRoute
   AuthenticatedAppLinkedinOptimizerRoute: typeof AuthenticatedAppLinkedinOptimizerRoute
+  AuthenticatedAppMessagesRoute: typeof AuthenticatedAppMessagesRoute
   AuthenticatedAppMyApplicationsRoute: typeof AuthenticatedAppMyApplicationsRoute
+  AuthenticatedAppNotificationsRoute: typeof AuthenticatedAppNotificationsRoute
   AuthenticatedAppOnboardingRoute: typeof AuthenticatedAppOnboardingRoute
   AuthenticatedAppOpenJobsRoute: typeof AuthenticatedAppOpenJobsRouteWithChildren
   AuthenticatedAppPostJobRoute: typeof AuthenticatedAppPostJobRoute
@@ -1583,13 +1667,17 @@ const AuthenticatedRouteRouteChildren: AuthenticatedRouteRouteChildren = {
   AuthenticatedAppAdminRoute: AuthenticatedAppAdminRoute,
   AuthenticatedAppAlertsRoute: AuthenticatedAppAlertsRoute,
   AuthenticatedAppApplicationsRoute: AuthenticatedAppApplicationsRoute,
+  AuthenticatedAppContractsRoute: AuthenticatedAppContractsRoute,
   AuthenticatedAppCoverLetterRoute: AuthenticatedAppCoverLetterRoute,
   AuthenticatedAppDashboardRoute: AuthenticatedAppDashboardRoute,
+  AuthenticatedAppDeliveriesRoute: AuthenticatedAppDeliveriesRoute,
   AuthenticatedAppDirectRoute: AuthenticatedAppDirectRoute,
   AuthenticatedAppJobsRoute: AuthenticatedAppJobsRoute,
   AuthenticatedAppLinkedinOptimizerRoute:
     AuthenticatedAppLinkedinOptimizerRoute,
+  AuthenticatedAppMessagesRoute: AuthenticatedAppMessagesRoute,
   AuthenticatedAppMyApplicationsRoute: AuthenticatedAppMyApplicationsRoute,
+  AuthenticatedAppNotificationsRoute: AuthenticatedAppNotificationsRoute,
   AuthenticatedAppOnboardingRoute: AuthenticatedAppOnboardingRoute,
   AuthenticatedAppOpenJobsRoute: AuthenticatedAppOpenJobsRouteWithChildren,
   AuthenticatedAppPostJobRoute: AuthenticatedAppPostJobRoute,

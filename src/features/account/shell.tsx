@@ -1,4 +1,5 @@
-import { useState, type ReactNode } from "react";
+import { Suspense, useState, type ReactNode } from "react";
+import { MarketplaceBadge } from "@/features/marketplace/workflow-page";
 import { Link, useNavigate } from "@tanstack/react-router";
 import { useQueryClient } from "@tanstack/react-query";
 import {
@@ -36,6 +37,7 @@ import { supabase } from "@/integrations/supabase/client";
 import { useAccountAuth } from "./auth";
 import { toast } from "sonner";
 const common = [
+  { to: "/app/notifications", label: "Notifications", icon: Bell },
   { to: "/app/messages", label: "Messages", icon: MessagesSquare },
   { to: "/app/contracts", label: "Contracts and Milestones", icon: FileSignature },
   { to: "/app/deliveries", label: "Deliveries", icon: PackageCheck },
@@ -164,6 +166,7 @@ export function AccountShell({
                 : "Your workspace"}
           </span>
           <div className="flex items-center gap-2">
+            {accountType && <Suspense fallback={null}><MarketplaceBadge /></Suspense>}
             <Link to="/app/profile" className="avatar" aria-label="Your profile">
               {user?.email?.slice(0, 1).toUpperCase() ?? "W"}
             </Link>

@@ -308,6 +308,277 @@ export type Database = {
           },
         ]
       }
+      marketplace_contracts: {
+        Row: {
+          accepted_at: string | null
+          amount: number
+          buyer_id: string
+          conversation_id: string
+          created_at: string
+          currency: string
+          id: string
+          seller_id: string
+          status: string
+          terms: string
+          title: string
+        }
+        Insert: {
+          accepted_at?: string | null
+          amount: number
+          buyer_id: string
+          conversation_id: string
+          created_at?: string
+          currency: string
+          id?: string
+          seller_id: string
+          status?: string
+          terms: string
+          title: string
+        }
+        Update: {
+          accepted_at?: string | null
+          amount?: number
+          buyer_id?: string
+          conversation_id?: string
+          created_at?: string
+          currency?: string
+          id?: string
+          seller_id?: string
+          status?: string
+          terms?: string
+          title?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "marketplace_contracts_buyer_id_fkey"
+            columns: ["buyer_id"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "marketplace_contracts_conversation_id_fkey"
+            columns: ["conversation_id"]
+            isOneToOne: true
+            referencedRelation: "marketplace_conversations"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "marketplace_contracts_seller_id_fkey"
+            columns: ["seller_id"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      marketplace_conversations: {
+        Row: {
+          application_id: string
+          buyer_id: string
+          created_at: string
+          id: string
+          seller_id: string
+          title: string
+        }
+        Insert: {
+          application_id: string
+          buyer_id: string
+          created_at?: string
+          id?: string
+          seller_id: string
+          title: string
+        }
+        Update: {
+          application_id?: string
+          buyer_id?: string
+          created_at?: string
+          id?: string
+          seller_id?: string
+          title?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "marketplace_conversations_application_id_fkey"
+            columns: ["application_id"]
+            isOneToOne: true
+            referencedRelation: "job_applications"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "marketplace_conversations_buyer_id_fkey"
+            columns: ["buyer_id"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "marketplace_conversations_seller_id_fkey"
+            columns: ["seller_id"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      marketplace_messages: {
+        Row: {
+          attachment_name: string | null
+          attachment_path: string | null
+          body: string
+          conversation_id: string
+          created_at: string
+          id: string
+          request_id: string
+          sender_id: string
+        }
+        Insert: {
+          attachment_name?: string | null
+          attachment_path?: string | null
+          body: string
+          conversation_id: string
+          created_at?: string
+          id?: string
+          request_id: string
+          sender_id: string
+        }
+        Update: {
+          attachment_name?: string | null
+          attachment_path?: string | null
+          body?: string
+          conversation_id?: string
+          created_at?: string
+          id?: string
+          request_id?: string
+          sender_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "marketplace_messages_conversation_id_fkey"
+            columns: ["conversation_id"]
+            isOneToOne: false
+            referencedRelation: "marketplace_conversations"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "marketplace_messages_sender_id_fkey"
+            columns: ["sender_id"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      marketplace_milestones: {
+        Row: {
+          amount: number
+          contract_id: string
+          due_date: string | null
+          id: string
+          position: number
+          title: string
+        }
+        Insert: {
+          amount: number
+          contract_id: string
+          due_date?: string | null
+          id?: string
+          position: number
+          title: string
+        }
+        Update: {
+          amount?: number
+          contract_id?: string
+          due_date?: string | null
+          id?: string
+          position?: number
+          title?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "marketplace_milestones_contract_id_fkey"
+            columns: ["contract_id"]
+            isOneToOne: false
+            referencedRelation: "marketplace_contracts"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      marketplace_notifications: {
+        Row: {
+          conversation_id: string
+          created_at: string
+          id: string
+          kind: string
+          read_at: string | null
+          user_id: string
+        }
+        Insert: {
+          conversation_id: string
+          created_at?: string
+          id?: string
+          kind: string
+          read_at?: string | null
+          user_id: string
+        }
+        Update: {
+          conversation_id?: string
+          created_at?: string
+          id?: string
+          kind?: string
+          read_at?: string | null
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "marketplace_notifications_conversation_id_fkey"
+            columns: ["conversation_id"]
+            isOneToOne: false
+            referencedRelation: "marketplace_conversations"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "marketplace_notifications_user_id_fkey"
+            columns: ["user_id"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      marketplace_reads: {
+        Row: {
+          conversation_id: string
+          read_at: string
+          user_id: string
+        }
+        Insert: {
+          conversation_id: string
+          read_at?: string
+          user_id: string
+        }
+        Update: {
+          conversation_id?: string
+          read_at?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "marketplace_reads_conversation_id_fkey"
+            columns: ["conversation_id"]
+            isOneToOne: false
+            referencedRelation: "marketplace_conversations"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "marketplace_reads_user_id_fkey"
+            columns: ["user_id"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       opportunities: {
         Row: {
           application_instructions: string
@@ -755,9 +1026,18 @@ export type Database = {
       assert_active_account: { Args: never; Returns: undefined }
       buyer_workspace_counts: { Args: never; Returns: Json }
       choose_account_type: { Args: { type_value: string }; Returns: undefined }
+      conversation_participant: { Args: { cid: string }; Returns: boolean }
       correct_account_type: {
         Args: { reason_value: string; target: string; type_value: string }
         Returns: undefined
+      }
+      create_marketplace_offer: {
+        Args: {
+          conversation_value: string
+          milestones_value: Json
+          terms_value: string
+        }
+        Returns: string
       }
       current_account_type: { Args: never; Returns: string }
       finish_resume_ai: {
@@ -776,16 +1056,42 @@ export type Database = {
       is_seller: { Args: never; Returns: boolean }
       job_is_buyer: { Args: { job: string }; Returns: boolean }
       job_open_for_application: { Args: { job: string }; Returns: boolean }
+      mark_marketplace_notification: {
+        Args: { notification_value: string }
+        Returns: undefined
+      }
+      open_marketplace_conversation: {
+        Args: { application_value: string }
+        Returns: string
+      }
       opportunity_is_active: {
         Args: { o: Database["public"]["Tables"]["opportunities"]["Row"] }
         Returns: boolean
       }
       published_website: { Args: never; Returns: Json }
+      read_marketplace_conversation: {
+        Args: { conversation_value: string; through_value: string }
+        Returns: undefined
+      }
       reserve_resume_ai: {
         Args: { input_length: number; mode_value: string }
         Returns: string
       }
+      respond_marketplace_offer: {
+        Args: { action_value: string; contract_value: string }
+        Returns: undefined
+      }
       seller_workspace_counts: { Args: never; Returns: Json }
+      send_marketplace_message: {
+        Args: {
+          attachment_value?: string
+          body_value: string
+          conversation_value: string
+          name_value?: string
+          request_value: string
+        }
+        Returns: string
+      }
       set_account_suspension: {
         Args: { is_suspended: boolean; reason_value: string; target: string }
         Returns: undefined

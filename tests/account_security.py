@@ -16,6 +16,7 @@ class AccountSecurity(unittest.TestCase):
    user=r.json();uid=user.get('id') or user['user']['id'];cls.users.append({'id':uid,'email':email})
    login=call('/auth/v1/token?grant_type=password','POST',{'email':email,'password':cls.password},{'apikey':PUB});assert login.ok,login.status_code
    cls.users[-1]['headers']={'apikey':PUB,'Authorization':'Bearer '+login.json()['access_token']}
+   chosen=call('/rest/v1/rpc/choose_account_type','POST',{'type_value':'seller'},cls.users[-1]['headers']);assert chosen.ok,chosen.status_code
  @classmethod
  def tearDownClass(cls):
   if cls.op:call('/rest/v1/opportunities?id=eq.'+cls.op,'DELETE')

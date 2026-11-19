@@ -144,19 +144,13 @@ export const searchJobs = createServerFn({ method: "POST" })
   .inputValidator((v) => jobSearchSchema.parse(v))
   .handler(async ({ data, context }) => {
     const clean = (v: string) => v.replace(/[%,()\\]/g, " ").trim();
-    const conditions = ["closing_date.is.null", `closing_date.gte.${today()}`];
     const term = clean(data.query);
-    if (term)
-      conditions.push(
-        `title.ilike.%${term}%`,
-        `description.ilike.%${term}%`,
-        `category.ilike.%${term}%`,
-      );
     let q = context.supabase
       .from("jobs")
       .select("*", { count: "exact" })
       .eq("status", "published")
-      .or(conditions.join(","));
+      .or(`closing_date.is.null,closing_date.gte.${today()}`);
+    if (term) q = q.or(`title.ilike.%${term}%,description.ilike.%${term}%,category.ilike.%${term}%`);
     if (clean(data.category)) q = q.ilike("category", `%${clean(data.category)}%`);
     if (clean(data.country)) q = q.ilike("country", `%${clean(data.country)}%`);
     if (data.work !== "All") q = q.eq("location_type", data.work);

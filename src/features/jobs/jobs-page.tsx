@@ -5,6 +5,7 @@ import { useServerFn } from "@tanstack/react-start";
 import { toast } from "sonner";
 import { BriefcaseBusiness, CalendarDays, MapPin, Send, Wallet, ArrowLeft } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { ConversationAction } from "@/features/marketplace/workflow-page";
 import { Field, SelectField, PageHeading, EmptyState } from "@/components/work/shared";
 import { myJobsOptions, jobApplicationsOptions, myApplicationsOptions } from "./query";
 import {
@@ -477,6 +478,7 @@ export function ApplicationsPage({ initialJob = "" }: { initialJob?: string }) {
                   </td>
                   <td>
                     <div className="flex flex-wrap gap-2">
+                      {!['withdrawn', 'rejected'].includes(a.status) && <ConversationAction application={a.id} />}
                       {a.status !== "reviewed" && (
                         <Button
                           variant="link"
@@ -814,6 +816,7 @@ export function JobDetailPage({ id }: { id: string }) {
                     Withdraw application
                   </Button>
                 )}
+                {!['withdrawn', 'rejected'].includes(application.status) && <ConversationAction application={application.id} />}
               </div>
             </div>
           ) : (
@@ -929,6 +932,7 @@ export function MyApplicationsPage() {
                   <td>{money(a.proposed_amount, a.jobs?.budget_currency ?? "")}</td>
                   <td>{day(a.created_at.slice(0, 10))}</td>
                   <td>
+                    {!['withdrawn', 'rejected'].includes(a.status) && <ConversationAction application={a.id} />}
                     {a.status === "submitted" ? (
                       <Button
                         variant="link"

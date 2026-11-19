@@ -56,3 +56,6 @@ use the editor.
 - Administration uses a separate client-only staff layout at /admin with dedicated login and permission-scoped navigation; every callable handler and database policy rechecks active permissions so existing sessions cannot bypass revocation.
 - Opportunity lifecycle and audit history are enforced by database triggers; search is paginated against active database rows, never a limited browser sample.
 - Marketplace buyer/seller type lives in `marketplace_accounts`, separate from staff roles; users choose once via RPC, only the owner corrects it (audited), and seller-only tables use restrictive `is_seller()` policies so hiding navigation is never the only boundary.
+- Marketplace conversation and offer commands serialize unique application records and enforce participant access in the database; messages use durable request IDs so retries cannot duplicate sends.
+- Marketplace files stay in participant-only private storage and download as attachments; accepted offers remain unfunded, with no delivery activation or money-release state until verified payments exist.
+- Marketplace views share query invalidation from uniquely named effect-scoped Realtime channels plus reconnect polling so unread counts survive missed events without leaking subscriptions.

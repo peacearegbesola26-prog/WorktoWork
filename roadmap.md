@@ -104,9 +104,14 @@ Hosted preview verification remains unavailable from the test browser: it opens 
 - [x] Report verified checks and initial administrator/inbox manual steps; do not publish
 
 ## Marketplace (two-sided)
+- [x] Repair request: reproduce placeholders; implement private messaging, offers and unfunded contracts; verify buyer/seller/third-account boundaries and clean tracked fixtures
+- [x] Repair request: implement message/offer notifications and delivery funding denial; keep payments disconnected
+- [ ] Repair request: manual offline-send recovery and logout/login message check — fault-injection browser check did not finish; not claimed verified
+- [ ] Repair request: funded delivery submission/revision/approval — requires a configured provider and a verified funding lifecycle; these actions remain disabled, not implemented
 - [x] A: buyer/seller choice at sign-up, onboarding for existing accounts, separate navigation and dashboards, backend seller-only rules
 - [x] B: buyer job posting (draft/publish/close/archive/delete), seller browsing of published jobs, applications, buyer review/hire, one-hire-per-job, dashboard counts; verified end-to-end in the browser and by live database checks
-- [ ] C: messaging, offers, contracts, milestones, deliveries
+- [x] C: private messaging, attachments, offers, seller acceptance and unfunded contract/milestone views; 7 live marketplace security checks, job checks and resume privacy checks passed (21 checks total); browser verified main buyer-to-seller flow, live receiving, refresh and third-account conversation denial
+- [ ] C: funded deliveries and revision/approval lifecycle — funding integration required; disabled without pretending funds were released
 - [ ] D: payment provider — registered in the United States (Texas) as "Work to Work"; buyers choose currency, sellers paid in it; provider support still to be checked
 - [ ] E: admin marketplace management, disputes, notifications, end-to-end checks
 - [ ] Owner screen for account-type corrections (database command exists)
