@@ -41,10 +41,26 @@ const errorMessage = (e: unknown) =>
 function day(value: string | null) {
   if (!value) return "No deadline";
   const d = new Date(value);
-  return Number.isNaN(d.getTime())
-    ? "No deadline"
-    : d.toLocaleDateString("en-GB", { day: "numeric", month: "short", year: "numeric" });
+  if (Number.isNaN(d.getTime())) return "No deadline";
+  // A date-only value ("2026-11-20") is parsed as midnight UTC, so format it in UTC to
+  // avoid showing the previous day in US time zones. Full timestamps use the viewer's zone.
+  const dateOnly = /^\d{4}-\d{2}-\d{2}$/.test(value);
+  return d.toLocaleDateString("en-GB", {
+    day: "numeric",
+    month: "short",
+    year: "numeric",
+    ...(dateOnly ? { timeZone: "UTC" } : {}),
+  });
 }
+
+const applicationNote: Record<string, string> = {
+  submitted: "You can still withdraw it.",
+  reviewed: "The buyer has reviewed your application.",
+  shortlisted: "The buyer has shortlisted you.",
+  hired: "The buyer has hired you for this job.",
+  rejected: "The buyer did not choose your application this time.",
+  withdrawn: "You withdrew this application.",
+};
 
 function JobStatus({ status }: { status: string }) {
   return <span className="status-pill">{status}</span>;
@@ -92,6 +108,9 @@ function JobForm({ job }: { job?: MyJob | undefined }) {
   const [skillText, setSkillText] = useState(job ? job.skills.join(", ") : "");
   const [error, setError] = useState("");
   const [busy, setBusy] = useState("");
+  // Remember the id once a new job is first saved, so a retry after a failed publish
+  // updates that draft instead of inserting a duplicate.
+  const [savedId, setSavedId] = useState<string | undefined>(job?.id);
 
   const set = <K extends keyof JobDraft>(key: K, v: JobDraft[K]) =>
     setValue((old) => ({ ...old, [key]: v }));
@@ -106,8 +125,9 @@ function JobForm({ job }: { job?: MyJob | undefined }) {
     setError("");
     try {
       const saved = await save({
-        data: { action: "save", id: job?.id, value: parsed.data } satisfies JobCommand,
+        data: { action: "save", id: savedId, value: parsed.data } satisfies JobCommand,
       });
+      setSavedId(saved.id);
       if (action === "publish") {
         await save({ data: { action: "publish", id: saved.id } satisfies JobCommand });
         await client.invalidateQueries({ queryKey: myJobsOptions.queryKey });
@@ -119,6 +139,8 @@ function JobForm({ job }: { job?: MyJob | undefined }) {
       toast.success("Draft saved.");
       if (!job) await navigate({ to: "/app/post-job", search: { job: saved.id } });
     } catch (e) {
+      // The draft may have been saved before the publish step failed; refresh the list so it shows.
+      await client.invalidateQueries({ queryKey: myJobsOptions.queryKey });
       setError(errorMessage(e));
     } finally {
       setBusy("");
@@ -466,7 +488,7 @@ export function ApplicationsPage({ initialJob = "" }: { initialJob?: string }) {
                 <tr key={a.id}>
                   <td>
                     <strong>{a.seller_name || "Seller"}</strong>
-                    <small>{day(a.created_at.slice(0, 10))}</small>
+                    <small>{day(a.created_at)}</small>
                   </td>
                   <td>{a.jobs?.title ?? "Job unavailable"}</td>
                   <td>
@@ -806,10 +828,8 @@ export function JobDetailPage({ id }: { id: string }) {
                   <Send size={16} /> Application {application.status}
                 </strong>
                 <p>
-                  Sent {day(application.created_at.slice(0, 10))}.{" "}
-                  {application.status === "submitted"
-                    ? "You can still withdraw it."
-                    : "The buyer is reviewing your application."}
+                  Sent {day(application.created_at)}.{" "}
+                  {applicationNote[application.status] ?? "The buyer is reviewing your application."}
                 </p>
                 {application.status === "submitted" && (
                   <Button variant="outline" size="sm" disabled={busy} onClick={() => void pull()}>
@@ -929,8 +949,8 @@ export function MyApplicationsPage() {
                   <td>
                     <JobStatus status={a.status} />
                   </td>
-                  <td>{money(a.proposed_amount, a.jobs?.budget_currency ?? "")}</td>
-                  <td>{day(a.created_at.slice(0, 10))}</td>
+                  <td>{amountOrNone(a.proposed_amount, a.jobs?.budget_currency ?? "")}</td>
+                  <td>{day(a.created_at)}</td>
                   <td>
                     {!['withdrawn', 'rejected'].includes(a.status) && <ConversationAction application={a.id} />}
                     {a.status === "submitted" ? (

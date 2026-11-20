@@ -40,6 +40,8 @@ export async function runResumeOptimization(content: ResumeContent, mode: Optimi
       };
     return {
       text,
+      // Only the rewritten wording may replace a resume field; feedback and questions are for reading.
+      wording: output.wording,
       error: null,
       canApply: !!output.wording && !output.questions.length && mode !== "feedback",
     };

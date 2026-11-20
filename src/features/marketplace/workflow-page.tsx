@@ -171,6 +171,14 @@ function OfferForm({ conversation }: { conversation: string }) {
   </form>;
 }
 
+const notificationTitle: Record<string, string> = {
+  message: "New message",
+  offer: "New offer",
+  accepted: "Offer accepted",
+  declined: "Offer declined",
+  cancelled: "Offer cancelled",
+};
+
 export function NotificationsPage() {
   const { data } = useSuspenseQuery(marketplaceOptions); useMarketplaceLive();
   const client = useQueryClient(); const mark = useServerFn(markNotification);
@@ -178,7 +186,7 @@ export function NotificationsPage() {
   return <><PageHeading title="Notifications" description="Updates from your project conversations and offers." />
     {mutation.error && <p role="alert" className="error-inline">{errorText(mutation.error)}</p>}
     {!data.notifications.length ? <EmptyState title="No notifications yet" description="New messages and offer updates appear here." /> : data.notifications.map(n => <article key={n.id} className="flex flex-wrap items-center justify-between gap-3 border-b border-border py-4">
-      <div><strong>{n.kind === "message" ? "New message" : `Offer ${n.kind}`}</strong><p>{data.conversations.find(c => c.id === n.conversation_id)?.title}</p><small>{new Date(n.created_at).toLocaleString()}</small></div>
+      <div><strong>{notificationTitle[n.kind] ?? "Update"}</strong><p>{data.conversations.find(c => c.id === n.conversation_id)?.title}</p><small>{new Date(n.created_at).toLocaleString()}</small></div>
       <div className="flex gap-2"><Button asChild variant="outline">{n.kind === "message" ? <Link to="/app/messages" search={{ conversation: n.conversation_id }}>Open conversation</Link> : <Link to="/app/contracts" search={{ conversation: n.conversation_id }}>View offer</Link>}</Button>{!n.read_at && <Button variant="ghost" disabled={mutation.isPending} onClick={() => mutation.mutate({ data: n.id })}>Mark read</Button>}</div>
     </article>)}
   </>;

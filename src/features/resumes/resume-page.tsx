@@ -123,6 +123,7 @@ function ResumeEditor({
   const [mode, setMode] = useState<OptimizationMode>("summary");
   const [suggestion, setSuggestion] = useState("");
   const [canApply, setCanApply] = useState(false);
+  const [wording, setWording] = useState("");
   const [error, setError] = useState("");
   const [aiBusy, setAiBusy] = useState(false);
   const command = useServerFn(resumeCommand);
@@ -181,6 +182,7 @@ function ResumeEditor({
     try {
       const result = await optimize({ data: { id: resume.id, mode } });
       setSuggestion(result.text);
+      setWording("wording" in result && typeof result.wording === "string" ? result.wording : "");
       setCanApply("canApply" in result && result.canApply === true);
       setError(result.error ?? "");
     } catch (e) {
@@ -325,12 +327,17 @@ function ResumeEditor({
                   {canApply ? "Suggested wording · review required" : "Feedback and questions"}
                 </h3>
                 <p>{suggestion}</p>
-                {canApply && mode !== "feedback" && (
+                {canApply && mode === "achievements" && (
+                  <p className="legal-note">
+                    Copy the lines you want into your Experience section. Applying them would
+                    replace your whole Experience section.
+                  </p>
+                )}
+                {canApply && wording && (mode === "summary" || mode === "experience") && (
                   <Button
                     variant="outline"
                     onClick={() => {
-                      const field = mode === "summary" ? "summary" : "experience";
-                      setContent((c) => ({ ...c, [field]: suggestion }));
+                      setContent((c) => ({ ...c, [mode]: wording }));
                       setDirty(true);
                       setSuggestion("");
                     }}
